@@ -1,0 +1,41 @@
+{
+  "description": "A child profile stored before the rule existed: filled with the value of the Child starter suggestion (compact without status capsules) as the user's choice, not locked.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "kind": "child",
+      "child_protection": true,
+      "rules": {},
+      "fixed": [],
+      "user_choice": [
+        "header"
+      ]
+    },
+    "overrides": [],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-22T18:00:00Z"
+  },
+  "expected": {
+    "home_header": {
+      "value": {
+        "style": "compact",
+        "status_chips": false,
+        "greeting": true,
+        "weather": true
+      },
+      "source": "default",
+      "reason": "user_choice",
+      "locked": false,
+      "fixed": false,
+      "user_choice": true,
+      "enforcement": "app"
+    }
+  }
+}

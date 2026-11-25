@@ -1,0 +1,31 @@
+{
+  "description": "Expired guest access on an Apple TV: hub stays hub (access_expired); the platform exception does not apply, so the device gets no key at all.",
+  "input": {
+    "platform": "tvos",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-20T12:00:00Z"
+    },
+    "profile": {
+      "rules": {
+        "control_path": "checked"
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "hub",
+      "source": "access_expired",
+      "reason": "access_expired",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

@@ -1,0 +1,35 @@
+{
+  "description": "“Darf ich noch?” is a kids rule (kids_requests): the suggestion Kleinkind switches it off, not fixed (a family manager may switch it on per child).",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "toddler"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_requests": {
+      "value": {
+        "enabled": false,
+        "categories": [
+          "stay_up",
+          "unlock_device",
+          "end_pause"
+        ]
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

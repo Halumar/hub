@@ -1,0 +1,34 @@
+{
+  "description": "The admin gives one adult iPhone the right family manager as a device adjustment (catalog default off, profile Erwachsen off).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "overrides": [
+      {
+        "rule": "family_manager",
+        "value": true
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "family_manager": {
+      "value": true,
+      "source": "device",
+      "reason": "device",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

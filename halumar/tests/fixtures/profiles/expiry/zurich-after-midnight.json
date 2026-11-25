@@ -1,0 +1,23 @@
+{
+  "description": "Zurich, 01:30 local: tomorrow morning is 07:00 of the same day",
+  "time_zone": "Europe/Zurich",
+  "now": "2026-11-21T00:30:00Z",
+  "cases": [
+    {
+      "preset": "1h",
+      "expires_at": "2026-11-21T01:30:00Z"
+    },
+    {
+      "preset": "today",
+      "expires_at": "2026-11-21T23:00:00Z"
+    },
+    {
+      "preset": "tomorrow_morning",
+      "expires_at": "2026-11-21T06:00:00Z"
+    },
+    {
+      "preset": "7d",
+      "expires_at": "2026-11-28T00:30:00Z"
+    }
+  ]
+}

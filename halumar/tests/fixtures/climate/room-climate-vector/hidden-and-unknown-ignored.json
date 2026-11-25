@@ -1,0 +1,68 @@
+{
+  "name": "hidden-and-unknown-ignored",
+  "description": "Hidden placements and sensors without a numeric state do not count.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "sensor.hidden_temperature",
+      "state": {
+        "state": "30",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Versteckt"
+        }
+      },
+      "visible": false
+    },
+    {
+      "entity_id": "sensor.broken_temperature",
+      "state": {
+        "state": "unknown",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Kaputt"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.room_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Raum"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.broken_temperature",
+          "sensor.room_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.room_temperature",
+      "humidity": null
+    }
+  }
+}

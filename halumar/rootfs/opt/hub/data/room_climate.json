@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "measures": {
+    "temperature": {
+      "device_domains": [
+        "climate"
+      ],
+      "device_attribute": "current_temperature",
+      "sensor_device_class": "temperature"
+    },
+    "humidity": {
+      "device_domains": [
+        "climate"
+      ],
+      "device_attribute": "current_humidity",
+      "sensor_device_class": "humidity"
+    }
+  },
+  "exclude": {
+    "entity_categories": [
+      "config",
+      "diagnostic"
+    ],
+    "groups": [
+      {
+        "id": "fridge",
+        "contains": [
+          "kuehlschrank",
+          "kuhlschrank",
+          "kuehlgeraet",
+          "kuhlgerat",
+          "fridge",
+          "refrigerator"
+        ],
+        "prefixes": []
+      },
+      {
+        "id": "freezer",
+        "contains": [
+          "gefrier",
+          "tiefkuehl",
+          "tiefkuhl",
+          "freezer"
+        ],
+        "prefixes": []
+      },
+      {
+        "id": "cool_box",
+        "contains": [
+          "kuehlbox",
+          "kuhlbox",
+          "coolbox",
+          "cool box"
+        ],
+        "prefixes": []
+      },
+      {
+        "id": "pool",
+        "contains": [
+          "whirlpool",
+          "schwimmbad",
+          "swimming",
+          "jacuzzi",
+          "hot tub",
+          "hottub"
+        ],
+        "prefixes": [
+          "pool"
+        ]
+      },
+      {
+        "id": "outdoor",
+        "contains": [
+          "outdoor",
+          "outside",
+          "exterior"
+        ],
+        "prefixes": [
+          "aussen",
+          "draussen"
+        ]
+      },
+      {
+        "id": "boiler",
+        "contains": [
+          "boiler",
+          "warmwasser",
+          "heisswasser",
+          "water heater",
+          "waterheater"
+        ],
+        "prefixes": []
+      },
+      {
+        "id": "water",
+        "contains": [
+          "aquarium"
+        ],
+        "prefixes": [
+          "wasser",
+          "water",
+          "teich",
+          "pond"
+        ]
+      },
+      {
+        "id": "processor",
+        "contains": [
+          "prozessor",
+          "processor",
+          "chipset"
+        ],
+        "prefixes": [
+          "cpu",
+          "gpu",
+          "soc",
+          "akku",
+          "battery",
+          "batterie",
+          "ssd",
+          "hdd",
+          "nvme"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "name": "diagnostic-excluded",
+  "description": "A plug reports its own temperature as a diagnostic entity; it never counts automatically.",
+  "ha_area_id": "living_room",
+  "entities": [
+    {
+      "entity_id": "sensor.shelly_plug_temperature",
+      "state": {
+        "state": "38.5",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Steckdose Temperatur"
+        }
+      },
+      "registry": {
+        "entity_category": "diagnostic",
+        "area_id": null,
+        "device": {
+          "name": "Steckdose TV",
+          "name_by_user": null,
+          "model": null,
+          "area_id": "living_room"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.living_room_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Temperatur"
+        }
+      },
+      "registry": {
+        "entity_category": null,
+        "area_id": null,
+        "device": {
+          "name": "Thermometer",
+          "name_by_user": null,
+          "model": null,
+          "area_id": "living_room"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.living_room_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 29.75,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.living_room_temperature",
+      "humidity": null
+    },
+    "options": {
+      "temperature": [
+        {
+          "entity_id": "sensor.shelly_plug_temperature",
+          "tier": "sensor",
+          "in_room": true,
+          "excluded": "entity_category"
+        },
+        {
+          "entity_id": "sensor.living_room_temperature",
+          "tier": "sensor",
+          "in_room": true,
+          "excluded": null
+        }
+      ],
+      "humidity": []
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "description": "A guest on Hub only with a temporary Direct until 20:00, before the end: capped at checked by the guest boundary, and the capped value ends with the adjustment (then hub).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-27T18:00:00Z"
+    },
+    "profile": {
+      "kind": "guest",
+      "rules": {
+        "control_path": "hub"
+      }
+    },
+    "overrides": [
+      {
+        "rule": "control_path",
+        "value": "direct",
+        "expires_at": "2026-11-20T20:00:00Z"
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": "hub"
+    }
+  },
+  "expected_ha_access": {
+    "child": false,
+    "access_open": true,
+    "expected": {
+      "holds_key": true,
+      "token": "clear"
+    }
+  }
+}

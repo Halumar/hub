@@ -1,0 +1,67 @@
+{
+  "description": "No common area: the watch gets no areas at all (an empty selection, never “all”).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "areas": {
+          "mode": "selected",
+          "area_ids": [
+            "7a2c9e4b-1d3f-4b5a-9c8d-2e4f6a8b0c1d"
+          ],
+          "tags": [],
+          "own_area": false
+        }
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "areas": {
+            "mode": "selected",
+            "area_ids": [
+              "d18b03ba-0f49-4fea-8d96-e25af54def81"
+            ],
+            "tags": [],
+            "own_area": false
+          }
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    }
+  },
+  "expected": {
+    "areas": {
+      "value": {
+        "mode": "selected",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    }
+  }
+}

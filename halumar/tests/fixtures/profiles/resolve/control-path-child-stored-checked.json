@@ -1,0 +1,45 @@
+{
+  "description": "A profile with parental controls and a stored value checked keeps checked: a read-only key, operating enforced in Home Assistant.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "child_protection": true,
+      "rules": {
+        "control_path": "checked"
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "default",
+      "reason": "catalog_default",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

@@ -1,0 +1,47 @@
+{
+  "description": "Child with “Allow a watch” on but without remote access: kids_watch does not apply (requires_remote_access: the watch switches only through Home Assistant), so watch stays off.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child",
+      "rules": {
+        "kids_watch": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_watch": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_remote_access",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_kids_watch",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "remote_access": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    }
+  }
+}

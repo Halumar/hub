@@ -1,0 +1,58 @@
+{
+  "description": "A profile with parental controls and no stored Home Assistant access resolves to Hub only, not to the catalog default checked (fail closed): no key, widgets and the watch off.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "child_protection": true
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "hub",
+      "source": "default",
+      "reason": "catalog_default",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "boundary",
+      "reason": "boundary_hub_only",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_kids_watch",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "default",
+      "reason": "catalog_default",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

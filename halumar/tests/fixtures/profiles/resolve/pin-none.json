@@ -1,0 +1,31 @@
+{
+  "description": "Neither profile nor device PIN: settings with remote PIN are hidden (prerequisite_missing).",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "wall_panel",
+      "has_remote_pin": false,
+      "remote_pin_fixed": true
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "app_settings": {
+      "value": "hidden",
+      "source": "prerequisite",
+      "reason": "prerequisite_missing",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  },
+  "expected_remote_pin_source": null
+}

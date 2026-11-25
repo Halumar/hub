@@ -1,0 +1,58 @@
+{
+  "name": "admin-pick-excluded-on-purpose",
+  "description": "The admin may pick an excluded entity on purpose (here the pool of a pool house).",
+  "ha_area_id": null,
+  "admin": {
+    "temperature": "sensor.pool_water_temperature"
+  },
+  "entities": [
+    {
+      "entity_id": "sensor.pool_water_temperature",
+      "state": {
+        "state": "26.5",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Pool Wasser"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.pool_house_air",
+      "state": {
+        "state": "24.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Poolhaus Luft"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "admin",
+        "entity_ids": [
+          "sensor.pool_water_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 26.5,
+      "humidity": null
+    },
+    "local": {
+      "temperature": null,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.pool_water_temperature",
+      "humidity": null
+    }
+  }
+}

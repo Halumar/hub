@@ -1,0 +1,8 @@
+# Advisories for bundled npm packages that cannot affect the Admin UI (read by
+# scripts/ci/npm-audit-bundle.mjs). The bundle is a static SPA (adapter-static, no
+# server, no form actions, no remote functions, no use:enhance). Remove an entry
+# once the fix is in; the script warns about entries that are no longer reported.
+GHSA-3r8g-jcqq-3p5j  # @sveltejs/kit: form parsing of remote functions, server only
+GHSA-6cf5-gc4q-fm3x  # @sveltejs/kit: query.batch remote functions, server only
+GHSA-pfhg-q3qv-9q6r  # @sveltejs/kit: redirect after enhanced form submission; no use:enhance in src/
+GHSA-27mw-82g8-phjj  # @sveltejs/kit: cache-control header of prerendered pages, server/prerender only

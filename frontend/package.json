@@ -1,0 +1,34 @@
+{
+  "name": "hub-frontend",
+  "version": "2026.12.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "check": "svelte-check",
+    "icons": "node scripts/gen-mdi-icons.mjs",
+    "licenses": "vite build --config scripts/license-scan.config.js"
+  },
+  "devDependencies": {
+    "@mdi/svg": "7.4.47",
+    "@playwright/test": "^1.61.1",
+    "@sveltejs/adapter-static": "^3.0.8",
+    "@sveltejs/kit": "^2.15.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "qrcode": "^1.5.4",
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.7.8",
+    "tailwindcss": "^4.0.0",
+    "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "dompurify": "^3.3.2",
+    "svelte-dnd-action": "^0.9.69"
+  }
+}

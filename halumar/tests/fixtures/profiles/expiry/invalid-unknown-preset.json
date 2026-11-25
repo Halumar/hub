@@ -1,0 +1,11 @@
+{
+  "description": "invalid: unknown preset",
+  "time_zone": "Europe/Zurich",
+  "now": "2026-11-20T18:00:00Z",
+  "cases": [
+    {
+      "preset": "2h",
+      "expires_at": "2026-11-20T20:00:00Z"
+    }
+  ]
+}

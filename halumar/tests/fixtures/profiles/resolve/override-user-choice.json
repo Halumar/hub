@@ -1,0 +1,36 @@
+{
+  "description": "Adult iPad: wall panel mode adjusted as user's choice with starting value on.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "overrides": [
+      {
+        "rule": "kiosk",
+        "value": true,
+        "user_choice": true
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kiosk": {
+      "value": true,
+      "source": "device",
+      "reason": "user_choice",
+      "locked": false,
+      "fixed": false,
+      "user_choice": true,
+      "enforcement": "app"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "description": "A profile of kind house_sitter without a stored Home Assistant access resolves to hub (fail closed), not to the catalog default checked.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-27T18:00:00Z"
+    },
+    "profile": {
+      "kind": "house_sitter"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "hub",
+      "source": "default",
+      "reason": "catalog_default",
+      "locked": true,
+      "fixed": false
+    }
+  },
+  "expected_ha_access": {
+    "child": false,
+    "access_open": true,
+    "expected": {
+      "holds_key": false,
+      "token": null
+    }
+  }
+}

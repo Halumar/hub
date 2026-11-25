@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "domains": [
+    {
+      "domains": [
+        "light",
+        "switch",
+        "input_boolean",
+        "fan",
+        "humidifier"
+      ],
+      "default": "control",
+      "max": "control",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "scene",
+        "script",
+        "button",
+        "input_button"
+      ],
+      "default": "control",
+      "max": "control",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "media_player"
+      ],
+      "default": "control",
+      "max": "control",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "climate"
+      ],
+      "default": "control",
+      "max": "control",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "cover"
+      ],
+      "default": "control",
+      "max": "control",
+      "critical": false,
+      "critical_device_classes": [
+        "garage",
+        "gate",
+        "door"
+      ],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "vacuum",
+        "lawn_mower"
+      ],
+      "default": "control",
+      "max": "control",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "input_number",
+        "number",
+        "input_select",
+        "select"
+      ],
+      "default": "status",
+      "max": "control",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "automation"
+      ],
+      "default": "status",
+      "max": "control",
+      "critical": true,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "valve",
+        "siren"
+      ],
+      "default": "status",
+      "max": "control",
+      "critical": true,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "lock"
+      ],
+      "default": "status",
+      "max": "control",
+      "critical": true,
+      "critical_device_classes": [],
+      "safe_direction": "lock"
+    },
+    {
+      "domains": [
+        "alarm_control_panel"
+      ],
+      "default": "status",
+      "max": "control",
+      "critical": true,
+      "critical_device_classes": [],
+      "safe_direction": "arm"
+    },
+    {
+      "domains": [
+        "sensor",
+        "binary_sensor",
+        "weather",
+        "water_heater"
+      ],
+      "default": "status",
+      "max": "status",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "camera",
+        "person",
+        "device_tracker"
+      ],
+      "default": "off",
+      "max": "off",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    },
+    {
+      "domains": [
+        "_other"
+      ],
+      "default": "status",
+      "max": "status",
+      "critical": false,
+      "critical_device_classes": [],
+      "safe_direction": null
+    }
+  ]
+}

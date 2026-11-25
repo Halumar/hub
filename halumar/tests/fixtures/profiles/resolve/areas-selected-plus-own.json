@@ -1,0 +1,49 @@
+{
+  "description": "Visible areas: selected area, a tag and the own area are combined (own area resolved, no duplicates).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "rules": {
+        "areas": {
+          "mode": "selected",
+          "area_ids": [
+            "a1b2c3d4-0000-4000-8000-00000000000b"
+          ],
+          "tags": [
+            "Familie"
+          ],
+          "own_area": true
+        }
+      }
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "areas": {
+      "value": {
+        "mode": "selected",
+        "area_ids": [
+          "a1b2c3d4-0000-4000-8000-00000000000b",
+          "a1b2c3d4-0000-4000-8000-00000000000a"
+        ],
+        "tags": [
+          "Familie"
+        ],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    }
+  }
+}

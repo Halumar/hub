@@ -1,0 +1,17 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Take down the add-on when the server fails
+# ==============================================================================
+# s6 would otherwise restart the service forever inside a container that looks
+# healthy. A non-zero exit (except 256 = killed by a signal, e.g. on stop) ends
+# the container instead, so the Supervisor sees the failure and its watchdog
+# restarts the add-on.
+
+if [[ "${1}" -ne 0 ]] && [[ "${1}" -ne 256 ]]; then
+  bashio::log.error "Hub server exited with code ${1}, stopping the add-on."
+  echo "${1}" > /run/s6-linux-init-container-results/exitcode
+  exec /run/s6/basedir/bin/halt
+fi
+
+bashio::log.info "Hub server stopped."

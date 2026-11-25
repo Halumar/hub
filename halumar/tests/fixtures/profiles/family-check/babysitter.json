@@ -1,0 +1,803 @@
+{
+  "description": "A babysitter device only answers requests of children with parental controls, while it has access and is at home, with Yes 15/30 min or until the end of babysitting; never rule changes, own releases, blocked device types, exceptions, locks or fixed rules.",
+  "cases": [
+    {
+      "name": "stay up 30 min",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "stay_up",
+        "preset": "30m"
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "until the end of babysitting",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "stay_up",
+        "preset": "access_end"
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "access_end without known end",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "stay_up",
+        "preset": "access_end"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "preset_not_allowed"
+      }
+    },
+    {
+      "name": "one hour is for parents only",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "stay_up",
+        "preset": "1h"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "preset_not_allowed"
+      }
+    },
+    {
+      "name": "no is always possible",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_no",
+        "category": "stay_up"
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "outside the access hours",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": false,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_no",
+        "category": "stay_up"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "not_permitted"
+      }
+    },
+    {
+      "name": "away from home",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": false,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "stay_up",
+        "preset": "15m"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "not_permitted"
+      }
+    },
+    {
+      "name": "no rule changes",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "kids_volume_max",
+        "value": 60
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "not_permitted"
+      }
+    },
+    {
+      "name": "no own releases",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "release",
+        "release_kind": "bedtime"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "not_permitted"
+      }
+    },
+    {
+      "name": "no ending of releases",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "release_end",
+        "release_kind": "bedtime"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "not_permitted"
+      }
+    },
+    {
+      "name": "bedtime fixed by the admin",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_quiet_hours"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "stay_up",
+        "preset": "15m"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "release_not_allowed"
+      }
+    },
+    {
+      "name": "unlock a lamp during bedtime",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "unlock_device",
+        "preset": "15m",
+        "entity_id": "light.kids_room"
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "never a blocked device type (even when not fixed)",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "unlock_device",
+        "preset": "15m",
+        "entity_id": "cover.garage_door",
+        "device_class": "garage"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "release_not_allowed"
+      }
+    },
+    {
+      "name": "never an exception",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "unlock_device",
+        "preset": "30m",
+        "entity_id": "media_player.parents_tv"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "release_not_allowed"
+      }
+    },
+    {
+      "name": "never a lock",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "unlock_device",
+        "preset": "15m",
+        "entity_id": "lock.front_door"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "release_not_allowed"
+      }
+    },
+    {
+      "name": "end the break",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "end_pause",
+        "preset": "15m"
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "end the break: breaks fixed",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_rate_limit"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_yes",
+        "category": "end_pause",
+        "preset": "15m"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "release_not_allowed"
+      }
+    },
+    {
+      "name": "a babysitter that is a child device",
+      "manager": {
+        "client_id": "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f",
+        "access": "guest",
+        "child_protection": true,
+        "family_manager": false,
+        "scope": {
+          "all": true,
+          "client_ids": []
+        },
+        "babysitter": true,
+        "access_open": true,
+        "at_home": true,
+        "access_until": "2026-11-21T00:00:00Z"
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_color_lock",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.parents_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "answer_no",
+        "category": "stay_up"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "not_permitted"
+      }
+    }
+  ]
+}

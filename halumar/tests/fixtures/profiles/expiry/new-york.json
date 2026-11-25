@@ -1,0 +1,23 @@
+{
+  "description": "New York, 22:00 local",
+  "time_zone": "America/New_York",
+  "now": "2026-11-21T03:00:00Z",
+  "cases": [
+    {
+      "preset": "1h",
+      "expires_at": "2026-11-21T04:00:00Z"
+    },
+    {
+      "preset": "today",
+      "expires_at": "2026-11-21T05:00:00Z"
+    },
+    {
+      "preset": "tomorrow_morning",
+      "expires_at": "2026-11-21T12:00:00Z"
+    },
+    {
+      "preset": "7d",
+      "expires_at": "2026-11-28T03:00:00Z"
+    }
+  ]
+}

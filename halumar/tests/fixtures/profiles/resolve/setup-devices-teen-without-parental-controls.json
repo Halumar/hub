@@ -1,0 +1,46 @@
+{
+  "description": "Kind child is independent of parental controls; a teen profile without parental controls still never sets up devices (only kind person).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "kind": "child",
+      "child_protection": false,
+      "rules": {
+        "setup_devices": {
+          "enabled": true,
+          "kinds": [
+            "guest"
+          ]
+        }
+      },
+      "fixed": []
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "setup_devices": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_profile_kind",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "remote_access": {
+      "value": false,
+      "source": "default",
+      "reason": "catalog_default",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    }
+  }
+}

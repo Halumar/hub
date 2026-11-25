@@ -1,0 +1,22 @@
+{
+  "description": "Wrong expectation: a switch that is off can never be open.",
+  "time_zone": "Europe/Zurich",
+  "access_hours": {
+    "enabled": false,
+    "windows": []
+  },
+  "cases": [
+    {
+      "now": "2026-11-20T10:00:00Z",
+      "switch": false,
+      "expected": {
+        "open": true,
+        "reason": null,
+        "until": null,
+        "opens_at": null,
+        "schedule": false,
+        "switch": false
+      }
+    }
+  ]
+}

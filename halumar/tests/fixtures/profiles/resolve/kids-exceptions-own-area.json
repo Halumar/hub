@@ -1,0 +1,104 @@
+{
+  "description": "Kind 6–9 with an exception for the own area and one for an entity: the own area is resolved to the device's area; visible areas = own area.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child_6_9",
+      "rules": {
+        "kids_exceptions": [
+          {
+            "target": {
+              "own_area": true
+            },
+            "rules": {
+              "quiet_hours": [
+                {
+                  "days": [
+                    "mon",
+                    "tue",
+                    "wed",
+                    "thu",
+                    "fri"
+                  ],
+                  "start": "20:00",
+                  "end": "06:30"
+                }
+              ]
+            }
+          },
+          {
+            "target": {
+              "entity_id": "light.night_light"
+            },
+            "rules": {
+              "quiet_hours": []
+            }
+          }
+        ]
+      }
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_exceptions": {
+      "value": [
+        {
+          "target": {
+            "area_id": "a1b2c3d4-0000-4000-8000-00000000000a"
+          },
+          "rules": {
+            "quiet_hours": [
+              {
+                "days": [
+                  "mon",
+                  "tue",
+                  "wed",
+                  "thu",
+                  "fri"
+                ],
+                "start": "20:00",
+                "end": "06:30"
+              }
+            ]
+          }
+        },
+        {
+          "target": {
+            "entity_id": "light.night_light"
+          },
+          "rules": {
+            "quiet_hours": []
+          }
+        }
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "areas": {
+      "value": {
+        "mode": "selected",
+        "area_ids": [
+          "a1b2c3d4-0000-4000-8000-00000000000a"
+        ],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

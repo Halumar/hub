@@ -1,0 +1,23 @@
+{
+  "description": "Zurich, Friday 19:00 local (winter time)",
+  "time_zone": "Europe/Zurich",
+  "now": "2026-11-20T18:00:00Z",
+  "cases": [
+    {
+      "preset": "1h",
+      "expires_at": "2026-11-20T19:00:00Z"
+    },
+    {
+      "preset": "today",
+      "expires_at": "2026-11-20T23:00:00Z"
+    },
+    {
+      "preset": "tomorrow_morning",
+      "expires_at": "2026-11-21T06:00:00Z"
+    },
+    {
+      "preset": "7d",
+      "expires_at": "2026-11-27T18:00:00Z"
+    }
+  ]
+}

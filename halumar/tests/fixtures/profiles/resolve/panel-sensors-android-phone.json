@@ -1,0 +1,47 @@
+{
+  "description": "Android counterpart of panel-sensors-iphone: the Android phone gets the same sensors as the iPhone, no control.",
+  "input": {
+    "platform": "android",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "panel_sensors": {
+      "value": [
+        "battery",
+        "charging",
+        "screen",
+        "brightness"
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "user_choice": false,
+      "expires_at": null,
+      "then": null,
+      "enforcement": "hub"
+    },
+    "panel_remote": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "user_choice": false,
+      "expires_at": null,
+      "then": null,
+      "enforcement": "hub"
+    }
+  }
+}

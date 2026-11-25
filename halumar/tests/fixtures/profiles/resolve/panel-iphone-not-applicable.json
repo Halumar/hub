@@ -1,0 +1,36 @@
+{
+  "description": "The iPhone has no wall panel; the panel control rules do not apply (panel_sensors does, see panel-sensors-iphone).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "panel_remote": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "panel_brightness": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  }
+}

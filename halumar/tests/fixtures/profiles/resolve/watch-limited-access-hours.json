@@ -1,0 +1,82 @@
+{
+  "description": "The phone gets access hours 07:00–20:00: the watch never has access when its phone has none (its own hours were none).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult"
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      },
+      "overrides": [
+        {
+          "rule": "access_hours",
+          "value": {
+            "enabled": true,
+            "windows": [
+              {
+                "days": [
+                  "mon",
+                  "tue",
+                  "wed",
+                  "thu",
+                  "fri",
+                  "sat",
+                  "sun"
+                ],
+                "start": "07:00",
+                "end": "20:00"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "access_hours": {
+      "value": {
+        "enabled": true,
+        "windows": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "start": "07:00",
+            "end": "20:00"
+          }
+        ]
+      },
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    }
+  }
+}

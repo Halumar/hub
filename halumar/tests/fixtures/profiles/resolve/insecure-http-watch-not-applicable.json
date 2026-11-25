@@ -1,0 +1,28 @@
+{
+  "description": "The Apple Watch takes the switch over from the iPhone; the rule does not apply to watchOS.",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "connection_insecure_http": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "description": "Home Assistant access when setting up or pairing a device, compared by key level after the platform mapping (none < read-only < full): a device on Hub only with remote access may hand out what resolves to checked (for example an Apple TV, Android TV or its watch), never direct; a device on Hub only without remote access hands out nothing that holds a key. Remote access and quick access compare along their order.",
+  "key_cases": [
+    {
+      "new": {
+        "control_path": "checked",
+        "remote_access": false
+      },
+      "mine": {
+        "control_path": "hub",
+        "remote_access": true
+      },
+      "expected_looser": false
+    },
+    {
+      "new": {
+        "control_path": "direct",
+        "remote_access": false
+      },
+      "mine": {
+        "control_path": "hub",
+        "remote_access": true
+      },
+      "expected_looser": true
+    },
+    {
+      "new": {
+        "control_path": "checked",
+        "remote_access": false
+      },
+      "mine": {
+        "control_path": "hub",
+        "remote_access": false
+      },
+      "expected_looser": true
+    },
+    {
+      "new": {
+        "control_path": "hub",
+        "remote_access": true
+      },
+      "mine": {
+        "control_path": "hub",
+        "remote_access": false
+      },
+      "expected_looser": true
+    },
+    {
+      "new": {
+        "control_path": "hub",
+        "remote_access": false
+      },
+      "mine": {
+        "control_path": "hub",
+        "remote_access": false
+      },
+      "expected_looser": false
+    },
+    {
+      "new": {
+        "control_path": "checked",
+        "remote_access": true
+      },
+      "mine": {
+        "control_path": "checked",
+        "remote_access": false
+      },
+      "expected_looser": false
+    },
+    {
+      "new": {
+        "control_path": "direct",
+        "remote_access": true
+      },
+      "mine": {
+        "control_path": "checked",
+        "remote_access": true
+      },
+      "expected_looser": true
+    },
+    {
+      "new": {
+        "control_path": "hub",
+        "remote_access": true
+      },
+      "mine": {
+        "control_path": "checked",
+        "remote_access": false
+      },
+      "expected_looser": false
+    },
+    {
+      "new": {
+        "control_path": "direct",
+        "remote_access": false
+      },
+      "mine": {
+        "control_path": "direct",
+        "remote_access": false
+      },
+      "expected_looser": false
+    }
+  ],
+  "cases": [
+    {
+      "rule": "remote_access",
+      "new": true,
+      "mine": false,
+      "expected_looser": true
+    },
+    {
+      "rule": "quick_access",
+      "new": "status",
+      "mine": "off",
+      "expected_looser": true
+    },
+    {
+      "rule": "quick_access",
+      "new": "off",
+      "mine": "status",
+      "expected_looser": false
+    }
+  ]
+}

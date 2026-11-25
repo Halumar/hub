@@ -1,0 +1,53 @@
+{
+  "description": "Babysitter rule on an Apple TV: not for the platform.",
+  "input": {
+    "platform": "tvos",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-27T18:00:00Z"
+    },
+    "profile": {
+      "from_suggestion": "babysitter"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "babysitter_requests": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "access_hours": {
+      "value": {
+        "enabled": true,
+        "windows": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "start": "17:00",
+            "end": "01:00"
+          }
+        ]
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    }
+  }
+}

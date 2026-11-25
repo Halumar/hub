@@ -1,0 +1,47 @@
+{
+  "description": "An iPad with the suggestion Erwachsen (version 2) gets the sensors but no control from Home Assistant – the suggestion sets panel_remote off; on only in the suggestions wall panel, Apple TV and kids room panel.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "panel_sensors": {
+      "value": [
+        "battery",
+        "charging",
+        "screen",
+        "brightness"
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "user_choice": false,
+      "expires_at": null,
+      "then": null,
+      "enforcement": "hub"
+    },
+    "panel_remote": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "user_choice": false,
+      "expires_at": null,
+      "then": null,
+      "enforcement": "hub"
+    }
+  }
+}

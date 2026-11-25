@@ -1,0 +1,40 @@
+{
+  "description": "Hub only in the profile of an Apple Watch: a watch has no hub socket and needs its own key, so the value is checked (platform_needs_key).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "control_path": "hub"
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "boundary",
+      "reason": "platform_needs_key",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    },
+    "quick_access": {
+      "value": "control",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

@@ -1,0 +1,1 @@
+import{t}from"./BJpRWW42.js";function i(n){const r=Array.isArray(n==null?void 0:n.errors)?n.errors:[];if(r.length===0)return null;const o=r.slice(0,3).join(" · ")+(r.length>3?` (+${r.length-3})`:"");return t("areas.importSkipped",{count:r.length,list:o})}export{i as s};

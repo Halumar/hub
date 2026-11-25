@@ -1,0 +1,9 @@
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/.playwright/
+
+# node_modules without a trailing slash also matches a symlink
+node_modules

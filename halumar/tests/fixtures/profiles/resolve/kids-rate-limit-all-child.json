@@ -1,0 +1,34 @@
+{
+  "description": "Suggestion Kind (version 4) pauses everything after more than 4 different devices or 12 actions in a minute, for 5 minutes; not fixed, so family managers may adjust it.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_rate_limit_all": {
+      "value": {
+        "enabled": true,
+        "max_actions": 12,
+        "max_entities": 4,
+        "window_seconds": 60,
+        "cooldown_seconds": 300
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

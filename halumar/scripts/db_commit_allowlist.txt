@@ -1,0 +1,6 @@
+# Transaction call sites that may remain outside models/database.py.
+# Format: <path relative to rootfs/opt/hub> <max number of findings>
+#
+# Empty: every write outside models/database.py runs in
+# `async with db.transaction():`. Keep it empty;
+# `check_db_commits.py --strict` is a blocking CI step.

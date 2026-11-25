@@ -1,0 +1,58 @@
+{
+  "description": "A phone on Hub only without remote access with Checked until 20:00, before the end: while Checked runs, quick access and the watch follow the profile and end with it (then off/false); from 20:00 hub_only caps them.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "control_path": "hub",
+        "remote_access": false
+      }
+    },
+    "overrides": [
+      {
+        "rule": "control_path",
+        "value": "checked",
+        "expires_at": "2026-11-20T20:00:00Z"
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "device",
+      "reason": "device_temporary",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": "hub"
+    },
+    "quick_access": {
+      "value": "control",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": "off"
+    },
+    "watch": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": false
+    }
+  }
+}

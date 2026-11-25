@@ -1,0 +1,1195 @@
+{
+  "catalog_version": 10,
+  "suggestions": [
+    {
+      "id": "adult",
+      "version": 5,
+      "group": "people",
+      "kind": "person",
+      "starter": true,
+      "name": {
+        "de": "Erwachsene Person",
+        "en": "Adult"
+      },
+      "description": {
+        "de": "Sieht und steuert alles zu Hause, auch von unterwegs. Neue Geräte einrichten und Gäste einladen nur, wenn du es erlaubst.",
+        "en": "Sees and controls everything at home, also when away. Sets up new devices and invites guests only if you allow it."
+      },
+      "icon": "mdi:account",
+      "color": "#2E7D32",
+      "child_protection": false,
+      "intended_for": "member",
+      "default_for": [
+        "ios",
+        "watchos",
+        "android",
+        "wearos"
+      ],
+      "rules": {
+        "remote_access": true,
+        "connection_insecure_http": true,
+        "remote_control": {
+          "default": "control",
+          "domains": {
+            "lock": "view",
+            "alarm_control_panel": "view",
+            "cover:garage": "view",
+            "cover:gate": "view"
+          },
+          "entities": {}
+        },
+        "quick_access": "control",
+        "camera_live": true,
+        "watch": true,
+        "location": "background",
+        "control_path": "checked",
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ]
+      },
+      "fixed": [
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack",
+        "kiosk",
+        "panel_start",
+        "panel_auto_home",
+        "panel_dim",
+        "panel_screensaver",
+        "panel_night"
+      ]
+    },
+    {
+      "id": "parent",
+      "version": 6,
+      "group": "people",
+      "kind": "person",
+      "starter": false,
+      "name": {
+        "de": "Eltern",
+        "en": "Parents"
+      },
+      "description": {
+        "de": "Wie „Erwachsene Person“, dazu Familienverwaltung für alle Kinder: Schlafenszeit, Pausen und Freigaben in der App, Anfragen der Kinder beantworten. Richtet Geräte für Kinder, Gäste, Wandpanels und TV ein. Braucht Pro auf dem Gerät.",
+        "en": "Like Adult, plus family manager for all children: bedtime, breaks and approvals in the app, answering the children's requests. Sets up devices for children, guests, wall panels and TV. Needs Pro on the device."
+      },
+      "icon": "mdi:account-child",
+      "color": "#1B5E20",
+      "child_protection": false,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "remote_access": true,
+        "connection_insecure_http": true,
+        "remote_control": {
+          "default": "control",
+          "domains": {
+            "lock": "view",
+            "alarm_control_panel": "view",
+            "cover:garage": "view",
+            "cover:gate": "view"
+          },
+          "entities": {}
+        },
+        "quick_access": "control",
+        "camera_live": true,
+        "watch": true,
+        "location": "background",
+        "family_manager": true,
+        "control_path": "direct",
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ],
+        "setup_devices": {
+          "enabled": true,
+          "kinds": [
+            "guest",
+            "child",
+            "panel",
+            "tv",
+            "house_sitter",
+            "babysitter"
+          ]
+        }
+      },
+      "fixed": [
+        "family_manager",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack",
+        "kiosk",
+        "panel_start",
+        "panel_auto_home",
+        "panel_dim",
+        "panel_screensaver",
+        "panel_night"
+      ]
+    },
+    {
+      "id": "child",
+      "version": 8,
+      "group": "kids",
+      "kind": "child",
+      "starter": true,
+      "name": {
+        "de": "Kind",
+        "en": "Child"
+      },
+      "description": {
+        "de": "Steuert nur über den Hub und nur zu Hause. Schlösser, Alarm, Garage und Kameras sind gesperrt. Schlafenszeit Mo–Fr ab 20:00 – Schlafenszeit, Pausen und Lautstärke dürfen Familienverwalter anpassen.",
+        "en": "Controls only through the hub and only at home. Locks, alarm, garage and cameras are blocked. Bedtime Mon–Fri from 20:00 – family managers may adjust bedtime, breaks and volume."
+      },
+      "icon": "mdi:human-child",
+      "color": "#F9A825",
+      "child_protection": true,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "control_path": "hub",
+        "control_mode_max": "advanced",
+        "app_settings": "pin",
+        "quick_access": "off",
+        "card_style": "color",
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ],
+        "kids_rate_limit_all": {
+          "enabled": true,
+          "max_actions": 12,
+          "max_entities": 4,
+          "window_seconds": 60,
+          "cooldown_seconds": 300
+        },
+        "location": "foreground",
+        "home_header": {
+          "style": "compact",
+          "status_chips": false,
+          "greeting": true,
+          "weather": true
+        }
+      },
+      "fixed": [
+        "app_settings",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack",
+        "kiosk",
+        "panel_start",
+        "panel_auto_home",
+        "panel_dim",
+        "panel_screensaver",
+        "panel_night"
+      ]
+    },
+    {
+      "id": "guest",
+      "version": 4,
+      "group": "guests",
+      "kind": "guest",
+      "starter": true,
+      "name": {
+        "de": "Gast",
+        "en": "Guest"
+      },
+      "description": {
+        "de": "Nur in den Bereichen, die du freigibst, und nur zu Hause. Läuft automatisch ab.",
+        "en": "Only in the areas you allow and only at home. Expires automatically."
+      },
+      "icon": "mdi:bag-suitcase",
+      "color": "#6D4C41",
+      "child_protection": false,
+      "intended_for": "guest",
+      "default_for": [
+        "guest"
+      ],
+      "rules": {
+        "areas": {
+          "mode": "selected",
+          "area_ids": [],
+          "tags": [],
+          "own_area": true
+        },
+        "control_mode_max": "basic",
+        "app_settings": "hidden",
+        "quick_access": "off",
+        "watch": false,
+        "remote_control": {
+          "default": "control",
+          "domains": {
+            "lock": "view",
+            "alarm_control_panel": "view",
+            "cover:garage": "view",
+            "cover:gate": "view",
+            "cover:door": "view",
+            "valve": "view",
+            "siren": "view",
+            "automation": "view"
+          },
+          "entities": {}
+        },
+        "control_path": "hub",
+        "access_requests": true
+      },
+      "fixed": [
+        "control_path",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack"
+      ]
+    },
+    {
+      "id": "wall_panel",
+      "version": 4,
+      "group": "shared",
+      "kind": "panel",
+      "starter": true,
+      "name": {
+        "de": "Wandpanel",
+        "en": "Wall panel"
+      },
+      "description": {
+        "de": "Vollbild an der Wand, startet im eigenen Bereich und dunkelt nachts ab. Einstellungen nur mit Fern-PIN, nur zu Hause.",
+        "en": "Full screen on the wall, starts in its own area and dims at night. Settings only with the remote PIN, only at home."
+      },
+      "icon": "mdi:tablet-dashboard",
+      "color": "#00695C",
+      "child_protection": false,
+      "intended_for": "member",
+      "default_for": [
+        "ipados",
+        "android_tablet"
+      ],
+      "rules": {
+        "app_settings": "pin",
+        "quick_access": "off",
+        "watch": false,
+        "camera_live": true,
+        "appearance": "dark",
+        "kiosk": true,
+        "panel_start": {
+          "mode": "own_area",
+          "area_id": null
+        },
+        "panel_auto_home": 5,
+        "panel_dim": 2,
+        "panel_screensaver": 10,
+        "panel_night": {
+          "mode": "sun",
+          "start": "22:00",
+          "end": "06:00",
+          "brightness": 20
+        },
+        "control_path": "checked",
+        "panel_remote": true,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness",
+          "battery_temperature"
+        ],
+        "panel_brightness": {
+          "mode": "system"
+        },
+        "panel_announce": {
+          "enabled": true,
+          "volume_max": 80,
+          "respect_night": true
+        },
+        "panel_off_mode": "black"
+      },
+      "fixed": [
+        "app_settings",
+        "connection_insecure_http",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max",
+        "kiosk",
+        "location",
+        "remote_access",
+        "setup_devices"
+      ],
+      "user_choice": []
+    },
+    {
+      "id": "apple_tv",
+      "version": 4,
+      "group": "shared",
+      "kind": "tv",
+      "starter": true,
+      "name": {
+        "de": "Fernseher",
+        "en": "TV"
+      },
+      "description": {
+        "de": "Alle Bereiche auf dem Fernseher, nur zu Hause. Einstellungen nur mit Fern-PIN.",
+        "en": "All areas on the TV, only at home. Settings only with the remote PIN."
+      },
+      "icon": "mdi:television",
+      "color": "#37474F",
+      "child_protection": false,
+      "intended_for": "member",
+      "default_for": [
+        "tvos",
+        "android_tv"
+      ],
+      "rules": {
+        "app_settings": "pin",
+        "appearance": "dark",
+        "header": true,
+        "panel_screensaver": 10,
+        "control_path": "checked",
+        "panel_remote": true,
+        "panel_sensors": [
+          "screen"
+        ],
+        "kiosk": false,
+        "camera_live": false
+      },
+      "fixed": [
+        "app_settings",
+        "connection_insecure_http",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max",
+        "location",
+        "remote_access",
+        "setup_devices"
+      ],
+      "user_choice": [
+        "card_style"
+      ]
+    },
+    {
+      "id": "easy_mode",
+      "version": 2,
+      "group": "people",
+      "kind": "person",
+      "starter": false,
+      "name": {
+        "de": "Einfach bedienen",
+        "en": "Easy mode"
+      },
+      "description": {
+        "de": "Grosse, einfache Bedienung ohne Suche und Filter. Einstellungen nur mit Fern-PIN.",
+        "en": "Large, simple controls without search and filter. Settings only with the remote PIN."
+      },
+      "icon": "mdi:human-cane",
+      "color": "#5E35B1",
+      "child_protection": false,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "control_mode_max": "basic",
+        "search_filter": false,
+        "card_style": "color",
+        "app_settings": "pin",
+        "quick_access": "status",
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ]
+      },
+      "fixed": [
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "appearance"
+      ]
+    },
+    {
+      "id": "toddler",
+      "version": 7,
+      "group": "kids",
+      "kind": "child",
+      "starter": false,
+      "name": {
+        "de": "Kleinkind (bis 5)",
+        "en": "Toddler (up to 5)"
+      },
+      "description": {
+        "de": "Nur das eigene Zimmer, nur Licht und Musik. Schlafenszeit jeden Tag ab 19:00. Einstellungen ausgeblendet.",
+        "en": "Only the own room, only lights and music. Bedtime every day from 19:00. Settings hidden."
+      },
+      "icon": "mdi:baby-face-outline",
+      "color": "#FB8C00",
+      "child_protection": true,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "control_path": "hub",
+        "areas": {
+          "mode": "selected",
+          "area_ids": [],
+          "tags": [],
+          "own_area": true
+        },
+        "control_mode_max": "basic",
+        "app_settings": "hidden",
+        "card_style": "color",
+        "kids_blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera",
+          "climate"
+        ],
+        "kids_quiet_hours": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "start": "19:00",
+            "end": "07:00"
+          }
+        ],
+        "kids_rate_limit": {
+          "max_actions": 4,
+          "window_seconds": 60,
+          "cooldown_seconds": 600
+        },
+        "kids_rate_limit_all": {
+          "enabled": true,
+          "max_actions": 8,
+          "max_entities": 3,
+          "window_seconds": 60,
+          "cooldown_seconds": 600
+        },
+        "kids_volume_max": 30,
+        "kids_requests": {
+          "enabled": false,
+          "categories": [
+            "stay_up",
+            "unlock_device",
+            "end_pause"
+          ]
+        },
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ],
+        "location": "foreground",
+        "home_header": {
+          "style": "compact",
+          "status_chips": false,
+          "greeting": true,
+          "weather": true
+        }
+      },
+      "fixed": [
+        "app_settings",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_rate_limit_all",
+        "kids_volume_max"
+      ],
+      "user_choice": []
+    },
+    {
+      "id": "child_6_9",
+      "version": 7,
+      "group": "kids",
+      "kind": "child",
+      "starter": false,
+      "name": {
+        "de": "Kind 6–9",
+        "en": "Child 6–9"
+      },
+      "description": {
+        "de": "Steuert Licht und Storen im eigenen Zimmer. Schlafenszeit Mo–Fr ab 19:30. Weitere Bereiche ergänzt du im Profil.",
+        "en": "Controls lights and blinds in the own room. Bedtime Mon–Fri from 19:30. Add more areas in the profile."
+      },
+      "icon": "mdi:human-child",
+      "color": "#FDD835",
+      "child_protection": true,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "control_path": "hub",
+        "areas": {
+          "mode": "selected",
+          "area_ids": [],
+          "tags": [],
+          "own_area": true
+        },
+        "control_mode_max": "basic",
+        "app_settings": "pin",
+        "card_style": "color",
+        "kids_quiet_hours": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri"
+            ],
+            "start": "19:30",
+            "end": "06:30"
+          },
+          {
+            "days": [
+              "sat",
+              "sun"
+            ],
+            "start": "20:30",
+            "end": "07:00"
+          }
+        ],
+        "kids_requests": {
+          "enabled": true,
+          "categories": [
+            "stay_up",
+            "unlock_device",
+            "end_pause"
+          ]
+        },
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ],
+        "kids_rate_limit_all": {
+          "enabled": true,
+          "max_actions": 12,
+          "max_entities": 4,
+          "window_seconds": 60,
+          "cooldown_seconds": 300
+        },
+        "location": "foreground",
+        "home_header": {
+          "style": "compact",
+          "status_chips": false,
+          "greeting": true,
+          "weather": true
+        }
+      },
+      "fixed": [
+        "app_settings",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_rate_limit_all",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack",
+        "kiosk",
+        "panel_start",
+        "panel_auto_home",
+        "panel_dim",
+        "panel_screensaver",
+        "panel_night"
+      ]
+    },
+    {
+      "id": "child_10_12",
+      "version": 7,
+      "group": "kids",
+      "kind": "child",
+      "starter": false,
+      "name": {
+        "de": "Kind 10–12",
+        "en": "Child 10–12"
+      },
+      "description": {
+        "de": "Steuert die Familienbereiche ohne Schloss, Alarm und Kameras. Schlafenszeit Mo–Fr ab 20:30.",
+        "en": "Controls the family areas without lock, alarm and cameras. Bedtime Mon–Fri from 20:30."
+      },
+      "icon": "mdi:account-school",
+      "color": "#7CB342",
+      "child_protection": true,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "control_path": "hub",
+        "control_mode_max": "advanced",
+        "app_settings": "pin",
+        "kids_blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "camera"
+        ],
+        "kids_quiet_hours": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri"
+            ],
+            "start": "20:30",
+            "end": "06:30"
+          },
+          {
+            "days": [
+              "sat",
+              "sun"
+            ],
+            "start": "21:30",
+            "end": "07:30"
+          }
+        ],
+        "kids_rate_limit": {
+          "max_actions": 10,
+          "window_seconds": 60,
+          "cooldown_seconds": 120
+        },
+        "kids_rate_limit_all": {
+          "enabled": true,
+          "max_actions": 20,
+          "max_entities": 6,
+          "window_seconds": 60,
+          "cooldown_seconds": 300
+        },
+        "kids_volume_max": 60,
+        "kids_requests": {
+          "enabled": true,
+          "categories": [
+            "stay_up",
+            "unlock_device",
+            "end_pause"
+          ]
+        },
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ],
+        "location": "foreground",
+        "home_header": {
+          "style": "compact",
+          "status_chips": false,
+          "greeting": true,
+          "weather": true
+        }
+      },
+      "fixed": [
+        "app_settings",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_rate_limit_all",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack",
+        "kiosk",
+        "panel_start",
+        "panel_auto_home",
+        "panel_dim",
+        "panel_screensaver",
+        "panel_night"
+      ]
+    },
+    {
+      "id": "teen",
+      "version": 7,
+      "group": "kids",
+      "kind": "child",
+      "starter": false,
+      "name": {
+        "de": "Teen (13–17)",
+        "en": "Teen (13–17)"
+      },
+      "description": {
+        "de": "Steuert fast alles zu Hause, nur nicht Alarm und Kameras. Unter der Woche ab 22:00 Ruhe.",
+        "en": "Controls almost everything at home except the alarm and cameras. Quiet from 22:00 on weekdays."
+      },
+      "icon": "mdi:account-music",
+      "color": "#43A047",
+      "child_protection": true,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "control_path": "hub",
+        "control_mode_max": "full",
+        "app_settings": "pin",
+        "kids_blocked_types": [
+          "alarm_control_panel",
+          "camera"
+        ],
+        "kids_quiet_hours": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri"
+            ],
+            "start": "22:00",
+            "end": "06:00"
+          }
+        ],
+        "kids_rate_limit": {
+          "max_actions": 20,
+          "window_seconds": 60,
+          "cooldown_seconds": 60
+        },
+        "kids_rate_limit_all": {
+          "enabled": true,
+          "max_actions": 30,
+          "max_entities": 10,
+          "window_seconds": 60,
+          "cooldown_seconds": 120
+        },
+        "kids_volume_max": 80,
+        "kids_requests": {
+          "enabled": true,
+          "categories": [
+            "stay_up",
+            "unlock_device",
+            "end_pause"
+          ]
+        },
+        "panel_remote": false,
+        "panel_sensors": [
+          "battery",
+          "charging",
+          "screen",
+          "brightness"
+        ],
+        "location": "foreground",
+        "home_header": {
+          "style": "compact",
+          "status_chips": false,
+          "greeting": true,
+          "weather": true
+        }
+      },
+      "fixed": [
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_rate_limit_all",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack",
+        "kiosk",
+        "panel_start",
+        "panel_auto_home",
+        "panel_dim",
+        "panel_screensaver",
+        "panel_night"
+      ]
+    },
+    {
+      "id": "babysitter",
+      "version": 5,
+      "group": "guests",
+      "kind": "babysitter",
+      "starter": false,
+      "name": {
+        "de": "Babysitter",
+        "en": "Babysitter"
+      },
+      "description": {
+        "de": "Nur zu Hause und zu den Zugangszeiten: Wohnräume und Kinderzimmer. Beantwortet die Anfragen der Kinder.",
+        "en": "Only at home and during access hours: living spaces and kids' rooms. Answers the children's requests."
+      },
+      "icon": "mdi:baby-carriage",
+      "color": "#8D6E63",
+      "child_protection": false,
+      "intended_for": "guest",
+      "default_for": [],
+      "area_patterns": [
+        "wohn",
+        "küche",
+        "kueche",
+        "ess",
+        "kinder",
+        "baby",
+        "living",
+        "lounge",
+        "kitchen",
+        "dining",
+        "kid",
+        "kids",
+        "child",
+        "children",
+        "nursery",
+        "playroom"
+      ],
+      "rules": {
+        "remote_access": false,
+        "control_path": "hub",
+        "access_hours": {
+          "enabled": true,
+          "windows": [
+            {
+              "days": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri",
+                "sat",
+                "sun"
+              ],
+              "start": "17:00",
+              "end": "01:00"
+            }
+          ]
+        },
+        "babysitter_requests": true,
+        "access_requests": true,
+        "areas": {
+          "mode": "selected",
+          "area_ids": [],
+          "tags": [],
+          "own_area": true
+        },
+        "control_mode_max": "advanced",
+        "app_settings": "hidden",
+        "quick_access": "off",
+        "watch": false
+      },
+      "fixed": [
+        "remote_access",
+        "control_path",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack"
+      ]
+    },
+    {
+      "id": "house_sitter",
+      "version": 5,
+      "group": "guests",
+      "kind": "house_sitter",
+      "starter": false,
+      "name": {
+        "de": "Haushüter & Helfer",
+        "en": "House sitter & helper"
+      },
+      "description": {
+        "de": "Für Haus-, Tier- oder Pflanzensitting: ausgewählte Räume zu den Zugangszeiten, über den Hub und nur zu Hause. Mit eingeschaltetem Fernzugriff auch von unterwegs; Tür und Garage dann nur ansehen.",
+        "en": "For house, pet or plant sitting: selected rooms during access hours, through the hub and only at home. With remote access switched on also when away; door and garage then view only."
+      },
+      "icon": "mdi:home-account",
+      "color": "#795548",
+      "child_protection": false,
+      "intended_for": "guest",
+      "default_for": [],
+      "area_patterns": [
+        "wohn",
+        "küche",
+        "kueche",
+        "garten",
+        "eingang",
+        "flur",
+        "living",
+        "kitchen",
+        "garden",
+        "entrance",
+        "hall"
+      ],
+      "rules": {
+        "remote_access": false,
+        "control_path": "hub",
+        "access_hours": {
+          "enabled": true,
+          "windows": [
+            {
+              "days": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri",
+                "sat",
+                "sun"
+              ],
+              "start": "07:00",
+              "end": "21:00"
+            }
+          ]
+        },
+        "access_requests": true,
+        "areas": {
+          "mode": "selected",
+          "area_ids": [],
+          "tags": [],
+          "own_area": true
+        },
+        "remote_control": {
+          "default": "control",
+          "domains": {
+            "lock": "view",
+            "alarm_control_panel": "view",
+            "cover:garage": "view",
+            "cover:gate": "view",
+            "cover:door": "view",
+            "valve": "view",
+            "siren": "view",
+            "automation": "view"
+          },
+          "entities": {}
+        },
+        "control_mode_max": "advanced",
+        "app_settings": "hidden",
+        "quick_access": "off",
+        "watch": false
+      },
+      "fixed": [
+        "control_path",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_volume_max"
+      ],
+      "user_choice": [
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack"
+      ]
+    },
+    {
+      "id": "kids_room_panel",
+      "version": 6,
+      "group": "shared",
+      "kind": "panel",
+      "starter": false,
+      "name": {
+        "de": "Wandpanel Kinderzimmer",
+        "en": "Kids' room panel"
+      },
+      "description": {
+        "de": "Panel im Kinderzimmer: nur dieser Raum, mit Kindersicherung und Schlafenszeit ab 19:30.",
+        "en": "Panel in the kids' room: only this room, with parental controls and bedtime from 19:30."
+      },
+      "icon": "mdi:tablet",
+      "color": "#FFB300",
+      "child_protection": true,
+      "intended_for": "member",
+      "default_for": [],
+      "rules": {
+        "control_path": "hub",
+        "areas": {
+          "mode": "selected",
+          "area_ids": [],
+          "tags": [],
+          "own_area": true
+        },
+        "control_mode_max": "basic",
+        "app_settings": "pin",
+        "card_style": "color",
+        "kiosk": true,
+        "panel_start": {
+          "mode": "own_area",
+          "area_id": null
+        },
+        "panel_auto_home": 5,
+        "panel_dim": 2,
+        "panel_night": {
+          "mode": "schedule",
+          "start": "19:30",
+          "end": "07:00",
+          "brightness": 10
+        },
+        "kids_quiet_hours": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "start": "19:30",
+            "end": "07:00"
+          }
+        ],
+        "panel_remote": true,
+        "panel_sensors": [
+          "battery",
+          "charging"
+        ],
+        "kids_rate_limit_all": {
+          "enabled": true,
+          "max_actions": 12,
+          "max_entities": 4,
+          "window_seconds": 60,
+          "cooldown_seconds": 300
+        },
+        "panel_announce": {
+          "enabled": false,
+          "volume_max": 50,
+          "respect_night": true
+        },
+        "panel_off_mode": "black"
+      },
+      "fixed": [
+        "app_settings",
+        "connection_insecure_http",
+        "kids_blocked_types",
+        "kids_color_lock",
+        "kids_exceptions",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_rate_limit_all",
+        "kids_volume_max",
+        "kiosk",
+        "location",
+        "panel_announce",
+        "panel_sensors",
+        "remote_access",
+        "setup_devices"
+      ],
+      "user_choice": []
+    }
+  ]
+}

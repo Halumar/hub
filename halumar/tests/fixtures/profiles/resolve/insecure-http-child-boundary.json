@@ -1,0 +1,34 @@
+{
+  "description": "Devices with parental controls have no HA token; the switch is capped off.",
+  "input": {
+    "platform": "android",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child"
+    },
+    "overrides": [
+      {
+        "rule": "connection_insecure_http",
+        "value": true
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "connection_insecure_http": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  }
+}

@@ -1,0 +1,366 @@
+name: Build and release
+
+# ==============================================================================
+# WHEN A RELEASE IS PUBLISHED
+# ==============================================================================
+# This workflow runs on every push to main and on every pushed tag of the form
+# <year>.<month>.<patch>. Pull requests run ci.yml and frontend.yml only.
+#
+# A run publishes when `version:` in halumar/config.yaml on main has no tag yet.
+# Home Assistant reads `version:` from config.yaml on the default branch and offers
+# the update as soon as that value changes; it does not check whether an image
+# exists. So the images are pushed first and the tag is created afterwards (job
+# `tag-release`): if the build fails, no tag appears and the next push to main
+# tries again. Pushing a tag by hand rebuilds and publishes that version.
+# Versions with a "-" (2026.12.0-dev) are development states and never published.
+# See docs/release-versioning.md.
+#
+# Nothing is published unless the full test gate is green: this workflow calls
+# ci.yml (ruff, pytest + coverage gate, transaction lint, pip-audit, contract and
+# brand checks, licenses) and frontend.yml (npm audit, svelte-check, build,
+# Playwright), and `init` waits for both. Between "main announces the version" and
+# "the image exists" lies the test run (about 10 minutes). Merge to main only through
+# a pull request whose checks are green, and update instances only after the tag
+# exists.
+#
+# All jobs run on GitHub-hosted runners. The image jobs use one native runner per
+# architecture (ubuntu-24.04 for amd64, ubuntu-24.04-arm for aarch64), because
+# home-assistant/builder builds for the runner's own architecture.
+#
+# Docker image names must be lowercase; the owner is "Halumar". `init` derives
+# ghcr.io/<owner, lowercased> once and every job uses that.
+#
+# Images are signed with cosign (keyless, GitHub OIDC) per architecture and for
+# the multi-arch manifest; each per-arch image gets a SLSA build-provenance and an
+# SPDX SBOM attestation pushed to the registry. Verify with
+#   cosign verify ghcr.io/<owner>/amd64-hub:<version> \
+#     --certificate-identity-regexp 'https://github.com/<owner>/hub/.*' \
+#     --certificate-oidc-issuer https://token.actions.githubusercontent.com
+#   gh attestation verify oci://ghcr.io/<owner>/amd64-hub:<version> --owner <owner>
+# Attestations need a public repository on GitHub's Free plan. In a private
+# repository those two steps are skipped and the SBOM is only uploaded as a
+# workflow artifact; cosign signs in both cases.
+#
+# Dry run without publishing: start ci.yml by hand with "image" ticked. It builds
+# both images the same way (push: false) and starts the hub.
+# ==============================================================================
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*.*.*"
+
+permissions: {}
+
+concurrency:
+  # Never cancel a publish half-way.
+  group: hub-release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: hub
+  ARCHITECTURES: '["amd64", "aarch64"]'
+
+jobs:
+  tests:
+    name: Backend gate
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+    # The image gate too: init (and with it every push) needs this job, so no
+    # image is published unless both architectures built and answered
+    # /api/health in a gate first.
+    with:
+      image: true
+
+  frontend:
+    name: Frontend gate
+    permissions:
+      contents: read
+    uses: ./.github/workflows/frontend.yml
+
+  # Decides whether this run publishes. See the header of this file.
+  release-gate:
+    name: Release needed?
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+      publish: ${{ steps.check.outputs.publish }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          # `version: "<x>"` in halumar/config.yaml.
+          config_version="$(sed -nE 's/^version:[[:space:]]*"?([^"[:space:]#]+)"?.*$/\1/p' halumar/config.yaml | head -n 1)"
+          [ -n "${config_version}" ] || { echo "::error file=halumar/config.yaml::no version found"; exit 1; }
+
+          # On a tag the tag wins and must match config.yaml — otherwise the
+          # Supervisor would pull a tag that does not exist. On main config.yaml
+          # IS the statement: that is the value Home Assistant reads.
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            version="${GITHUB_REF_NAME}"
+            if [ "${version}" != "${config_version}" ]; then
+              echo "::error file=halumar/config.yaml::Tag '${version}' and 'version: ${config_version}' in halumar/config.yaml disagree."
+              exit 1
+            fi
+          else
+            version="${config_version}"
+          fi
+
+          # Pre-release versions (2026.12.0-dev, …) are development states
+          # and never published, even when they reach main.
+          case "${version}" in
+            *-*)
+              echo "Version ${version} is a pre-release — nothing to publish."
+              {
+                echo "version=${version}"
+                echo "publish=false"
+              } >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+
+          # Dots would be wildcards in a regular expression.
+          version_pattern="${version//./\\.}"
+          if ! grep -qE "^##[[:space:]]+\[?v?${version_pattern}\]?[[:space:]]*$" halumar/CHANGELOG.md; then
+            echo "::error file=halumar/CHANGELOG.md::halumar/CHANGELOG.md has no '## ${version}' section. Home Assistant shows this file in the update dialog; a release without an entry is a black box for users."
+            exit 1
+          fi
+
+          # Only main and tags publish, whatever the version says.
+          if [ "${GITHUB_REF_TYPE}" != "tag" ] && [ "${GITHUB_REF}" != "refs/heads/main" ]; then
+            echo "Ref ${GITHUB_REF} is neither main nor a tag — nothing to publish."
+            {
+              echo "version=${version}"
+              echo "publish=false"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Through the API, because the checkout keeps no credentials. Only a 404
+          # means "not tagged"; any other error stops the run.
+          if result="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${version}" 2>&1)"; then
+            publish=false
+            echo "Version ${version} is already published (tag exists) — nothing to do."
+          elif [[ "${result}" == *"HTTP 404"* ]]; then
+            publish=true
+            echo "Version ${version} is not published yet — this run builds and publishes it."
+          else
+            printf '%s\n' "${result}" >&2
+            echo "::error::Could not check whether tag ${version} exists"
+            exit 1
+          fi
+
+          # Tagging by hand means "publish", even when rebuilding.
+          [ "${GITHUB_REF_TYPE}" = "tag" ] && publish=true
+
+          {
+            echo "version=${version}"
+            echo "publish=${publish}"
+          } >> "$GITHUB_OUTPUT"
+
+  init:
+    name: Prepare matrix
+    if: needs.release-gate.outputs.publish == 'true'
+    needs: [release-gate, tests, frontend]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+      version: ${{ steps.version.outputs.version }}
+      registry-prefix: ${{ steps.prefix.outputs.registry-prefix }}
+    steps:
+      - id: version
+        env:
+          # From config.yaml on main, the tag name on a tag. GITHUB_REF_NAME
+          # would be the branch name on main.
+          VERSION: ${{ needs.release-gate.outputs.version }}
+        run: echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+      # Docker rejects uppercase image names (owner "Halumar").
+      - id: prefix
+        run: echo "registry-prefix=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+      - id: matrix
+        uses: home-assistant/builder/actions/prepare-multi-arch-matrix@7412f0023ea9b6e58e8bb5059f1660f51376f49a # 2026.09.0
+        with:
+          architectures: ${{ env.ARCHITECTURES }}
+          image-name: ${{ env.IMAGE_NAME }}
+          registry-prefix: ${{ steps.prefix.outputs.registry-prefix }}
+
+  # The Admin UI bundle is built here from the released commit, once, and both
+  # images get the same files. The copy checked in under static/ is not
+  # byte-reproducible (SvelteKit build timestamp), so it can drift from src/
+  # without any check noticing; a release never ships it.
+  bundle:
+    name: Admin UI bundle
+    needs: init
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: admin-ui-bundle
+          path: halumar/rootfs/opt/hub/static
+          if-no-files-found: error
+          retention-days: 7
+
+  build:
+    name: Build ${{ matrix.arch }}
+    needs: [init, bundle]
+    # Native runner per architecture (ubuntu-24.04 / ubuntu-24.04-arm), see the header.
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.init.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Replace the checked-in bundle
+        run: rm -rf halumar/rootfs/opt/hub/static
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: admin-ui-bundle
+          path: halumar/rootfs/opt/hub/static
+      # The base image is the FROM line of halumar/Dockerfile.
+      - id: build
+        uses: home-assistant/builder/actions/build-image@7412f0023ea9b6e58e8bb5059f1660f51376f49a # 2026.09.0
+        with:
+          arch: ${{ matrix.arch }}
+          image: ${{ matrix.image }}
+          image-tags: |
+            ${{ needs.init.outputs.version }}
+            latest
+          version: ${{ needs.init.outputs.version }}
+          context: halumar
+          file: halumar/Dockerfile
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          cosign: "true"
+          push: "true"
+      # Attestations need a public repository on the Free plan (see the header).
+      - name: Provenance attestation
+        if: ${{ !github.event.repository.private }}
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ${{ matrix.image }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+      - name: SBOM (SPDX)
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          image: ${{ matrix.image }}@${{ steps.build.outputs.digest }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          format: spdx-json
+          output-file: ${{ runner.temp }}/sbom-${{ matrix.arch }}.spdx.json
+          artifact-name: sbom-${{ matrix.arch }}.spdx.json
+          dependency-snapshot: false
+      - name: SBOM attestation
+        if: ${{ !github.event.repository.private }}
+        uses: actions/attest-sbom@c604332985a26aa8cf1bdc465b92731239ec6b9e # v4.1.0
+        with:
+          subject-name: ${{ matrix.image }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          sbom-path: ${{ runner.temp }}/sbom-${{ matrix.arch }}.spdx.json
+          push-to-registry: true
+
+  publish:
+    name: Publish multi-arch manifest
+    needs:
+      - init
+      - build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - uses: home-assistant/builder/actions/publish-multi-arch-manifest@7412f0023ea9b6e58e8bb5059f1660f51376f49a # 2026.09.0
+        with:
+          architectures: ${{ env.ARCHITECTURES }}
+          image-name: ${{ env.IMAGE_NAME }}
+          registry-prefix: ${{ needs.init.outputs.registry-prefix }}
+          image-tags: |
+            ${{ needs.init.outputs.version }}
+            latest
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          cosign: "true"
+
+  # Create the tag after publishing, not before. The tag states that images exist
+  # for this version. If the build fails no tag appears, and the next push to main
+  # tries again.
+  #
+  # A tag pushed with GITHUB_TOKEN does not trigger another workflow. That is
+  # wanted here: the run creating the tag has just published.
+  tag-release:
+    name: Create tag and GitHub release
+    needs: [release-gate, publish]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Create and push tag
+        env:
+          VERSION: ${{ needs.release-gate.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "${VERSION}" -m "Release ${VERSION}"
+          git push origin "${VERSION}"
+          echo "Tag ${VERSION} created — the images for it are in the registry."
+      # Release notes = the CHANGELOG section the release gate verified.
+      - name: GitHub release
+        env:
+          VERSION: ${{ needs.release-gate.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          awk -v v="${VERSION}" '
+            /^##[[:space:]]/ {
+              if (on) exit
+              h = $0
+              sub(/^##[[:space:]]+\[?v?/, "", h)
+              sub(/\]?[[:space:]]*$/, "", h)
+              if (h == v) { on = 1; next }
+            }
+            on { print }
+          ' halumar/CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          gh release create "${VERSION}" --verify-tag --title "${VERSION}" --notes-file "$RUNNER_TEMP/notes.md"

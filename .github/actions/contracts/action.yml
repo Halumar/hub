@@ -1,0 +1,42 @@
+# Checks out the contract (Halumar/contracts) at the tag pinned in
+# .github/contracts-ref and exports CONTRACTS_DIR for the following steps.
+# Changing the pin is a reviewed commit in this repository.
+name: Contract checkout
+description: Check out the pinned contract and export CONTRACTS_DIR
+
+outputs:
+  dir:
+    description: Path of the contract checkout, relative to the repository root
+    value: ${{ steps.pin.outputs.dir }}
+
+runs:
+  using: composite
+  steps:
+    - id: pin
+      shell: bash
+      run: |
+        set -euo pipefail
+        echo "dir=.contracts" >> "$GITHUB_OUTPUT"
+        echo "ref=$(tr -d '[:space:]' < .github/contracts-ref)" >> "$GITHUB_OUTPUT"
+
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        repository: Halumar/contracts
+        ref: ${{ steps.pin.outputs.ref }}
+        path: .contracts
+        persist-credentials: false
+
+    - shell: bash
+      env:
+        DIR: ${{ steps.pin.outputs.dir }}
+        REF: ${{ steps.pin.outputs.ref }}
+      run: |
+        set -euo pipefail
+        version="$(tr -d '[:space:]' < "${DIR}/VERSION")"
+        # A tag pin must name the version it contains (v<VERSION>).
+        if [[ "${REF}" == v* && "${REF}" != "v${version}" ]]; then
+          echo "::error file=.github/contracts-ref::Pinned ref ${REF} contains contract version ${version}."
+          exit 1
+        fi
+        echo "CONTRACTS_DIR=${DIR}" >> "$GITHUB_ENV"
+        echo "Contract ${version} (${REF}) in ${DIR}"

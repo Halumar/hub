@@ -1,0 +1,41 @@
+{
+  "description": "Parental controls switch setup_devices off even on a profile of kind person.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "kind": "person",
+      "child_protection": true,
+      "rules": {
+        "setup_devices": {
+          "enabled": true,
+          "kinds": [
+            "guest"
+          ]
+        }
+      },
+      "fixed": []
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "setup_devices": {
+      "value": {
+        "enabled": false,
+        "kinds": []
+      },
+      "source": "boundary",
+      "reason": "boundary_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    }
+  }
+}

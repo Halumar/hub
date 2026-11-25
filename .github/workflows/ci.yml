@@ -1,0 +1,276 @@
+name: CI
+
+# Backend gate: lint, tests with coverage, transaction lint, audit, contract and
+# brand checks, licenses and third-party notices, image build. Runs on pull requests
+# and on develop; on main build.yaml calls it before every release (a red test
+# blocks publishing).
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+  workflow_call:
+    inputs:
+      image:
+        description: Also build and start the app image (build.yaml sets it for every release)
+        type: boolean
+        default: false
+  workflow_dispatch:
+    inputs:
+      image:
+        description: Also build and start the app image (amd64 and aarch64, no push)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  # Literal prefix plus github.workflow (= the caller when called from build.yaml):
+  # a direct run and a called run never share a group, and none matches the caller
+  # (a shared group would deadlock the release).
+  group: hub-ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+  # Measured coverage rounded down. Raise it together with the tests that
+  # justify it, never lower it.
+  COVERAGE_MIN: "75"
+
+jobs:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      # The ruff version is pinned in .github/requirements-ci.txt.
+      - run: pip install -r .github/requirements-ci.txt
+      - run: ruff check --output-format=github halumar/rootfs/opt/hub/
+      # Format applies to the whole repository (code and tests).
+      - run: ruff format --check .
+      - name: API docs assets (vendored, SHA-256)
+        run: scripts/update-api-docs.sh --check
+      - name: Version consistency
+        run: scripts/ci/check-versions.sh
+
+  test:
+    name: Test, coverage and audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # The contract conformance tests need the pinned contract; without it
+      # they would skip (conftest.py fails the run under CI instead).
+      - id: contracts
+        uses: ./.github/actions/contracts
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            halumar/rootfs/opt/hub/requirements.txt
+            halumar/requirements-dev.txt
+            .github/requirements-ci.txt
+      - name: Install dependencies
+        run: |
+          pip install -r halumar/rootfs/opt/hub/requirements.txt \
+            -r halumar/requirements-dev.txt \
+            -r .github/requirements-ci.txt
+
+      - name: pytest with coverage gate
+        working-directory: halumar/tests
+        env:
+          COVERAGE_FILE: ${{ runner.temp }}/.coverage
+          # Absolute: the action exports a path relative to the repository root.
+          CONTRACTS_DIR: ${{ github.workspace }}/${{ steps.contracts.outputs.dir }}
+        run: |
+          python -m pytest -p no:cacheprovider \
+            --cov=../rootfs/opt/hub \
+            --cov-report=term:skip-covered \
+            --cov-report=xml:"$RUNNER_TEMP/coverage.xml" \
+            --cov-fail-under="$COVERAGE_MIN"
+      - name: Coverage summary
+        if: always()
+        working-directory: halumar/tests
+        env:
+          COVERAGE_FILE: ${{ runner.temp }}/.coverage
+        run: |
+          if [ -f "$COVERAGE_FILE" ]; then
+            {
+              echo "### Coverage (gate ${COVERAGE_MIN} %)"
+              coverage report --format=markdown --skip-covered --precision=1
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: coverage-xml
+          path: ${{ runner.temp }}/coverage.xml
+          if-no-files-found: ignore
+          retention-days: 14
+
+      # Transaction control (commit/rollback/raw connection) belongs in
+      # models/database.py; everything else uses db.transaction(). The
+      # allowlist (halumar/scripts/db_commit_allowlist.txt) is empty; --strict
+      # also fails on allowlist entries that are too high.
+      - name: Transaction call sites outside database.py
+        run: python halumar/scripts/check_db_commits.py --strict
+
+      # A known vulnerability in a pinned runtime dependency fails the build.
+      - name: pip-audit (runtime requirements)
+        run: pip-audit -r halumar/rootfs/opt/hub/requirements.txt
+
+  contracts:
+    name: Contract and brand
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/contracts
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: halumar/rootfs/opt/hub/requirements.txt
+      - run: pip install -r halumar/rootfs/opt/hub/requirements.txt
+      # The hub fulfils the pinned contract (OpenAPI snapshot, generated models).
+      - name: Contract test
+        run: scripts/ci/contracts-check.sh
+      # Generated brand files match contracts/brand.json; no brand or namespace
+      # literal outside the allowed files (.brandlint.toml).
+      - name: Brand lint
+        run: scripts/brand-check.sh
+      # No ticket references, planning documents, local paths or test-network addresses
+      # (rules and exceptions: tools/publiclint/README.md in the contract, .public-lint.toml).
+      - name: Public text lint
+        run: python "$CONTRACTS_DIR/tools/publiclint/publiclint.py" .
+
+  # License (AGPL-3.0-only): the MDI tables carry no brand icons, every shipped
+  # third-party component has an allowed license and THIRD_PARTY_NOTICES.md (plus the
+  # copies in the image under /usr/share/doc/halumar) lists exactly what ships.
+  licenses:
+    name: Licenses and third-party notices
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: halumar/rootfs/opt/hub/requirements.txt
+      - run: pip install -r halumar/rootfs/opt/hub/requirements.txt
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: MDI icon tables up to date, without brand icons
+        working-directory: frontend
+        run: npm run icons -- --check
+      - name: Packages in the Admin UI bundle
+        working-directory: frontend
+        run: npm run licenses
+      - name: Third-party notices
+        run: python scripts/third_party_notices.py --check
+
+  # The app image builds and starts, for both architectures, without publishing.
+  # Same path as a release in build.yaml: one native runner per architecture
+  # (home-assistant/builder builds for the runner's own architecture), the same
+  # builder action and a bundle built from frontend/, but with push: false. The hub
+  # is then started from the image and must answer /api/health.
+  # Runs when started by hand with "image" ticked, in every release (build.yaml
+  # calls this workflow with image: true, so nothing is pushed before both
+  # architectures built and started once), on pull requests into main and on
+  # Dependabot pull requests for the base image or the Python pins (a new base can
+  # bring a Python without wheels for a pin).
+  image:
+    name: Image build ${{ matrix.arch }} (no push)
+    if: >-
+      inputs.image ||
+      (github.event_name == 'pull_request' &&
+        (github.base_ref == 'main' ||
+         startsWith(github.head_ref, 'dependabot/docker/') ||
+         startsWith(github.head_ref, 'dependabot/pip/')))
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            os: ubuntu-24.04
+          - arch: aarch64
+            os: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      # As in a release: the image gets the bundle built from src/, not the checked-in copy.
+      - name: Admin UI bundle
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+      # Docker rejects uppercase image names (owner "Halumar").
+      - id: name
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${ARCH}-hub" >> "$GITHUB_OUTPUT"
+      - uses: home-assistant/builder/actions/build-image@7412f0023ea9b6e58e8bb5059f1660f51376f49a # 2026.09.0
+        with:
+          arch: ${{ matrix.arch }}
+          image: ${{ steps.name.outputs.image }}
+          image-tags: ci
+          version: ci
+          context: halumar
+          file: halumar/Dockerfile
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          cache-gha: "false"
+          cosign: "false"
+          push: "false"
+          load: "true"
+      # Outside the Supervisor: python straight from the image (bashio needs the
+      # Supervisor API), plain HTTP on :8099, a throwaway /data.
+      - name: Hub starts from the image
+        env:
+          IMAGE: ${{ steps.name.outputs.image }}:ci
+        run: |
+          set -euo pipefail
+          docker image inspect "${IMAGE}" --format 'Image {{.Architecture}} {{.Size}} bytes'
+          docker run --rm --entrypoint sh "${IMAGE}" -c 'uname -m; cat /etc/alpine-release; python3 -V'
+          docker run -d --name hub-smoke -p 8099:8099 --tmpfs /data --entrypoint python3 \
+            "${IMAGE}" /opt/hub/main.py --log-level info
+          for _ in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8099/api/health; then
+              echo
+              docker rm -f hub-smoke >/dev/null
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs hub-smoke
+          echo "::error::the hub in ${IMAGE} did not answer /api/health within 60 s"
+          exit 1

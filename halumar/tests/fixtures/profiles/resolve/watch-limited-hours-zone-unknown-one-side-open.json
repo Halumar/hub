@@ -1,0 +1,68 @@
+{
+  "description": "The hub's time zone is not known yet and the watch has no access hours: the watch gets exactly the phone's window Saturday 17:00–02:30 (no intersection, nothing to trim).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {}
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-03-28T20:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "access_hours": {
+            "enabled": true,
+            "windows": [
+              {
+                "days": [
+                  "sat"
+                ],
+                "start": "17:00",
+                "end": "02:30"
+              }
+            ]
+          }
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    }
+  },
+  "expected": {
+    "access_hours": {
+      "value": {
+        "enabled": true,
+        "windows": [
+          {
+            "days": [
+              "sat"
+            ],
+            "start": "17:00",
+            "end": "02:30"
+          }
+        ]
+      },
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    }
+  }
+}

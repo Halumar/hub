@@ -1,0 +1,35 @@
+{
+  "description": "Empty profile on an iPad: temporary adjustment remote access for 1 hour, still running.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {},
+    "overrides": [
+      {
+        "rule": "remote_access",
+        "value": true,
+        "expires_at": "2026-11-20T19:00:00Z"
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_access": {
+      "value": true,
+      "source": "device",
+      "reason": "device_temporary",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T19:00:00Z",
+      "then": false,
+      "enforcement": "ha"
+    }
+  }
+}

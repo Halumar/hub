@@ -1,0 +1,81 @@
+{
+  "description": "The hub's time zone is not known yet: the watch's window Saturday 22:00–02:45 and its phone's 22:00–03:15 are intersected as if the clocks of any zone could jump forward that night (fail closed): the limited window ends at 01:00, the start of the earliest gap that contains 02:45 in any zone (Antarctica/Troll jumps from 01:00 to 03:00), so no jump can move it past the phone's end.",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "access_hours": {
+          "enabled": true,
+          "windows": [
+            {
+              "days": [
+                "sat"
+              ],
+              "start": "22:00",
+              "end": "02:45"
+            }
+          ]
+        }
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-03-28T20:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "access_hours": {
+            "enabled": true,
+            "windows": [
+              {
+                "days": [
+                  "sat"
+                ],
+                "start": "22:00",
+                "end": "03:15"
+              }
+            ]
+          }
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    }
+  },
+  "expected": {
+    "access_hours": {
+      "value": {
+        "enabled": true,
+        "windows": [
+          {
+            "days": [
+              "sat"
+            ],
+            "start": "22:00",
+            "end": "01:00"
+          }
+        ]
+      },
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    }
+  }
+}

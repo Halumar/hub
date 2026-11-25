@@ -1,0 +1,82 @@
+{
+  "description": "Mitteilungen: Keine: critical notifications (priority >= 80) and notifications about alarm, smoke, CO, water or gas are still shown - while the app is open, no push.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "notification_level": "none"
+      },
+      "user_choice": []
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "notification_level": {
+      "value": "none",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    }
+  },
+  "notification_checks": [
+    {
+      "priority": 10,
+      "expected_shown": false
+    },
+    {
+      "priority": 60,
+      "expected_shown": false
+    },
+    {
+      "priority": 85,
+      "expected_shown": true
+    },
+    {
+      "priority": 20,
+      "entity_id": "binary_sensor.hallway_smoke",
+      "device_class": "smoke",
+      "expected_shown": true
+    },
+    {
+      "priority": 20,
+      "entity_id": "binary_sensor.basement_leak",
+      "device_class": "moisture",
+      "expected_shown": true
+    },
+    {
+      "priority": 20,
+      "entity_id": "binary_sensor.door",
+      "device_class": "door",
+      "expected_shown": false
+    },
+    {
+      "priority": 20,
+      "entity_id": "alarm_control_panel.home",
+      "device_class": null,
+      "expected_shown": true
+    },
+    {
+      "priority": 20,
+      "entity_id": "binary_sensor.boiler_gas",
+      "device_class": "gas",
+      "expected_shown": true
+    },
+    {
+      "priority": 20,
+      "entity_id": "binary_sensor.co",
+      "device_class": "carbon_monoxide",
+      "expected_shown": true
+    }
+  ]
+}

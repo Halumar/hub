@@ -1,0 +1,11 @@
+{
+  "description": "invalid: today in Zurich ends at local midnight, not UTC midnight",
+  "time_zone": "Europe/Zurich",
+  "now": "2026-11-20T18:00:00Z",
+  "cases": [
+    {
+      "preset": "today",
+      "expires_at": "2026-11-21T00:00:00Z"
+    }
+  ]
+}

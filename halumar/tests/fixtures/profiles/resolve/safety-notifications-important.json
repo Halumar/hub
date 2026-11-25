@@ -1,0 +1,53 @@
+{
+  "description": "Mitteilungen: Nur wichtige: from priority 50; safety entities always.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "wall_panel",
+      "rules": {
+        "notification_level": "important"
+      }
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "notification_level": {
+      "value": "important",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    }
+  },
+  "notification_checks": [
+    {
+      "priority": 49,
+      "expected_shown": false
+    },
+    {
+      "priority": 50,
+      "expected_shown": true
+    },
+    {
+      "priority": 5,
+      "entity_id": "binary_sensor.basement_leak",
+      "device_class": "moisture",
+      "expected_shown": true
+    },
+    {
+      "priority": 5,
+      "entity_id": "sensor.temperature",
+      "device_class": null,
+      "expected_shown": false
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "description": "An adult profile on which the admin turned off “User's choice” for the home screen head: compact without status capsules, the device must not change it (locked).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "home_header": {
+          "style": "compact",
+          "status_chips": false,
+          "greeting": true,
+          "weather": true
+        }
+      },
+      "user_choice": [
+        "appearance",
+        "card_style",
+        "columns",
+        "header",
+        "notification_level",
+        "notification_stack",
+        "power_button",
+        "search_filter"
+      ]
+    },
+    "overrides": [],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-22T18:00:00Z"
+  },
+  "expected": {
+    "home_header": {
+      "value": {
+        "style": "compact",
+        "status_chips": false,
+        "greeting": true,
+        "weather": true
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    }
+  }
+}

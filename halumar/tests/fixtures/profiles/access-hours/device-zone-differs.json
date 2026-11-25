@@ -1,0 +1,71 @@
+{
+  "description": "Device clock in another zone than the hub (America/New_York vs. Europe/Zurich, 6 h apart): every edge follows the hub zone of client_config.access.time_zone, never the device zone. Weekday evenings 18:00-21:00 Zurich; a device that used its own zone would open Friday at 23:00Z instead of Monday.",
+  "time_zone": "Europe/Zurich",
+  "device_time_zone": "America/New_York",
+  "access_hours": {
+    "enabled": true,
+    "windows": [
+      {
+        "days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "start": "18:00",
+        "end": "21:00"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "now": "2026-11-27T18:00:00Z",
+      "switch": true,
+      "expected": {
+        "open": true,
+        "reason": null,
+        "until": "2026-11-27T20:00:00Z",
+        "opens_at": null,
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2026-11-27T20:30:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2026-11-30T17:00:00Z",
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2026-11-27T23:30:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2026-11-30T17:00:00Z",
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2026-11-30T16:59:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2026-11-30T17:00:00Z",
+        "schedule": true,
+        "switch": true
+      }
+    }
+  ]
+}

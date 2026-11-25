@@ -1,0 +1,31 @@
+{
+  "description": "Profile PIN not fixed and a device PIN: the device PIN applies.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "wall_panel",
+      "has_remote_pin": true,
+      "remote_pin_fixed": false
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "app_settings": {
+      "value": "pin",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  },
+  "expected_remote_pin_source": "device"
+}

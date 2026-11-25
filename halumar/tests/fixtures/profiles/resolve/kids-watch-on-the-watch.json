@@ -1,0 +1,106 @@
+{
+  "description": "A child's watch resolves with its phone's profile on watchos: kids rules apply, the control path is checked (a watch needs its own key: platform_needs_key), complications follow the profile (off in the Child suggestion), the rules watch and kids_watch do not apply to the watch itself.",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child",
+      "rules": {
+        "remote_access": true,
+        "kids_watch": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_watch": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "watch": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "control_path": {
+      "value": "checked",
+      "source": "boundary",
+      "reason": "platform_needs_key",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "kids_rate_limit_all": {
+      "value": {
+        "enabled": true,
+        "max_actions": 12,
+        "max_entities": 4,
+        "window_seconds": 60,
+        "cooldown_seconds": 300
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "kids_quiet_hours": {
+      "value": [
+        {
+          "days": [
+            "mon",
+            "tue",
+            "wed",
+            "thu",
+            "fri"
+          ],
+          "start": "20:00",
+          "end": "06:30"
+        },
+        {
+          "days": [
+            "sat",
+            "sun"
+          ],
+          "start": "21:00",
+          "end": "07:00"
+        }
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

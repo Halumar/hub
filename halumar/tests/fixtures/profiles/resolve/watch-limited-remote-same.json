@@ -1,0 +1,58 @@
+{
+  "description": "Watch and phone both with the adult profile and remote access: nothing is stricter than the watch's own, so its own entry stays (no limited_by_phone, no redundant keys).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-03-28T20:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "remote_access": true
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    },
+    "entity_classes": {}
+  },
+  "expected": {
+    "remote_control": {
+      "value": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view"
+        },
+        "entities": {}
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    }
+  }
+}

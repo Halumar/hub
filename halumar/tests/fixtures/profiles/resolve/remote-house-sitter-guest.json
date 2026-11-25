@@ -1,0 +1,108 @@
+{
+  "description": "House sitter & helper (guest) with remote access switched on in the profile: critical device types view only from away (locks, alarm, garage/gate/door, valves, sirens, automations).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-23T18:00:00Z"
+    },
+    "profile": {
+      "from_suggestion": "house_sitter",
+      "rules": {
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_control": {
+      "value": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view",
+          "cover:door": "view",
+          "valve": "view",
+          "siren": "view",
+          "automation": "view"
+        },
+        "entities": {}
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    },
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    }
+  },
+  "entity_checks": [
+    {
+      "entity_id": "lock.front_door",
+      "device_class": null,
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "view",
+      "expected_quick": null,
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "valve.garden",
+      "device_class": null,
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "view",
+      "expected_quick": null,
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "cover.front_door",
+      "device_class": "door",
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "view",
+      "expected_quick": null,
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "automation.morning",
+      "device_class": null,
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "view",
+      "expected_quick": null,
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "light.kitchen",
+      "device_class": null,
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "control",
+      "expected_quick": null,
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "lock.front_door",
+      "device_class": null,
+      "route": "local",
+      "quick_access": null,
+      "expected_app": "control",
+      "expected_quick": null,
+      "expected_always_visible": false
+    }
+  ]
+}

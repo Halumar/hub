@@ -1,0 +1,693 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Profile rule values",
+  "description": "Value of every profile rule, one property per key of data/profile-rules.json. Used for profile bodies (admin API: partial in writes, complete in answers), suggestions and resolver vectors; the resolved, typed form for the apps is resolved-rules.json (generated from this file by tools/profile_rules.py). Unknown keys answer 422.",
+  "type": "object",
+  "properties": {
+    "remote_access": {
+      "type": "boolean",
+      "description": "Control Home Assistant from outside the home network (the device's HA user is not local_only)."
+    },
+    "connection_insecure_http": {
+      "type": "boolean",
+      "description": "True = the app offers the switch “Always allow unencrypted (less secure)” (starts off, the person at the device decides; with the switch on the app sends the Home Assistant access over http:// / ws:// even when the home network is not confirmed by the pinned hub or by the Home Assistant instance ID over Bonjour). false = no switch, unencrypted only in the confirmed home network. Remote access over https is unaffected."
+    },
+    "control_path": {
+      "$ref": "defs.json#/$defs/control_path_rule",
+      "description": "“Home Assistant access”: hub = no Home Assistant key (with remote access a read-only one), reading and switching only through the hub; checked = the device's HA user only reads, switching goes through the checked integration action; direct = full HA rights, rules only in the app."
+    },
+    "access_hours": {
+      "$ref": "defs.json#/$defs/access_hours",
+      "description": "“Access hours”: the device has access only inside the windows (hub time zone); outside it stays paired and sees nothing. With the access switch in Home Assistant: access = schedule (when enabled) AND switch on."
+    },
+    "setup_devices": {
+      "description": "“Set up new devices”: enabled = this device may set up new devices by QR code or code (onboard_confirm) and invite guests (guest_invite_create, needs kind guest); kinds = the profile kinds it may give ($defs/profile_kind: guest, child, panel, tv, house_sitter, babysitter, person; unique, so never more than there are kinds). Never more rights than its own (onboarding checks every offered profile). Applies only to profiles of kind person; boundaries guest and parental controls: off.",
+      "type": "object",
+      "required": [
+        "enabled",
+        "kinds"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "kinds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "defs.json#/$defs/profile_kind"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "family_manager": {
+      "type": "boolean",
+      "description": "Family manager: may manage the kids rules of the children in family_children (device property) within what the profile does not fix, answer their requests and see their activity."
+    },
+    "babysitter_requests": {
+      "type": "boolean",
+      "description": "“Answer children's requests”: a babysitter device receives the children's requests (“Can I have more time?”) while it has access and is at home, and may answer Yes 15/30 min, Yes until the end of babysitting or No. No rule changes, no blocked devices, no activity. Only profiles of kind babysitter."
+    },
+    "access_requests": {
+      "type": "boolean",
+      "description": "“Ask for early access”: outside its access hours the device may ask for access now; the devices that set it up or may set up its kind (babysitter: also the family managers) answer Yes with a duration or No. Takes effect only with access hours (rule access_hours enabled)."
+    },
+    "app_settings": {
+      "enum": [
+        "hidden",
+        "pin",
+        "open"
+      ],
+      "description": "Settings in the app: hidden, only with the device's remote PIN, open."
+    },
+    "app_settings_biometrics": {
+      "type": "boolean",
+      "description": "Face ID / Touch ID may replace the remote PIN (app_settings = pin)."
+    },
+    "remote_control": {
+      "type": "object",
+      "description": "When away: level per device type and per entity while the device is connected over the external route (Nabu Casa or the HA external URL); at home it has no effect. Precedence entity > domain:device_class > domain > default. control = operate; view = show only (exception: the safe direction of data/quick-access.json safe_direction - lock a lock, arm an alarm); hidden = not shown at all. Applies in the app, widgets/controls, Siri and on the watch; combined with quick access and kids rules the strictest value wins (docs/profiles.md). Keys of domains: a Home Assistant domain or domain:device_class (like kids_rule_type).",
+      "required": [
+        "default",
+        "domains",
+        "entities"
+      ],
+      "properties": {
+        "default": {
+          "$ref": "defs.json#/$defs/remote_control_level"
+        },
+        "domains": {
+          "type": "object",
+          "maxProperties": 100,
+          "additionalProperties": {
+            "$ref": "defs.json#/$defs/remote_control_level"
+          },
+          "description": "domain or domain:device_class -> level."
+        },
+        "entities": {
+          "type": "object",
+          "maxProperties": 500,
+          "additionalProperties": {
+            "$ref": "defs.json#/$defs/remote_control_level"
+          },
+          "description": "entity_id -> level (wins over the domain)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "areas": {
+      "type": "object",
+      "description": "Visible areas. all = every active area; selected = the listed areas, areas with one of the tags and (own_area) the device's own area; nothing selected = no area (fail closed). In resolved values (client_config) the hub has replaced own_area by the concrete id: own_area is always false there.",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "all",
+            "selected"
+          ]
+        },
+        "area_ids": {
+          "type": "array",
+          "maxItems": 200,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "defs.json#/$defs/uuid"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50,
+            "pattern": "^(?!\\*$)(?!area:)"
+          }
+        },
+        "own_area": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "control_mode_max": {
+      "$ref": "defs.json#/$defs/control_mode",
+      "description": "Highest control mode; the hub clamps the control mode of every area and entity it delivers."
+    },
+    "camera_live": {
+      "type": "boolean",
+      "description": "Live camera image in the app (otherwise still images). Also on Apple TV and Android TV, with picture-in-picture where the platform allows it (started by the user)."
+    },
+    "kids_blocked_types": {
+      "type": "array",
+      "maxItems": 30,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "defs.json#/$defs/kids_rule_type"
+      },
+      "description": "Kids mode: blocked device types (profile level of kids-rules.json)."
+    },
+    "kids_quiet_hours": {
+      "type": "array",
+      "maxItems": 14,
+      "items": {
+        "$ref": "defs.json#/$defs/quiet_hours_window"
+      },
+      "description": "Kids mode: bedtime windows; [] = no bedtime."
+    },
+    "kids_rate_limit": {
+      "anyOf": [
+        {
+          "$ref": "defs.json#/$defs/kids_rate_limit"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Kids mode: rate limit; null = off."
+    },
+    "kids_rate_limit_all": {
+      "$ref": "defs.json#/$defs/kids_rate_limit_all",
+      "description": "Kids mode: overall rate limit – too many devices or actions in a short time pause everything; enabled false = off."
+    },
+    "kids_volume_max": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Kids mode: volume cap in percent; null = off."
+    },
+    "kids_color_lock": {
+      "type": "boolean",
+      "description": "Kids mode: lights keep their color."
+    },
+    "kids_requests": {
+      "$ref": "defs.json#/$defs/kids_requests",
+      "description": "Kids mode: requests “Can I have more time?”, on/off and the kinds."
+    },
+    "kids_exceptions": {
+      "type": "array",
+      "maxItems": 500,
+      "description": "Kids mode: exceptions for an area, an entity or the device's own area (area and entity levels of kids-rules.json). Profile only, never adjusted per device.",
+      "items": {
+        "type": "object",
+        "required": [
+          "target",
+          "rules"
+        ],
+        "properties": {
+          "target": {
+            "type": "object",
+            "description": "Exactly one of area_id, entity_id, own_area.",
+            "properties": {
+              "area_id": {
+                "$ref": "defs.json#/$defs/uuid"
+              },
+              "entity_id": {
+                "$ref": "defs.json#/$defs/entity_id"
+              },
+              "own_area": {
+                "const": true
+              }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "area_id"
+                ]
+              },
+              {
+                "required": [
+                  "entity_id"
+                ]
+              },
+              {
+                "required": [
+                  "own_area"
+                ]
+              }
+            ],
+            "maxProperties": 1,
+            "additionalProperties": false
+          },
+          "rules": {
+            "$ref": "kids-rules.json"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "kids_watch": {
+      "type": "boolean",
+      "description": "Kids mode: the child may add an Apple Watch (an adult confirms the pairing); the watch gets the phone's kids rules. Lifts the parental-controls boundary of the rule watch; needs remote access."
+    },
+    "quick_access": {
+      "$ref": "defs.json#/$defs/quick_access_level",
+      "description": "Widgets, controls and Siri: off, only show states, may switch."
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "An Apple Watch may be added with this iPhone."
+    },
+    "scan_tags": {
+      "type": "boolean",
+      "description": "NFC and QR tags (Pro): the device may use tags registered in the hub (https://<website>/t/<tag_id>). Switching runs like a widget (quick access level, profile, <ns>.control)."
+    },
+    "card_style": {
+      "$ref": "defs.json#/$defs/card_style"
+    },
+    "appearance": {
+      "enum": [
+        "system",
+        "light",
+        "dark"
+      ]
+    },
+    "header": {
+      "type": "boolean",
+      "description": "Header with clock and weather."
+    },
+    "home_header": {
+      "type": "object",
+      "description": "Start screen head of phones and tablets while header is on: style, status capsules (lights, doors, climate) below the weather, greeting (“Good morning”) and weather. Phones and tablets outside wall panel mode use it; in wall panel mode (kiosk on) and on TVs the app ignores it.",
+      "required": [
+        "style",
+        "status_chips",
+        "greeting",
+        "weather"
+      ],
+      "properties": {
+        "style": {
+          "$ref": "defs.json#/$defs/home_header_style"
+        },
+        "status_chips": {
+          "type": "boolean",
+          "description": "Capsules lights / doors / climate below the weather; a tap opens the matching areas."
+        },
+        "greeting": {
+          "type": "boolean",
+          "description": "Greeting by time of day (“Good morning”)."
+        },
+        "weather": {
+          "type": "boolean",
+          "description": "Weather in the head (weather_mood: temperature and hourly row; compact: icon, temperature and condition in the line). Without weather, weather_mood keeps its sky in the tone of the time of day."
+        }
+      },
+      "additionalProperties": false
+    },
+    "search_filter": {
+      "type": "boolean",
+      "description": "Search field and filter button."
+    },
+    "columns": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4,
+      "description": "Columns per area; an iPhone shows at most 2."
+    },
+    "power_button": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "domains"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "domains": {
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "defs.json#/$defs/power_button_domain"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "notification_level": {
+      "enum": [
+        "none",
+        "important",
+        "all"
+      ],
+      "description": "Which hub notifications the app shows: none, only important ones (priority >= notifications.important_min_priority), all. Critical notifications and notifications about safety entities (catalog safety_entities) are never suppressed; no delivery promise (no push)."
+    },
+    "notification_stack": {
+      "enum": [
+        "off",
+        "banner",
+        "carousel"
+      ],
+      "description": "Several open notifications: off (one at a time), banner, carousel."
+    },
+    "kiosk": {
+      "type": "boolean",
+      "description": "Wall panel mode (full screen, keeps the screen awake)."
+    },
+    "panel_start": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "overview",
+            "own_area",
+            "area"
+          ]
+        },
+        "area_id": {
+          "anyOf": [
+            {
+              "$ref": "defs.json#/$defs/uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "area"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "area_id"
+            ],
+            "properties": {
+              "area_id": {
+                "$ref": "defs.json#/$defs/uuid"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false,
+      "description": "Start area of the wall panel. Resolved values never contain own_area (the hub resolves it to area or overview)."
+    },
+    "panel_auto_home": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1440,
+      "description": "Back to the start area after N minutes without touch; 0 = never."
+    },
+    "panel_dim": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1440,
+      "description": "Dim after N minutes; 0 = never."
+    },
+    "panel_screensaver": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1440,
+      "description": "Screensaver after N minutes; 0 = never."
+    },
+    "panel_night": {
+      "type": "object",
+      "required": [
+        "mode",
+        "start",
+        "end",
+        "brightness"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "off",
+            "schedule",
+            "sun"
+          ]
+        },
+        "start": {
+          "$ref": "defs.json#/$defs/kids_hhmm"
+        },
+        "end": {
+          "$ref": "defs.json#/$defs/kids_hhmm"
+        },
+        "brightness": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 100
+        }
+      },
+      "additionalProperties": false
+    },
+    "panel_remote": {
+      "type": "boolean",
+      "description": "Home Assistant may control this panel (brightness, wake, screensaver, start area, reload) through the entities of the integration. Only HA administrators and automations operate them, never device users. Off = the hub rejects every panel_command with remote_off and the integration creates no control entities. On in the suggestions wall panel, Apple TV and kids room wall panel, off in every other suggestion (the catalog default stays on, so profiles copied before this default existed keep their value)."
+    },
+    "panel_sensors": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 6,
+      "items": {
+        "$ref": "defs.json#/$defs/panel_sensor"
+      },
+      "description": "Device values that appear as entities in Home Assistant (every device except watches). Empty = none. screen = screen state on wall panels and Apple TVs, “app active” on every other device; brightness on phones and tablets outside the wall panel only while the app is in front; illuminance only on Android devices with a light sensor. The status itself always reaches the hub and its admin UI. battery_temperature only on Android (attribute battery_health)."
+    },
+    "panel_wake": {
+      "type": "object",
+      "required": [
+        "entities"
+      ],
+      "properties": {
+        "entities": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 10,
+          "items": {
+            "$ref": "defs.json#/$defs/panel_wake_entity"
+          },
+          "description": "Motion, presence, door or doorbell entities. The app subscribes to them through the hub (state_subscribe) and treats on / home / a new event like a touch. No camera."
+        },
+        "proximity": {
+          "type": "boolean",
+          "description": "The proximity sensor of the device wakes the panel too (Android with panel.proximity_sensor; ignored elsewhere). Proximity never becomes a Home Assistant sensor. Missing = false."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Wake the panel from Home Assistant sensors without an automation, optionally also from the device's proximity sensor. Empty list and no proximity = only touch (and HA wake commands)."
+    },
+    "panel_brightness": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "system",
+            "fixed",
+            "lux",
+            "device_lux",
+            "schedule"
+          ],
+          "description": "system = do not touch the backlight (the device decides); fixed = level; lux = curve from the Home Assistant illuminance entity lux_entity (iPad: the only way, iPadOS has no light sensor API for apps); device_lux = the device's own light sensor (Android; without one like lux); schedule = levels at times of day."
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 100,
+          "description": "fixed: backlight in percent."
+        },
+        "lux_entity": {
+          "anyOf": [
+            {
+              "$ref": "defs.json#/$defs/illuminance_entity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "lux/device_lux: sensor entity with device_class illuminance (lx)."
+        },
+        "min": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 100,
+          "description": "lux: backlight at 0 lx (and darker)."
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 100,
+          "description": "lux: backlight at lux_max and brighter."
+        },
+        "lux_max": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 100000,
+          "description": "lux: illuminance at which max is reached (default 500)."
+        },
+        "curve": {
+          "enum": [
+            "log",
+            "linear"
+          ],
+          "description": "lux: logarithmic (default) or linear between 1 lx and lux_max."
+        },
+        "schedule": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "required": [
+              "at",
+              "level"
+            ],
+            "properties": {
+              "at": {
+                "$ref": "defs.json#/$defs/kids_hhmm"
+              },
+              "level": {
+                "type": "integer",
+                "minimum": 5,
+                "maximum": 100
+              }
+            },
+            "additionalProperties": false
+          },
+          "description": "schedule: from at (local time of the device) on, level applies until the next entry; the last entry wraps over midnight."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "fixed"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "level"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "lux"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "lux_entity",
+              "min",
+              "max"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "device_lux"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "min",
+              "max"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "schedule"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "schedule"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false,
+      "description": "Backlight of the panel while active. Dimmed lowers the real backlight further (panel_dim), panel_night stays the upper limit at night. The app smooths changes (hysteresis ±10 %, at most one step per 10 s). A value set from Home Assistant switches to manual until the next phase change."
+    },
+    "panel_announce": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "volume_max",
+        "respect_night"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Off = the hub rejects announce with announce_off."
+        },
+        "volume_max": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Upper limit of the announcement volume in percent (the hub and the app cap the requested volume)."
+        },
+        "respect_night": {
+          "type": "boolean",
+          "description": "During night mode (panel_night) announcements are shown as text without sound."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Announcements and chime on a wall panel from Home Assistant (Pro): panel_command announce {text, volume?, chime?}."
+    },
+    "panel_off_mode": {
+      "$ref": "defs.json#/$defs/panel_off_mode",
+      "description": "black = black screen (default). The iPad always shows a black screen, also with off."
+    },
+    "location": {
+      "enum": [
+        "off",
+        "foreground",
+        "background"
+      ],
+      "description": "Most the person may share: off, foreground (while the app is in use) or background. Only for profiles of kind person and child. The app asks for it after pairing and later when needed; reports go to the hub (location_report), never to Home Assistant directly."
+    },
+    "location_required": {
+      "type": "boolean",
+      "description": "The app shows a lasting notice on the home screen until the location is shared. Applies only while location is not off (otherwise not_applicable / requires_location)."
+    }
+  },
+  "additionalProperties": false
+}

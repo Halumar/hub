@@ -1,0 +1,50 @@
+{
+  "description": "Child with remote access and “Allow a watch” only until 20:00 (temporary device adjustment): the phone's rule watch carries the same expires_at and then false, so an iPhone offline at 20:00 stops offering the watch.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child",
+      "rules": {
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "overrides": [
+      {
+        "rule": "kids_watch",
+        "value": true,
+        "expires_at": "2026-11-20T20:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "kids_watch": {
+      "value": true,
+      "source": "device",
+      "reason": "device_temporary",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": false,
+      "enforcement": "hub"
+    },
+    "watch": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": false,
+      "enforcement": "hub"
+    }
+  }
+}

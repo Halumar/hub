@@ -1,0 +1,23 @@
+{
+  "description": "Zurich, Saturday before the switch to summer time (29 March 2026)",
+  "time_zone": "Europe/Zurich",
+  "now": "2026-03-28T20:00:00Z",
+  "cases": [
+    {
+      "preset": "1h",
+      "expires_at": "2026-03-28T21:00:00Z"
+    },
+    {
+      "preset": "today",
+      "expires_at": "2026-03-28T23:00:00Z"
+    },
+    {
+      "preset": "tomorrow_morning",
+      "expires_at": "2026-03-29T05:00:00Z"
+    },
+    {
+      "preset": "7d",
+      "expires_at": "2026-04-04T20:00:00Z"
+    }
+  ]
+}

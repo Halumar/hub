@@ -1,0 +1,46 @@
+{
+  "description": "Adjustment: one adult iPhone without remote access (permanent device adjustment).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "overrides": [
+      {
+        "rule": "remote_access",
+        "value": false,
+        "expires_at": null
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_access": {
+      "value": false,
+      "source": "device",
+      "reason": "device",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "setup_devices": {
+      "value": {
+        "enabled": false,
+        "kinds": []
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

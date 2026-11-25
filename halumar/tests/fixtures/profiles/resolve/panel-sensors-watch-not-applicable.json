@@ -1,0 +1,31 @@
+{
+  "description": "A watch has no hub connection and reports no status; panel_sensors does not apply.",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "panel_sensors": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "user_choice": false,
+      "expires_at": null,
+      "then": null,
+      "enforcement": "hub"
+    }
+  }
+}

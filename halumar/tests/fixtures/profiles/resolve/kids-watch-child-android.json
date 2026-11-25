@@ -1,0 +1,48 @@
+{
+  "description": "Child on an Android phone with remote access and “Allow a watch” on: kids_watch does not apply on Android (no Wear OS app), so parental controls keep watch off.",
+  "input": {
+    "platform": "android",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child",
+      "rules": {
+        "remote_access": true,
+        "kids_watch": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_watch": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_kids_watch",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    }
+  }
+}

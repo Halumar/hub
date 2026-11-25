@@ -1,0 +1,91 @@
+{
+  "description": "Child suggestion: Hub only by default. No Home Assistant key at home; the hub enforces areas, access hours and the kids rules; widgets are off because the device holds no key (boundary hub_only).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "hub",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "boundary",
+      "reason": "boundary_hub_only",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_kids_watch",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "access_hours": {
+      "value": {
+        "enabled": false,
+        "windows": []
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "control_mode_max": {
+      "value": "advanced",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "kids_blocked_types": {
+      "value": [
+        "lock",
+        "alarm_control_panel",
+        "cover:garage",
+        "cover:gate",
+        "camera"
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

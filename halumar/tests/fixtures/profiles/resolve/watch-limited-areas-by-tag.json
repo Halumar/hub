@@ -1,0 +1,81 @@
+{
+  "description": "The phone's profile grants rooms by tag (upstairs), the watch's pins two rooms by id. With the hub's area tags (input.area_tags) the watch gets the room both reach: the pinned one that is upstairs.",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "areas": {
+          "mode": "selected",
+          "area_ids": [
+            "9c0d85fe-cd89-4bfd-8c15-1e56e24352f3",
+            "d18b03ba-0f49-4fea-8d96-e25af54def81"
+          ],
+          "tags": [],
+          "own_area": false
+        }
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "areas": {
+            "mode": "selected",
+            "area_ids": [],
+            "tags": [
+              "upstairs"
+            ],
+            "own_area": false
+          }
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    },
+    "area_tags": {
+      "9c0d85fe-cd89-4bfd-8c15-1e56e24352f3": [
+        "downstairs"
+      ],
+      "d18b03ba-0f49-4fea-8d96-e25af54def81": [
+        "upstairs"
+      ],
+      "7a2c9e4b-1d3f-4b5a-9c8d-2e4f6a8b0c1d": [
+        "upstairs"
+      ]
+    }
+  },
+  "expected": {
+    "areas": {
+      "value": {
+        "mode": "selected",
+        "area_ids": [
+          "d18b03ba-0f49-4fea-8d96-e25af54def81"
+        ],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    }
+  }
+}

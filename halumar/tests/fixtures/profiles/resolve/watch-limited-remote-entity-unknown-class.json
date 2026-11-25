@@ -1,0 +1,70 @@
+{
+  "description": "The same pair without any state known for the blinds: the class is unknown, so the entity gets the lowest level the watch's profile gives any cover (view, from cover:garage and cover:gate).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-03-28T20:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "remote_access": true,
+          "remote_control": {
+            "default": "view",
+            "domains": {},
+            "entities": {
+              "cover.living_blinds": "control",
+              "cover.garage_door": "control",
+              "cover.side": "control"
+            }
+          }
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    },
+    "entity_classes": {}
+  },
+  "expected": {
+    "remote_control": {
+      "value": {
+        "default": "view",
+        "domains": {},
+        "entities": {}
+      },
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    }
+  },
+  "entity_checks": [
+    {
+      "entity_id": "cover.living_blinds",
+      "device_class": "blind",
+      "route": "external",
+      "expected_app": "view"
+    }
+  ]
+}

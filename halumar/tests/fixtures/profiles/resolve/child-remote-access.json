@@ -1,0 +1,95 @@
+{
+  "description": "Kind with remote access in the profile: remote access applies like for every profile, \"When away\" applies (operating enforced in Home Assistant by <ns>.control); on Hub only the device holds a read-only key, so widgets follow the profile (off in this suggestion); the watch stays off while “Allow a watch” (kids_watch) is off.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child",
+      "rules": {
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "remote_control": {
+      "value": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view"
+        },
+        "entities": {}
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    },
+    "control_path": {
+      "value": "hub",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_kids_watch",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "kids_watch": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  },
+  "entity_checks": [
+    {
+      "entity_id": "light.kinderzimmer",
+      "route": "external",
+      "expected_app": "control",
+      "expected_quick": null
+    },
+    {
+      "entity_id": "lock.haustuer",
+      "route": "external",
+      "expected_app": "view",
+      "expected_quick": null
+    }
+  ],
+  "expected_ha_user_group": "read_only"
+}

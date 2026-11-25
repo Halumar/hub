@@ -1,0 +1,56 @@
+{
+  "name": "climate-without-humidity",
+  "description": "A thermostat without current_humidity is no humidity candidate; the humidity sensor gives the value.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "climate.office",
+      "state": {
+        "state": "heat",
+        "attributes": {
+          "current_temperature": 21.5,
+          "friendly_name": "Thermostat"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.office_humidity",
+      "state": {
+        "state": "45",
+        "attributes": {
+          "device_class": "humidity",
+          "unit_of_measurement": "%",
+          "friendly_name": "Luftfeuchte"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "climate.office"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.office_humidity"
+        ]
+      }
+    },
+    "value": {
+      "temperature": 21.5,
+      "humidity": 45.0
+    },
+    "local": {
+      "temperature": 21.5,
+      "humidity": 45.0
+    },
+    "primary_sensor": {
+      "temperature": null,
+      "humidity": "sensor.office_humidity"
+    }
+  }
+}

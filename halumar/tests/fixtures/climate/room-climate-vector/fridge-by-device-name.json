@@ -1,0 +1,92 @@
+{
+  "name": "fridge-by-device-name",
+  "description": "Only the device name says fridge: the hub leaves it out, an app without registry cannot and takes the median.",
+  "ha_area_id": "kitchen",
+  "entities": [
+    {
+      "entity_id": "sensor.sensor_1_temperature",
+      "state": {
+        "state": "4.2",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Sensor 1 Temperatur"
+        }
+      },
+      "registry": {
+        "entity_category": null,
+        "area_id": null,
+        "device": {
+          "name": "Kühlschrank Bosch",
+          "name_by_user": null,
+          "model": null,
+          "area_id": "kitchen"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.kitchen_room_temperature",
+      "state": {
+        "state": "21.4",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Raumtemperatur"
+        }
+      },
+      "registry": {
+        "entity_category": null,
+        "area_id": null,
+        "device": {
+          "name": "Thermometer Küche",
+          "name_by_user": null,
+          "model": null,
+          "area_id": "kitchen"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.kitchen_room_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 21.4,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 12.8,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.kitchen_room_temperature",
+      "humidity": null
+    },
+    "options": {
+      "temperature": [
+        {
+          "entity_id": "sensor.sensor_1_temperature",
+          "tier": "sensor",
+          "in_room": true,
+          "excluded": "fridge"
+        },
+        {
+          "entity_id": "sensor.kitchen_room_temperature",
+          "tier": "sensor",
+          "in_room": true,
+          "excluded": null
+        }
+      ],
+      "humidity": []
+    }
+  }
+}

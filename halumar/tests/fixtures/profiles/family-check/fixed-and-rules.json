@@ -1,0 +1,620 @@
+{
+  "description": "Only the manageable rules and only where the child's profile does not fix them. Kind version 2 leaves bedtime, breaks, volume and “Darf ich noch?” (kids_requests) open; a profile that fixes a rule keeps it with the admin.",
+  "cases": [
+    {
+      "name": "volume when not fixed",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "kids_volume_max",
+        "value": 60
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "blocked types fixed",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "kids_blocked_types",
+        "value": [
+          "lock"
+        ]
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "rule_fixed"
+      }
+    },
+    {
+      "name": "reset of a fixed rule",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_reset",
+        "rule": "kids_blocked_types"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "rule_fixed"
+      }
+    },
+    {
+      "name": "starter Kind: bedtime fixed",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_quiet_hours",
+          "kids_rate_limit",
+          "kids_volume_max",
+          "kids_color_lock",
+          "kids_exceptions",
+          "app_settings"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "kids_quiet_hours",
+        "value": [
+          {
+            "days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri"
+            ],
+            "start": "20:30",
+            "end": "06:30"
+          },
+          {
+            "days": [
+              "sat",
+              "sun"
+            ],
+            "start": "21:00",
+            "end": "07:00"
+          }
+        ]
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "rule_fixed"
+      }
+    },
+    {
+      "name": "exceptions are never manageable",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "kids_exceptions",
+        "value": []
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "rule_not_manageable"
+      }
+    },
+    {
+      "name": "rights stay with the admin",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "setup_devices",
+        "value": {
+          "enabled": true,
+          "kinds": [
+            "child",
+            "panel",
+            "tv",
+            "person"
+          ]
+        }
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "rule_not_manageable"
+      }
+    },
+    {
+      "name": "app settings stay with the admin",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "app_settings",
+        "value": "open"
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "rule_not_manageable"
+      }
+    },
+    {
+      "name": "areas within own areas",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": [
+          "c3d4e5f6-a7b8-4c9d-8e0f-2a3b4c5d6e7f",
+          "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e"
+        ]
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "areas",
+        "value": {
+          "mode": "selected",
+          "area_ids": [
+            "c3d4e5f6-a7b8-4c9d-8e0f-2a3b4c5d6e7f"
+          ],
+          "tags": [],
+          "own_area": true
+        }
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "areas beyond own areas",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": [
+          "c3d4e5f6-a7b8-4c9d-8e0f-2a3b4c5d6e7f"
+        ]
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "areas",
+        "value": {
+          "mode": "all"
+        }
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "areas_not_allowed"
+      }
+    },
+    {
+      "name": "areas all when the manager sees all",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "areas",
+        "value": {
+          "mode": "all"
+        }
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "requests switched off per child (kids_requests not fixed)",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "kids_requests",
+        "value": {
+          "enabled": false,
+          "categories": [
+            "stay_up",
+            "unlock_device",
+            "end_pause"
+          ]
+        }
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "requests fixed in the profile",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "member",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions",
+          "kids_requests"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "rule_set",
+        "rule": "kids_requests",
+        "value": {
+          "enabled": true,
+          "categories": [
+            "stay_up"
+          ]
+        }
+      },
+      "expected": {
+        "allowed": false,
+        "reason": "rule_fixed"
+      }
+    }
+  ]
+}

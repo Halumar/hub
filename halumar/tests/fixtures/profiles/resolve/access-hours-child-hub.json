@@ -1,0 +1,55 @@
+{
+  "description": "Access hours on a child with parental controls are enforced by the hub (it controls only through the hub).",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child",
+      "rules": {
+        "access_hours": {
+          "enabled": true,
+          "windows": [
+            {
+              "days": [
+                "sat",
+                "sun"
+              ],
+              "start": "08:00",
+              "end": "20:00"
+            }
+          ]
+        }
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "access_hours": {
+      "value": {
+        "enabled": true,
+        "windows": [
+          {
+            "days": [
+              "sat",
+              "sun"
+            ],
+            "start": "08:00",
+            "end": "20:00"
+          }
+        ]
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

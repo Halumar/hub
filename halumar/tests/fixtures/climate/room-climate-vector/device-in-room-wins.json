@@ -1,0 +1,109 @@
+{
+  "name": "device-in-room-wins",
+  "description": "Sensors whose device (or entity) is assigned to the room's Home Assistant area win over sensors only placed in the area.",
+  "ha_area_id": "kitchen",
+  "entities": [
+    {
+      "entity_id": "sensor.hall_temperature",
+      "state": {
+        "state": "23.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Flur"
+        }
+      },
+      "registry": {
+        "entity_category": null,
+        "area_id": "hall",
+        "device": {
+          "name": "Thermometer Flur",
+          "name_by_user": null,
+          "model": null,
+          "area_id": "kitchen"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.kitchen_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Küche"
+        }
+      },
+      "registry": {
+        "entity_category": null,
+        "area_id": null,
+        "device": {
+          "name": "Thermometer Küche",
+          "name_by_user": null,
+          "model": null,
+          "area_id": "kitchen"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.loose_temperature",
+      "state": {
+        "state": "24.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Lose"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.kitchen_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 23.0,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.kitchen_temperature",
+      "humidity": null
+    },
+    "options": {
+      "temperature": [
+        {
+          "entity_id": "sensor.hall_temperature",
+          "tier": "sensor",
+          "in_room": false,
+          "excluded": null
+        },
+        {
+          "entity_id": "sensor.kitchen_temperature",
+          "tier": "sensor",
+          "in_room": true,
+          "excluded": null
+        },
+        {
+          "entity_id": "sensor.loose_temperature",
+          "tier": "sensor",
+          "in_room": false,
+          "excluded": null
+        }
+      ],
+      "humidity": []
+    }
+  }
+}

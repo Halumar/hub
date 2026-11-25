@@ -1,0 +1,94 @@
+{
+  "description": "When away: alarm panel and smoke/water sensors are at least view even if the profile hides them; other entities stay hidden; safety entities are flagged always visible.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "remote_control": {
+          "default": "hidden",
+          "domains": {
+            "alarm_control_panel": "hidden"
+          },
+          "entities": {
+            "binary_sensor.hallway_smoke": "hidden"
+          }
+        }
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_control": {
+      "value": {
+        "default": "hidden",
+        "domains": {
+          "alarm_control_panel": "hidden"
+        },
+        "entities": {
+          "binary_sensor.hallway_smoke": "hidden"
+        }
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    }
+  },
+  "entity_checks": [
+    {
+      "entity_id": "alarm_control_panel.home",
+      "device_class": null,
+      "route": "external",
+      "quick_access": "control",
+      "expected_app": "view",
+      "expected_quick": "status",
+      "expected_always_visible": true
+    },
+    {
+      "entity_id": "binary_sensor.hallway_smoke",
+      "device_class": "smoke",
+      "route": "external",
+      "quick_access": "status",
+      "expected_app": "view",
+      "expected_quick": "status",
+      "expected_always_visible": true
+    },
+    {
+      "entity_id": "binary_sensor.basement_leak",
+      "device_class": "moisture",
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "view",
+      "expected_quick": null,
+      "expected_always_visible": true
+    },
+    {
+      "entity_id": "light.kitchen",
+      "device_class": null,
+      "route": "external",
+      "quick_access": "control",
+      "expected_app": "hidden",
+      "expected_quick": "off",
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "binary_sensor.door",
+      "device_class": "door",
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "hidden",
+      "expected_quick": null,
+      "expected_always_visible": false
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "description": "An Android tablet with the suggestion Wandpanel gets the panel rules like an iPad (panel_brightness too); an Android TV like an Apple TV.",
+  "input": {
+    "platform": "android_tablet",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "wall_panel"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "panel_remote": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "panel_brightness": {
+      "value": {
+        "mode": "system"
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    }
+  }
+}

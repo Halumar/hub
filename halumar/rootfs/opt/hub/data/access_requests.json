@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "durations": [
+    {
+      "id": "until_window_start",
+      "label": {
+        "de": "Bis zum regulären Beginn",
+        "en": "Until the regular start"
+      },
+      "short": {
+        "de": "Bis {time}",
+        "en": "Until {time}"
+      }
+    },
+    {
+      "id": "1h",
+      "minutes": 60,
+      "label": {
+        "de": "1 Std.",
+        "en": "1 hour"
+      }
+    },
+    {
+      "id": "3h",
+      "minutes": 180,
+      "label": {
+        "de": "3 Std.",
+        "en": "3 hours"
+      }
+    },
+    {
+      "id": "today",
+      "label": {
+        "de": "Heute",
+        "en": "Today"
+      }
+    }
+  ],
+  "decline_messages": [
+    {
+      "id": "not_now",
+      "label": {
+        "de": "Jetzt nicht",
+        "en": "Not now"
+      },
+      "requester_text": {
+        "de": "Jetzt nicht.",
+        "en": "Not now."
+      }
+    },
+    {
+      "id": "not_today",
+      "label": {
+        "de": "Heute nicht",
+        "en": "Not today"
+      },
+      "requester_text": {
+        "de": "Heute nicht.",
+        "en": "Not today."
+      }
+    },
+    {
+      "id": "later",
+      "label": {
+        "de": "Später nochmal",
+        "en": "Ask again later"
+      },
+      "requester_text": {
+        "de": "Bitte später nochmal fragen.",
+        "en": "Please ask again later."
+      }
+    },
+    {
+      "id": "call_me",
+      "label": {
+        "de": "Ruf mich an",
+        "en": "Call me"
+      },
+      "requester_text": {
+        "de": "Bitte kurz anrufen.",
+        "en": "Please give me a call."
+      }
+    }
+  ],
+  "notify_actions": [
+    {
+      "id": "yes_1h",
+      "answer": "yes",
+      "duration": "1h",
+      "label": {
+        "de": "Ja, 1 Std.",
+        "en": "Yes, 1 hour"
+      }
+    },
+    {
+      "id": "yes_window",
+      "answer": "yes",
+      "duration": "until_window_start",
+      "label": {
+        "de": "Ja, bis zum Beginn",
+        "en": "Yes, until the start"
+      }
+    },
+    {
+      "id": "no",
+      "answer": "no",
+      "duration": null,
+      "label": {
+        "de": "Nein",
+        "en": "No"
+      }
+    }
+  ],
+  "requester_texts": {
+    "button": {
+      "de": "Früher Zugang anfragen",
+      "en": "Ask for early access"
+    },
+    "recipients": {
+      "de": "{names} bekommen deine Anfrage.",
+      "en": "{names} will get your request."
+    },
+    "recipient_one": {
+      "de": "{name} bekommt deine Anfrage.",
+      "en": "{name} will get your request."
+    },
+    "recipient_admin": {
+      "de": "Dein Admin bekommt deine Anfrage.",
+      "en": "Your admin will get your request."
+    },
+    "sent": {
+      "de": "Angefragt. Du bekommst gleich Bescheid.",
+      "en": "Requested. You'll hear back soon."
+    },
+    "approved": {
+      "de": "Offen bis {until} – von {name}.",
+      "en": "Open until {until} – by {name}."
+    },
+    "declined": {
+      "de": "{name} hat Nein gesagt.",
+      "en": "{name} said no."
+    },
+    "expired": {
+      "de": "Niemand hat geantwortet. Später nochmal fragen.",
+      "en": "Nobody answered. Ask again later."
+    },
+    "cooldown": {
+      "de": "Wieder möglich um {time}.",
+      "en": "Possible again at {time}."
+    },
+    "home_only": {
+      "de": "Nur zu Hause möglich.",
+      "en": "Only possible at home."
+    },
+    "unavailable": {
+      "de": "Gerade kann niemand antworten.",
+      "en": "Nobody can answer right now."
+    }
+  },
+  "recipient_texts": {
+    "title": {
+      "de": "Früher Zugang?",
+      "en": "Early access?"
+    },
+    "body": {
+      "de": "{device} fragt nach Zugang (regulär ab {time}).",
+      "en": "{device} asks for access (regularly from {time})."
+    },
+    "body_no_start": {
+      "de": "{device} fragt nach Zugang.",
+      "en": "{device} asks for access."
+    },
+    "no_plain": {
+      "de": "Nur Nein",
+      "en": "Just no"
+    },
+    "answered_yes": {
+      "de": "{by} hat {device} bis {until} geöffnet.",
+      "en": "{by} opened {device} until {until}."
+    },
+    "answered_no": {
+      "de": "{by} hat Nein gesagt ({device}).",
+      "en": "{by} said no ({device})."
+    },
+    "expired": {
+      "de": "Anfrage von {device} unbeantwortet.",
+      "en": "Request from {device} unanswered."
+    }
+  },
+  "limits": {
+    "request_timeout_minutes": 10,
+    "requests_per_hour": 3,
+    "decline_cooldown_minutes": 10,
+    "open_requests_per_device": 1,
+    "note_max_length": 80,
+    "until_window_start_max_hours": 24,
+    "messages_per_device_per_minute": 20,
+    "answers_per_recipient_per_hour": 60,
+    "recipients_max": 10,
+    "answer_token_bytes": 16
+  }
+}

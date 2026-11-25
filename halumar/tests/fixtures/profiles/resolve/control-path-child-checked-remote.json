@@ -1,0 +1,98 @@
+{
+  "description": "Child on Checked with remote access: the key also works away from home; When away and the areas are enforced in Home Assistant, the kids rules by the hub and the integration; quick access follows the profile.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "teen",
+      "rules": {
+        "control_path": "checked",
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "quick_access": {
+      "value": "status",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_kids_watch",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    },
+    "remote_control": {
+      "value": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view"
+        },
+        "entities": {}
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    },
+    "kids_blocked_types": {
+      "value": [
+        "alarm_control_panel",
+        "camera"
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

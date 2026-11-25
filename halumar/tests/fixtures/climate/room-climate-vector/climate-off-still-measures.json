@@ -1,0 +1,55 @@
+{
+  "name": "climate-off-still-measures",
+  "description": "A thermostat that is off still measures the room.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "climate.bedroom",
+      "state": {
+        "state": "off",
+        "attributes": {
+          "current_temperature": 19.0,
+          "friendly_name": "Thermostat"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.bedroom_temperature",
+      "state": {
+        "state": "18.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Temperatur"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "climate.bedroom",
+          "sensor.bedroom_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 19.0,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 19.0,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.bedroom_temperature",
+      "humidity": null
+    }
+  }
+}

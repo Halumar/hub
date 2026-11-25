@@ -1,0 +1,302 @@
+{
+  "description": "Like starter-wall-panel-ipad on Android tablet (android_tablet): the Android counterpart gets the same effective rules except those the catalog leaves out for Android (card_style, columns, notification_level, notification_stack, power_button, search_filter not applicable). Starter suggestion Wandpanel on an iPad with own area and remote PIN: wall panel mode fixed on, starts in the own area, settings with remote PIN, nothing is the user's choice.",
+  "input": {
+    "platform": "android_tablet",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "wall_panel"
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_access": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    },
+    "setup_devices": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_profile_kind",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "app_settings": {
+      "value": "pin",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "app_settings_biometrics": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "remote_control": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_remote_access",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    },
+    "control_mode_max": {
+      "value": "full",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "camera_live": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "kids_blocked_types": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "kids_quiet_hours": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "kids_rate_limit": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "kids_volume_max": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "kids_color_lock": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "kids_exceptions": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_child_protection",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "card_style": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "appearance": {
+      "value": "dark",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "header": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "home_header": {
+      "value": {
+        "style": "weather_mood",
+        "status_chips": true,
+        "greeting": true,
+        "weather": true
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "search_filter": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "columns": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "power_button": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "notification_level": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "notification_stack": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "kiosk": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "panel_start": {
+      "value": {
+        "mode": "area",
+        "area_id": "a1b2c3d4-0000-4000-8000-00000000000a"
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "panel_auto_home": {
+      "value": 5,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "panel_dim": {
+      "value": 2,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "panel_screensaver": {
+      "value": 10,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "panel_night": {
+      "value": {
+        "mode": "sun",
+        "start": "22:00",
+        "end": "06:00",
+        "brightness": 20
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "location": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    },
+    "location_required": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  }
+}

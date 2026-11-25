@@ -1,0 +1,86 @@
+{
+  "description": "Kind (starter, remote access off): \"When away\" does not apply without remote access; areas and control mode are enforced by the hub (parental controls). Remote access itself is a normal profile rule.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_control": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_remote_access",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    },
+    "remote_access": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "control_mode_max": {
+      "value": "advanced",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "card_style": {
+      "value": "color",
+      "source": "profile",
+      "reason": "user_choice",
+      "locked": false,
+      "fixed": false,
+      "user_choice": true,
+      "enforcement": "app"
+    }
+  },
+  "entity_checks": [
+    {
+      "entity_id": "light.kitchen",
+      "device_class": null,
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "hidden",
+      "expected_quick": null,
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "light.kitchen",
+      "device_class": null,
+      "route": "local",
+      "quick_access": null,
+      "expected_app": "control",
+      "expected_quick": null,
+      "expected_always_visible": false
+    }
+  ]
+}

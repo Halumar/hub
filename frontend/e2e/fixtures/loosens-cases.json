@@ -1,0 +1,797 @@
+{
+ "description": "loosens() cases shared by the hub (services/profiles/catalog.py, halumar/tests/test_profiles_api.py) and the admin UI (src/lib/profiles/format.js, e2e/loosens.spec.js): both must give 'loosens' for every case.",
+ "cases": [
+  {
+   "name": "off",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": null,
+   "loosens": true
+  },
+  {
+   "name": "tighter",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "max_actions": 5,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "loosens": false
+  },
+  {
+   "name": "more actions",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "max_actions": 20,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "loosens": true
+  },
+  {
+   "name": "shorter window",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "max_actions": 10,
+    "window_seconds": 30,
+    "cooldown_seconds": 30
+   },
+   "loosens": true
+  },
+  {
+   "name": "shorter pause",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 10
+   },
+   "loosens": true
+  },
+  {
+   "name": "longer pause",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 60
+   },
+   "loosens": false
+  },
+  {
+   "name": "on",
+   "rule": "kids_rate_limit",
+   "before": null,
+   "after": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "loosens": false
+  },
+  {
+   "name": "float equal",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "max_actions": 10.0,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "loosens": false
+  },
+  {
+   "name": "bool",
+   "rule": "kids_rate_limit",
+   "before": {
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "max_actions": true,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "loosens": true
+  },
+  {
+   "name": "all off",
+   "rule": "kids_rate_limit_all",
+   "before": {
+    "enabled": true,
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": {
+    "enabled": false,
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "loosens": true
+  },
+  {
+   "name": "all on",
+   "rule": "kids_rate_limit_all",
+   "before": {
+    "enabled": false
+   },
+   "after": {
+    "enabled": true,
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "loosens": false
+  },
+  {
+   "name": "all null",
+   "rule": "kids_rate_limit_all",
+   "before": {
+    "enabled": true,
+    "max_actions": 10,
+    "window_seconds": 60,
+    "cooldown_seconds": 30
+   },
+   "after": null,
+   "loosens": true
+  },
+  {
+   "name": "removed",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "after": [],
+   "loosens": true
+  },
+  {
+   "name": "added day",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    },
+    {
+     "days": [
+      "tue"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "wider",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "19:00",
+     "end": "08:00"
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "narrower",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "21:00",
+     "end": "07:00"
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "whole Monday instead of Mon 20:00 to Tue 07:00 (Tuesday morning lost)",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "00:00",
+     "end": "00:00"
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "split window misses Monday 00:00-06:00 (Monday 23:59 runs into Tuesday)",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "sun"
+     ],
+     "start": "22:00",
+     "end": "06:00"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "sun"
+     ],
+     "start": "22:00",
+     "end": "23:59"
+    },
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "23:59",
+     "end": "06:00"
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "seconds format",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00:00",
+     "end": "07:00:00"
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "null",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "20:00",
+     "end": "07:00"
+    }
+   ],
+   "after": null,
+   "loosens": false
+  },
+  {
+   "name": "add strict",
+   "rule": "kids_exceptions",
+   "before": [],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked": true
+     }
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "add allow",
+   "rule": "kids_exceptions",
+   "before": [],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked": false
+     }
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "remove strict",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked": true
+     }
+    }
+   ],
+   "after": [],
+   "loosens": true
+  },
+  {
+   "name": "null blocked",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked": true
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked": null
+     }
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "volume float",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "volume_max": 40
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "volume_max": 30.0
+     }
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "volume lower",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "volume_max": 40
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "volume_max": 30
+     }
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "more types",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked_types": [
+       "light"
+      ]
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked_types": [
+       "light",
+       "switch"
+      ]
+     }
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "exc rate tighter",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "rate_limit": {
+       "max_actions": 10,
+       "window_seconds": 60,
+       "cooldown_seconds": 30
+      }
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "rate_limit": {
+       "max_actions": 5,
+       "window_seconds": 60,
+       "cooldown_seconds": 30
+      }
+     }
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "nested target reorder",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a",
+      "x": {
+       "b": 1
+      }
+     },
+     "rules": {
+      "blocked": true
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "x": {
+       "b": 1
+      },
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked": true
+     }
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "moved target",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "entity_id": "light.a"
+     },
+     "rules": {
+      "blocked": true
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "entity_id": "light.b"
+     },
+     "rules": {
+      "blocked": true
+     }
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "dup qh",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "quiet_hours": [
+       {
+        "days": [
+         "mon"
+        ],
+        "start": "20:00",
+        "end": "07:00"
+       }
+      ]
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "quiet_hours": [
+       {
+        "days": [
+         "mon"
+        ],
+        "start": "20:00",
+        "end": "07:00"
+       },
+       {
+        "days": [
+         "mon"
+        ],
+        "start": "20:00",
+        "end": "07:00"
+       }
+      ]
+     }
+    }
+   ],
+   "loosens": false
+  },
+  {
+   "name": "bedtime: later start on two days",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "mon",
+      "tue"
+     ],
+     "start": "20:00",
+     "end": "06:30"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "mon",
+      "tue"
+     ],
+     "start": "21:00",
+     "end": "06:30"
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "exception: removed explicit allow",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "blocked": false
+     }
+    }
+   ],
+   "after": [],
+   "loosens": false
+  },
+  {
+   "name": "exception: volume cap off",
+   "rule": "kids_exceptions",
+   "before": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "volume_max": 30
+     }
+    }
+   ],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "volume_max": null
+     }
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "exception: color lock false",
+   "rule": "kids_exceptions",
+   "before": [],
+   "after": [
+    {
+     "target": {
+      "area_id": "a"
+     },
+     "rules": {
+      "color_lock": false
+     }
+    }
+   ],
+   "loosens": true
+  },
+  {
+   "name": "pause everything: more devices",
+   "rule": "kids_rate_limit_all",
+   "before": {
+    "enabled": true,
+    "max_actions": 12,
+    "max_entities": 4,
+    "window_seconds": 60,
+    "cooldown_seconds": 300
+   },
+   "after": {
+    "enabled": true,
+    "max_actions": 12,
+    "max_entities": 8,
+    "window_seconds": 60,
+    "cooldown_seconds": 300
+   },
+   "loosens": true
+  },
+  {
+   "name": "pause everything: longer pause",
+   "rule": "kids_rate_limit_all",
+   "before": {
+    "enabled": true,
+    "max_actions": 12,
+    "max_entities": 4,
+    "window_seconds": 60,
+    "cooldown_seconds": 300
+   },
+   "after": {
+    "enabled": true,
+    "max_actions": 12,
+    "max_entities": 4,
+    "window_seconds": 60,
+    "cooldown_seconds": 600
+   },
+   "loosens": false
+  },
+  {
+   "name": "split over the week wrap, same minutes",
+   "rule": "kids_quiet_hours",
+   "before": [
+    {
+     "days": [
+      "sun"
+     ],
+     "start": "22:00",
+     "end": "06:00"
+    }
+   ],
+   "after": [
+    {
+     "days": [
+      "sun"
+     ],
+     "start": "22:00",
+     "end": "00:00"
+    },
+    {
+     "days": [
+      "mon"
+     ],
+     "start": "00:00",
+     "end": "06:00"
+    }
+   ],
+   "loosens": false
+  }
+ ]
+}

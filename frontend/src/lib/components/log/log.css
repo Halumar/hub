@@ -1,0 +1,160 @@
+/* Log tab: shared styles of the entries, notifications and settings pages. */
+.logpage .stack-sm,
+.log-panel .stack-sm {
+	display: grid;
+	gap: var(--s2);
+}
+.logpage .chipic.sm {
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+}
+.logpage .chipic.sm .ic {
+	width: 16px;
+	height: 16px;
+}
+.logpage .c-info {
+	background: var(--info-soft);
+	color: var(--info-ink);
+}
+.logpage .c-violet {
+	background: color-mix(in srgb, #7c4dff 14%, var(--surface));
+	color: color-mix(in srgb, #5b2fd6 85%, var(--ink));
+}
+.logpage .c-warn {
+	background: var(--warn-soft);
+	color: var(--warn-ink);
+}
+.logpage .c-light {
+	background: var(--light-soft);
+	color: var(--light-ink);
+}
+:root[data-theme='dark'] .logpage .c-violet {
+	background: color-mix(in srgb, #7c4dff 28%, var(--surface));
+	color: #c9b6ff;
+}
+
+/* Equal tiles: same width per row, reserved two-line labels. */
+.logpage .tiles {
+	display: grid;
+	gap: var(--s2);
+	grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+}
+.logpage .tiles.c4 {
+	--cols: 4;
+}
+.logpage .tiles.c2 {
+	--cols: 2;
+}
+.logpage .tile {
+	display: grid;
+	align-content: start;
+	gap: 4px;
+	min-width: 0;
+	min-height: 92px;
+	padding: 12px;
+	border-radius: var(--r-box);
+	border: 1px solid var(--line-2);
+	background: var(--surface);
+	color: var(--ink);
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+.logpage .tile b,
+.logpage .tile small {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	overflow-wrap: anywhere;
+}
+.logpage .tile b {
+	font-size: var(--fs-sm);
+	min-height: calc(2 * 1.35em);
+	line-height: 1.35;
+}
+.logpage .tile small {
+	color: var(--ink-3);
+	font-size: var(--fs-cap);
+	min-height: calc(2 * 1.4em);
+	line-height: 1.4;
+}
+.logpage .tile[aria-pressed='true'],
+.logpage .tile[aria-checked='true'] {
+	border-color: var(--ink);
+	box-shadow: 0 0 0 1px var(--ink);
+}
+.logpage .tile:focus-visible {
+	outline: 2px solid var(--focus);
+	outline-offset: 2px;
+}
+.logpage .tile-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+.logpage .tile-row .grow {
+	flex: 1;
+}
+.logpage .tile .num {
+	font-size: 22px;
+	font-weight: 750;
+	min-height: 0;
+}
+.logpage .tick .ic {
+	width: 18px;
+	height: 18px;
+	color: var(--ok-ink);
+}
+.logpage .t-mono,
+.logpage .mono {
+	font-family: var(--mono);
+	font-size: 12px;
+}
+.logpage code {
+	font-family: var(--mono);
+	font-size: 12px;
+	background: var(--fill);
+	padding: 1px 5px;
+	border-radius: 5px;
+}
+.logpage pre.code {
+	font-family: var(--mono);
+	font-size: 12px;
+	background: var(--surface-2);
+	border-radius: var(--r-box);
+	padding: var(--s3);
+	overflow-x: auto;
+	margin: 0;
+	max-width: 100%;
+}
+.logpage .btnrow {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(0, 1fr);
+	gap: var(--s2);
+}
+.logpage .btnrow .btn {
+	justify-content: center;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+@media (max-width: 639px) {
+	.logpage .tiles,
+	.logpage .tiles.c4 {
+		--cols: 2;
+	}
+	.logpage .tile {
+		min-height: 88px;
+	}
+}
+@media (max-width: 380px) {
+	.logpage .tiles.tgt {
+		--cols: 1;
+	}
+}

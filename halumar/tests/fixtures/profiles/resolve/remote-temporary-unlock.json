@@ -1,0 +1,88 @@
+{
+  "description": "Temporary adjustment until 20:00: the front door may be unlocked from away (e.g. a delivery); afterwards the profile value (then) applies again.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "overrides": [
+      {
+        "rule": "remote_control",
+        "value": {
+          "default": "control",
+          "domains": {
+            "lock": "view",
+            "alarm_control_panel": "view",
+            "cover:garage": "view",
+            "cover:gate": "view"
+          },
+          "entities": {
+            "lock.front_door": "control"
+          }
+        },
+        "expires_at": "2026-11-20T19:00:00Z"
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_control": {
+      "value": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view"
+        },
+        "entities": {
+          "lock.front_door": "control"
+        }
+      },
+      "source": "device",
+      "reason": "device_temporary",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T19:00:00Z",
+      "then": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view"
+        },
+        "entities": {}
+      },
+      "enforcement": "ha_control"
+    }
+  },
+  "entity_checks": [
+    {
+      "entity_id": "lock.front_door",
+      "device_class": null,
+      "route": "external",
+      "quick_access": "control",
+      "expected_app": "control",
+      "expected_quick": "control",
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "lock.back_door",
+      "device_class": null,
+      "route": "external",
+      "quick_access": "control",
+      "expected_app": "view",
+      "expected_quick": "status",
+      "expected_always_visible": false
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "description": "Kind: safety entities are always visible (read only; the alarm stays blocked by the kids rules); no route from away.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_blocked_types": {
+      "value": [
+        "lock",
+        "alarm_control_panel",
+        "cover:garage",
+        "cover:gate",
+        "camera"
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "notification_level": {
+      "value": "all",
+      "source": "profile",
+      "reason": "user_choice",
+      "locked": false,
+      "fixed": false,
+      "user_choice": true,
+      "enforcement": "app"
+    }
+  },
+  "notification_checks": [
+    {
+      "priority": 20,
+      "entity_id": "binary_sensor.hallway_smoke",
+      "device_class": "smoke",
+      "expected_shown": true
+    }
+  ],
+  "entity_checks": [
+    {
+      "entity_id": "alarm_control_panel.home",
+      "device_class": null,
+      "route": "local",
+      "quick_access": null,
+      "expected_app": "control",
+      "expected_quick": null,
+      "expected_always_visible": true
+    },
+    {
+      "entity_id": "binary_sensor.hallway_smoke",
+      "device_class": "smoke",
+      "route": "local",
+      "quick_access": null,
+      "expected_app": "control",
+      "expected_quick": null,
+      "expected_always_visible": true
+    },
+    {
+      "entity_id": "light.kitchen",
+      "device_class": null,
+      "route": "local",
+      "quick_access": null,
+      "expected_app": "control",
+      "expected_quick": null,
+      "expected_always_visible": false
+    }
+  ]
+}

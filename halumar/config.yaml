@@ -1,0 +1,90 @@
+name: "Halumar"
+version: 2026.12.0
+slug: halumar
+# Multi-arch manifest (amd64, aarch64), built and signed by the release workflow.
+image: "ghcr.io/halumar/hub"
+description: "Gives every device in your home its own, limited view of Home Assistant"
+url: https://github.com/Halumar/hub
+# Oldest Home Assistant the app and the integration are tested with.
+homeassistant: "2025.11.0"
+arch:
+  - amd64
+  - aarch64
+ingress: true
+ingress_port: 8099
+ingress_stream: true
+panel_icon: mdi:floor-plan
+panel_title: "Halumar"
+startup: application
+init: false
+# Supervisor restarts the app when the health check fails (DB unusable,
+# server not answering) or the container stops unexpectedly.
+watchdog: "http://[HOST]:[PORT:8099]/api/health"
+# HA backups run while the app is up (hot). The pre hook writes a
+# consistent snapshot (VACUUM INTO) plus a marker; after restoring such a
+# backup the app starts from that snapshot instead of the db/-wal pair the
+# Supervisor copied while it was being written. Daily and
+# pre-migration snapshots, archived damaged files and temp files are left out.
+# Never put the keys into HA backups: the Fernet
+# keyfile (incl. its local copy .bak and set-aside .broken-*) decrypts every
+# stored HA token, key.pem is the TLS identity of :8100. Patterns are matched
+# against the end of each file path. After restoring an HA backup the app
+# creates a new keyfile and a new certificate: stored HA tokens report
+# "decryption_failed" and apps must pair again (new fingerprint).
+backup: hot
+backup_pre: python3 /opt/hub/backup_hook.py pre
+backup_post: python3 /opt/hub/backup_hook.py post
+backup_exclude:
+  - "backups/hub-daily-*"
+  - "backups/hub-pre-*"
+  - "*.corrupt-*"
+  - "*.pre-restore-*"
+  - "*.orphan-*"
+  - "*.tmp"
+  - "*.hub_keyfile*"
+  - "tls/*key.pem*"
+# Why these rights (also in DOCS.md):
+# homeassistant_api: the Hub reads entities, areas and devices of Home
+#   Assistant and mirrors its own state as sensor.halumar_* entities.
+# auth_api: login of Home Assistant administrators to the admin UI on :8100,
+#   only when direct admin access is switched on in the settings (default off).
+# host_network: Bonjour/mDNS announcement (_halumar._tcp) in the LAN, the
+#   LAN address in pairing QR codes, and the check that the integration token
+#   is only used from this host. See DOCS.md.
+homeassistant_api: true
+hassio_api: true
+# No hassio_role: the default role covers every Supervisor endpoint the app
+# uses (addons/self/*, /info, /discovery, /auth, <service>/info, HA Core
+# proxy); see tests/test_supervisor_role.py.
+auth_api: true
+# Services this app may announce via the Supervisor discovery API. On every
+# start the app rotates its dedicated integration token and POSTs
+# {host, port, api_token, version} so the companion integration configures
+# itself (see services/discovery.py).
+discovery:
+  - halumar
+host_network: true
+# With host_network the Hub listens on these ports of the host directly; they
+# cannot be remapped.
+ports:
+  # Plain HTTP: HA Ingress and the integration on this system.
+  8099/tcp: 8099
+  # TLS port for fingerprint-pinned https/wss clients. Only served
+  # when tls_enabled is on (the default).
+  8100/tcp: 8100
+options:
+  log_level: info
+  mdns_enabled: true
+  tls_enabled: true
+  reset_corrupt_database: false
+  reset_encryption_key: false
+  api_docs: true
+  pairing_qr_camera: "off"
+schema:
+  log_level: list(trace|debug|info|warning|error)
+  mdns_enabled: bool
+  tls_enabled: bool
+  reset_corrupt_database: bool
+  reset_encryption_key: bool
+  api_docs: bool
+  pairing_qr_camera: list(off|guests|all)

@@ -1,0 +1,132 @@
+{
+  "name": "outdoor-pool-boiler-cpu-water",
+  "description": "Outdoor, pool, boiler, water, processor and freezer sensors are left out; a word that only contains aussen inside (Haussensor) is not.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "sensor.aussentemperatur",
+      "state": {
+        "state": "8.5",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Aussentemperatur"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.outside_temperature",
+      "state": {
+        "state": "8.4",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Outside"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.pool_temperature",
+      "state": {
+        "state": "26",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Pool"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.boiler_temperature",
+      "state": {
+        "state": "55",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Boiler"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.nas_cpu_temperature",
+      "state": {
+        "state": "48",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "NAS CPU"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.aquarium",
+      "state": {
+        "state": "25",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Aquarium"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.gefrierschrank",
+      "state": {
+        "state": "-18",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Gefrierschrank"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.wassertemperatur",
+      "state": {
+        "state": "12",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Wassertemperatur"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.haussensor_temperatur",
+      "state": {
+        "state": "21.5",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Haussensor"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.haussensor_temperatur"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 21.5,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 21.5,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.haussensor_temperatur",
+      "humidity": null
+    }
+  }
+}

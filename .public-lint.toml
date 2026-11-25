@@ -1,0 +1,18 @@
+# Exceptions for publiclint (contracts tools/publiclint/README.md). Every entry needs a reason.
+
+[[allow]]
+rule = "PL015"
+path = "**/THIRD_PARTY_NOTICES.md"
+reason = "Third-party copyright lines name their authors; the licenses require keeping them."
+
+[[allow]]
+rule = "PL011"
+path = "halumar/tests/test_crypto.py"
+line = "Ünïcode"
+reason = "Unicode round-trip test string, not decoration."
+
+[[allow]]
+rule = "PL013"
+path = "halumar/tests/test_log_redaction.py"
+line = "eyJpc3MiOiJhYmMifQ"
+reason = "Made-up JWT ({\"iss\":\"abc\"}, signature 'signature-value') that the log redaction test must mask."

@@ -1,0 +1,16 @@
+{
+  "description": "Wrong expectation: a checked device from a Hub-only device without remote access gives a key.",
+  "key_cases": [
+    {
+      "new": {
+        "control_path": "checked",
+        "remote_access": false
+      },
+      "mine": {
+        "control_path": "hub",
+        "remote_access": false
+      },
+      "expected_looser": false
+    }
+  ]
+}

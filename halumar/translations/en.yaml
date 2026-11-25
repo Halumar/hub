@@ -1,0 +1,25 @@
+configuration:
+  log_level:
+    name: Log level
+    description: How much detail the Halumar Hub writes to its log. "info" is right for everyday use; "debug" helps when you report a problem.
+  mdns_enabled:
+    name: Find the hub automatically (Bonjour)
+    description: Announce the hub in your home network, so the Halumar apps on your phones, tablets and TVs find it without typing an address. Turn off only if you do not want the announcement; the apps then need the address.
+  tls_enabled:
+    name: Encrypted connection for the apps (TLS)
+    description: Serve port 8100 with HTTPS/WSS. The apps check the certificate fingerprint they saved when pairing. Leave it on.
+  reset_corrupt_database:
+    name: Reset damaged database
+    description: Only if the hub reports a damaged database without a usable snapshot, or a database of a different build. The hub then starts with an EMPTY database; the old file is kept. Turn it off again afterwards.
+  reset_encryption_key:
+    name: Reset encryption key
+    description: Only if the hub reports a damaged or missing key file. The hub creates a new key; the device tokens it stored can no longer be read, so a device that then cannot reach Home Assistant has to be paired again. Turn it off again afterwards.
+  api_docs:
+    name: API documentation
+    description: Serve the API documentation (/api/docs, /api/redoc, /api/openapi.json). Only Home Assistant administrators can open it. Turn it off if you do not need it.
+  pairing_qr_camera:
+    name: Pairing QR code in Home Assistant
+    description: 'Show the pairing QR code in the integration''s camera "Pairing status" (for a dashboard). "off" (default): never. "guests": only during a guest pairing. "all": during every pairing. While it is shown, everyone who can sign in to this Home Assistant can read it, including every paired device that holds a key, guest and child devices too, and for 5 to 10 minutes anyone with the camera''s image address; such a person can use the one-time code first. A child''s device could use the code to add a guest device, and guest devices have no parental controls. Prefer "guests"; keep it off with children in the house. Details in the documentation.'
+network:
+  8099/tcp: Hub API for the Halumar integration and the admin page (HTTP). The apps use port 8100.
+  8100/tcp: Hub API for the Halumar apps (HTTPS/WSS with certificate pinning).

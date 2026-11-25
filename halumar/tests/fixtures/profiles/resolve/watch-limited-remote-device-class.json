@@ -1,0 +1,70 @@
+{
+  "description": "The watch hides garage doors from away (cover:garage hidden); its phone names one cover by entity (cover.door control). The resolver does not know cover.door's device class, so the watch gets the lowest level that entity can have on its own side: hidden – it never opens a garage from away.",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "remote_access": true,
+        "remote_control": {
+          "default": "control",
+          "domains": {
+            "cover:garage": "hidden"
+          },
+          "entities": {}
+        }
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "remote_access": true,
+          "remote_control": {
+            "default": "control",
+            "domains": {},
+            "entities": {
+              "cover.door": "control"
+            }
+          }
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    }
+  },
+  "expected": {
+    "remote_control": {
+      "value": {
+        "default": "control",
+        "domains": {
+          "cover:garage": "hidden"
+        },
+        "entities": {
+          "cover.door": "hidden"
+        }
+      },
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha_control"
+    }
+  }
+}

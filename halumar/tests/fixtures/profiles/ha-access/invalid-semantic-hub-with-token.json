@@ -1,0 +1,23 @@
+{
+  "description": "Wrong expectation: Hub only without remote access never gets a key.",
+  "now": "2026-11-20T18:00:00Z",
+  "cases": [
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    }
+  ]
+}

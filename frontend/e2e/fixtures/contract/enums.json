@@ -1,0 +1,39 @@
+{
+	"description": "Enums of the contract (schemas/common/defs.json) whose values the admin UI shows as text. Copied from the contract; e2e/translations.spec.js checks that each value has a text in English and German.",
+	"watch_removed_reason": [
+		"kids_watch_off",
+		"remote_access_off",
+		"parental_controls",
+		"hub_only"
+	],
+	"rule_reason": [
+		"catalog_default",
+		"profile",
+		"user_choice",
+		"device",
+		"device_temporary",
+		"boundary_guest",
+		"boundary_child_protection",
+		"boundary_kids_watch",
+		"boundary_hub_only",
+		"platform_needs_key",
+		"limited_by_phone",
+		"prerequisite_missing",
+		"not_applicable",
+		"requires_remote_access",
+		"requires_child_protection",
+		"requires_profile_kind",
+		"requires_location",
+		"access_expired"
+	],
+	"rule_boundary": [
+		"guest",
+		"child_protection",
+		"hub_only"
+	],
+	"control_path_rule": [
+		"hub",
+		"checked",
+		"direct"
+	]
+}

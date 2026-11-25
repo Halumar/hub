@@ -1,0 +1,42 @@
+{
+  "description": "Android TV with the TV suggestion, live camera switched on for this device; announcements do not apply to TVs.",
+  "input": {
+    "platform": "android_tv",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "apple_tv"
+    },
+    "overrides": [
+      {
+        "rule": "camera_live",
+        "value": true
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-21T12:00:00Z"
+  },
+  "expected": {
+    "camera_live": {
+      "value": true,
+      "source": "device",
+      "reason": "device",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    },
+    "panel_announce": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    }
+  }
+}

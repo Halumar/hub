@@ -1,0 +1,57 @@
+{
+  "description": "Android tablet set up as a personal device with the Adult suggestion (its default stays Wall panel): tags on, panel rules from the catalog. panel_off_mode does not apply on android_tablet (the catalog leaves it out for Android).",
+  "input": {
+    "platform": "android_tablet",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-21T12:00:00Z"
+  },
+  "expected": {
+    "scan_tags": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "panel_announce": {
+      "value": {
+        "enabled": false,
+        "volume_max": 80,
+        "respect_night": true
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "panel_off_mode": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "not_applicable",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "kiosk": {
+      "value": false,
+      "source": "profile",
+      "reason": "user_choice",
+      "locked": false,
+      "fixed": false,
+      "enforcement": "app",
+      "user_choice": true
+    }
+  }
+}

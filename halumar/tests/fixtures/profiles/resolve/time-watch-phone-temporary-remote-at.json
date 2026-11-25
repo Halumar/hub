@@ -1,0 +1,60 @@
+{
+  "description": "The watch of a phone on Hub only with remote access until 20:00, at the end: a key only while the phone's rule watch is on (lifted by the remote access).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T20:00:00Z",
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "control_path": "hub",
+          "remote_access": false
+        }
+      },
+      "overrides": [
+        {
+          "rule": "remote_access",
+          "value": true,
+          "expires_at": "2026-11-20T20:00:00Z"
+        }
+      ],
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      }
+    }
+  },
+  "expected": {
+    "remote_access": {
+      "value": false,
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true
+    }
+  },
+  "expected_ha_access": {
+    "child": false,
+    "access_open": true,
+    "expected": {
+      "holds_key": false,
+      "token": null
+    }
+  }
+}

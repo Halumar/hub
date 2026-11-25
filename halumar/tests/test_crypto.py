@@ -1,0 +1,173 @@
+"""Tests for the encryption service — Fernet roundtrip, keyfile, tamper detection.
+
+Security-critical: HA Long-Lived Tokens are encrypted at rest with Fernet
+(AES-128-CBC + HMAC-SHA256). These tests verify that:
+- encryption is reversible (roundtrip),
+- ciphertext never leaks plaintext,
+- a changed/lost key or tampered ciphertext fails closed (no plaintext leak),
+- the keyfile is created with restrictive 0600 permissions.
+
+The `db` argument to the crypto functions is unused for key resolution
+(the key lives in a keyfile, not the DB), so we pass None throughout.
+"""
+
+import os
+import stat
+
+import pytest
+
+import services.crypto as crypto
+from cryptography.fernet import Fernet
+
+
+@pytest.fixture
+def keyfile(tmp_path, monkeypatch):
+    """Isolate the keyfile path per-test and reset the cached Fernet instance.
+
+    Each test gets a fresh keyfile location inside tmp_path so that auto-
+    generation and permission behaviour can be observed without touching
+    the real /data path.
+    """
+    path = str(tmp_path / ".hub_keyfile")
+    monkeypatch.setattr(crypto, "KEYFILE_PATH", path)
+    crypto.reset_cache()
+    yield path
+    crypto.reset_cache()
+
+
+class TestRoundtrip:
+    """encrypt_token / decrypt_token round-trips."""
+
+    async def test_basic_roundtrip(self, keyfile):
+        ciphertext = await crypto.encrypt_token(None, "super-secret-token")
+        assert ciphertext != "super-secret-token"
+        plaintext = await crypto.decrypt_token(None, ciphertext)
+        assert plaintext == "super-secret-token"
+
+    async def test_unicode_roundtrip(self, keyfile):
+        secret = "tökèn-🔐-Ünïcode-Ñ"
+        ciphertext = await crypto.encrypt_token(None, secret)
+        assert await crypto.decrypt_token(None, ciphertext) == secret
+
+    async def test_long_token_roundtrip(self, keyfile):
+        secret = "x" * 4096
+        ciphertext = await crypto.encrypt_token(None, secret)
+        assert await crypto.decrypt_token(None, ciphertext) == secret
+
+    async def test_ciphertext_does_not_contain_plaintext(self, keyfile):
+        secret = "PLAINTEXT_MARKER_VALUE"
+        ciphertext = await crypto.encrypt_token(None, secret)
+        assert secret not in ciphertext
+
+    async def test_ciphertext_is_nondeterministic(self, keyfile):
+        """Fernet embeds a random IV, so encrypting twice yields different output."""
+        c1 = await crypto.encrypt_token(None, "same-input")
+        c2 = await crypto.encrypt_token(None, "same-input")
+        assert c1 != c2
+        # ...but both decrypt back to the same plaintext.
+        assert await crypto.decrypt_token(None, c1) == "same-input"
+        assert await crypto.decrypt_token(None, c2) == "same-input"
+
+
+class TestEmptyValues:
+    """Empty-string handling (no token configured)."""
+
+    async def test_encrypt_empty_returns_empty(self, keyfile):
+        assert await crypto.encrypt_token(None, "") == ""
+
+    async def test_decrypt_empty_returns_none(self, keyfile):
+        assert await crypto.decrypt_token(None, "") is None
+
+    async def test_decrypt_empty_status_is_no_token(self, keyfile):
+        """Empty ciphertext means 'no token configured', not an error."""
+        result, error = await crypto.decrypt_token_with_status(None, "")
+        assert result is None
+        assert error is None
+
+
+class TestTamperAndKeyChange:
+    """Fail-closed behaviour on tamper / key loss."""
+
+    async def test_tampered_ciphertext_fails(self, keyfile):
+        ciphertext = await crypto.encrypt_token(None, "secret")
+        # Flip a character in the middle of the ciphertext.
+        mid = len(ciphertext) // 2
+        swapped = "A" if ciphertext[mid] != "A" else "B"
+        tampered = ciphertext[:mid] + swapped + ciphertext[mid + 1 :]
+
+        result, error = await crypto.decrypt_token_with_status(None, tampered)
+        assert result is None
+        assert error == "decryption_failed"
+
+    async def test_garbage_ciphertext_fails(self, keyfile):
+        result, error = await crypto.decrypt_token_with_status(
+            None, "not-valid-fernet-data"
+        )
+        assert result is None
+        assert error == "decryption_failed"
+
+    async def test_key_change_makes_token_unrecoverable(self, keyfile):
+        """A ciphertext encrypted under key A cannot be decrypted under key B."""
+        ciphertext = await crypto.encrypt_token(None, "secret")
+
+        # Simulate a lost/replaced keyfile: overwrite with a brand-new key
+        # and clear the in-memory cache so the new key is loaded.
+        with open(keyfile, "w") as f:
+            f.write(Fernet.generate_key().decode() + "\n")
+        crypto.reset_cache()
+
+        result, error = await crypto.decrypt_token_with_status(None, ciphertext)
+        assert result is None
+        assert error == "decryption_failed"
+
+
+class TestKeyfile:
+    """Keyfile auto-generation and permissions."""
+
+    async def test_keyfile_autogenerated_on_first_use(self, keyfile):
+        assert not os.path.exists(keyfile)
+        await crypto.encrypt_token(None, "trigger-key-generation")
+        assert os.path.exists(keyfile)
+
+    async def test_keyfile_has_0600_permissions(self, keyfile):
+        await crypto.encrypt_token(None, "trigger-key-generation")
+        mode = stat.S_IMODE(os.stat(keyfile).st_mode)
+        assert mode == 0o600
+
+    async def test_existing_keyfile_is_reused(self, keyfile):
+        """A pre-existing key must be honoured (tokens survive restarts)."""
+        key = Fernet.generate_key().decode()
+        with open(keyfile, "w") as f:
+            f.write(key + "\n")
+        crypto.reset_cache()
+
+        # Encrypt via the service, decrypt with the known key directly.
+        ciphertext = await crypto.encrypt_token(None, "persisted-secret")
+        assert Fernet(key.encode()).decrypt(ciphertext.encode()) == b"persisted-secret"
+
+    async def test_fernet_instance_is_cached(self, keyfile):
+        """Repeated calls reuse one Fernet instance (no repeated file reads)."""
+        # _get_fernet takes no db: the key lives only in the keyfile.
+        f1 = await crypto._get_fernet()
+        f2 = await crypto._get_fernet()
+        assert f1 is f2
+
+
+class TestKeyOnlyFromKeyfile:
+    """The key comes from the keyfile only: _get_fernet takes no db, and a
+    value in the settings table is neither used, moved nor deleted."""
+
+    async def test_get_fernet_takes_no_db(self, keyfile):
+        # Signature locked: the key is resolved from the keyfile only.
+        with pytest.raises(TypeError):
+            await crypto._get_fernet(None)
+        assert await crypto._get_fernet() is not None
+
+    async def test_settings_key_ignored_and_not_deleted(self, keyfile, db):
+        # A value under a plausible key name in the settings table must be
+        # neither used as the key, copied to the keyfile, nor deleted.
+        await db.set_setting("encryption_key", "legacy-untouched")
+        ciphertext = await crypto.encrypt_token(db, "roundtrip")
+        assert await crypto.decrypt_token(db, ciphertext) == "roundtrip"
+        # Key resolution never touched the settings table.
+        assert await db.get_setting("encryption_key") == "legacy-untouched"

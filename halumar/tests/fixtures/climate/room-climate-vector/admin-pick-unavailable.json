@@ -1,0 +1,58 @@
+{
+  "name": "admin-pick-unavailable",
+  "description": "The admin's sensor has no value: no room value, no fallback to the rule.",
+  "ha_area_id": null,
+  "admin": {
+    "temperature": "sensor.window_temperature"
+  },
+  "entities": [
+    {
+      "entity_id": "sensor.window_temperature",
+      "state": {
+        "state": "unavailable",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Fenster"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.sofa_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Sofa"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "admin",
+        "entity_ids": [
+          "sensor.window_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": null,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": null,
+      "humidity": null
+    }
+  }
+}

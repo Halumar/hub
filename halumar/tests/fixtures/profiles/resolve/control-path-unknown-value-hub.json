@@ -1,0 +1,36 @@
+{
+  "description": "An unknown stored value of Home Assistant access counts as hub (fail closed): no key.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "rules": {
+        "control_path": "hub"
+      }
+    },
+    "overrides": [
+      {
+        "rule": "control_path",
+        "value": "hub",
+        "expires_at": null
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "hub",
+      "source": "device",
+      "reason": "device",
+      "locked": true,
+      "fixed": false
+    }
+  }
+}

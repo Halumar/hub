@@ -1,0 +1,62 @@
+version: 2
+
+# Updates land on develop (integration branch); main only receives releases.
+updates:
+  - package-ecosystem: pip
+    directories:
+      - /halumar/rootfs/opt/hub   # runtime (shipped in the image, pip-audit gate)
+      - /halumar                  # requirements-dev.txt (pytest; add-on folder = slug, brandlint: allow)
+      - /.github                  # requirements-ci.txt (ruff, pytest-cov, pip-audit)
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      python-tooling:
+        patterns: ["ruff", "pytest*", "pip-audit", "coverage"]
+      python-runtime-patch:
+        update-types: ["patch"]
+
+  - package-ecosystem: npm
+    directory: /frontend
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      svelte:
+        patterns: ["svelte", "svelte-check", "@sveltejs/*", "vite"]
+      tailwind:
+        patterns: ["tailwindcss", "@tailwindcss/*"]
+      playwright:
+        patterns: ["@playwright/*"]
+      # Same version for paths and metadata (scripts/gen-mdi-icons.mjs; then npm run icons).
+      mdi:
+        patterns: ["@mdi/*"]
+
+  - package-ecosystem: github-actions
+    directories:
+      - /
+      - /.github/actions/contracts
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      actions:
+        patterns: ["*"]
+
+  # Base image of the app (FROM in halumar/Dockerfile).
+  - package-ecosystem: docker
+    directory: /halumar  # brandlint: allow (app folder = slug)
+    target-branch: develop
+    schedule:
+      interval: weekly

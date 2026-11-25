@@ -1,0 +1,2644 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Common definitions",
+  "description": "Shared primitive types of the hub protocol.",
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "client_id": {
+      "description": "Paired client UUID, or a pseudo id of a non-client session: ingress (HA Ingress), integration (push session), admin (admin web UI with session cookie), dev (development mode only).",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/uuid"
+        },
+        {
+          "enum": [
+            "ingress",
+            "integration",
+            "dev",
+            "admin"
+          ]
+        }
+      ]
+    },
+    "entity_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+\\.[a-z0-9_]+$",
+      "maxLength": 255
+    },
+    "hub_picture_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$",
+      "description": "Marker of the entity's picture in a state the hub relays (attributes.hub_picture_id, media players and cameras). Home Assistant's entity_picture of these entities carries an access token, so the hub never relays it; it relays this marker instead: the first 16 hex characters of HMAC-SHA-256, keyed with a secret of this hub, over the entity_picture with its token query parameter removed. It appears exactly when Home Assistant's state has an entity_picture, and it changes when that picture changes (for a media player with the artwork; for a camera it stays the same, so camera clients refresh on their own schedule). It is not a URL and gives no way to the URL, the token or the image: only the hub can fetch the image (camera_image_get, media_image_get). It differs between hubs and may change when the hub's secret is renewed. A client asks for the image when the marker appears or changes; without the marker it asks for nothing and shows the domain icon."
+    },
+    "pin": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{4}$",
+      "description": "Pairing PIN NNNN-NNNN, 300 s, single use."
+    },
+    "secret": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Client secret, secrets.token_hex(32). Stored server-side as sha256 hex only."
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Lowercase hex SHA-256 of the DER TLS leaf certificate."
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 timestamp. Usually datetime.isoformat() in UTC with offset (+00:00); some DB defaults use SQLite 'YYYY-MM-DD HH:MM:SS' without zone (known deviation D6, docs/protocol.md). Clients must parse leniently."
+    },
+    "utc_expiry": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Canonical UTC expiry (seconds truncated), e.g. 2026-11-19T08:00:00+00:00."
+    },
+    "control_mode": {
+      "enum": [
+        "basic",
+        "advanced",
+        "full"
+      ]
+    },
+    "card_style": {
+      "description": "Card style of the apps: 'calm' = calm cards, 'color' = color areas. A hub preset; see client-config.json card_style.",
+      "enum": [
+        "calm",
+        "color"
+      ]
+    },
+    "home_header_style": {
+      "description": "Style of the start screen head (rule home_header): 'weather_mood' = sky in one tone per weather and time of day, large temperature, hourly row; 'compact' = one line with greeting and weather, the areas start high up. Clients treat an unknown style like weather_mood.",
+      "enum": [
+        "weather_mood",
+        "compact"
+      ]
+    },
+    "boolish": {
+      "description": "SQLite boolean as delivered today: JSON boolean or integer 0/1 (known deviation D4, docs/protocol.md).",
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    "image_src": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^/images/[^/]+$",
+      "description": "Servable path of an uploaded image; prefix with image_base_url."
+    },
+    "hex_color": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "client_tags": {
+      "description": "Area tags of a paired client (its area scope). Members and household devices: empty = all active areas, otherwise active areas with one of these tags. Guests fail closed: empty = NO area; the reserved marker \"*\" = all active areas (explicit choice); otherwise active areas with one of these tags. \"*\" is meant on its own; combined with other tags it still means all areas. Clients that display tags hide \"*\". The reserved form \"area:<area id>\" pins one area by its id (it matches that area only, whatever its tags; area choice when a paired device sets it up): a device scoped like this sees exactly the pinned areas plus areas matching its other tags. A pin of a deleted area matches nothing (fail closed, never pruned to \"all\"). Clients that display tags show the area name instead of a pin.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "area_tags": {
+      "description": "Tags of an area. The client marker \"*\" and the prefix \"area:\" (area pins, see client_tags) are reserved (422 when sent as an area tag or as a predefined guest tag).",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(?!\\*$)(?!area:)"
+      }
+    },
+    "nullable_string": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ha_token_status": {
+      "description": "HA user of the device on the hub: pending = waiting for the integration to create the user and deliver its token; active = user and token stored on the hub. On the hub path active means the hub holds the token for its calls of <ns>.control; the device itself holds it only when it holds a key (has_ha_token).",
+      "enum": [
+        "pending",
+        "active"
+      ]
+    },
+    "ha_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Home Assistant user or refresh-token id (HA uses uuid4().hex, 32 lowercase hex). Opaque to the hub."
+    },
+    "owner_label": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 50,
+      "description": "Optional free-text owner of a device (e.g. 'Admin'). Pure label: groups devices in the Admin UI and becomes part of the HA user name. Carries no permissions. null or missing = no owner."
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Device name as shown in the Admin UI (paired_clients.name)."
+    },
+    "protocol_version": {
+      "description": "Protocol version. One integer for the whole hub protocol (WebSocket, the REST calls of apps, Bonjour TXT, deep link), starting at 1. Bumped only for changes an older client cannot handle; additive changes (new optional fields, new message types, new enum values) do not bump it, because clients decode tolerantly. Compatibility rule: a hub serves every client protocol version from min_protocol_version up to its own protocol_version, and min_protocol_version <= max(1, protocol_version - 2), so a hub always supports at least the two previous protocol versions.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "platform": {
+      "description": "Client platform. One value per device class: ios = iPhone app; ipados = iOS app running on an iPad; tvos = Apple TV app; watchos = Apple Watch app (its own device, paired through the iPhone with onboard_start, no PIN, no hub WebSocket after pairing); android = Android phone app; android_tablet = Android app on a tablet (like ipados, also as a wall panel); android_tv = Android TV / Google TV app (like tvos); wearos = Wear OS watch (like watchos, paired through the Android phone); web = web app. The protocol provides for wearos and web; apps for them are planned and do not exist yet. The hub applies the profile rules, default profiles and onboarding to every value. The set is fixed in protocol 1: a new platform is a protocol change (protocol_version bump), because rule platforms and default profile slots depend on it. Clients still decode unknown values tolerantly (device lists, onboard_info) and show them as a generic device.",
+      "enum": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos",
+        "web"
+      ]
+    },
+    "app_version": {
+      "description": "Marketing version of the client app (CFBundleShortVersionString, versionName), CalVer YYYY.M.N for the official apps. Compared numerically per dot-separated part; a pre-release suffix is ignored for the comparison.",
+      "type": "string",
+      "maxLength": 32,
+      "pattern": "^[0-9]{1,6}(\\.[0-9]{1,6}){0,3}([-+][0-9A-Za-z.-]{1,20})?$"
+    },
+    "app_build": {
+      "description": "Build number of the client app (CFBundleVersion, versionCode). Informational only, never compared.",
+      "type": "string",
+      "pattern": "^[0-9A-Za-z.-]{1,32}$"
+    },
+    "device_model": {
+      "description": "Hardware model identifier of the device, e.g. 'iPhone18,1', 'iPad16,3', 'AppleTV14,1' (sysctl hw.machine; in the Simulator SIMULATOR_MODEL_IDENTIFIER). Printable ASCII, informational only.",
+      "type": "string",
+      "pattern": "^[ -~]{1,64}$"
+    },
+    "min_app_version": {
+      "description": "Lowest app version per platform the hub accepts. A platform without an entry has no app-version floor. Shipped with the hub release; raised only when a hub release needs a fixed app build. Clients compare their own entry only.",
+      "type": "object",
+      "properties": {
+        "ios": {
+          "$ref": "#/$defs/app_version"
+        },
+        "ipados": {
+          "$ref": "#/$defs/app_version"
+        },
+        "tvos": {
+          "$ref": "#/$defs/app_version"
+        },
+        "watchos": {
+          "$ref": "#/$defs/app_version"
+        },
+        "android": {
+          "$ref": "#/$defs/app_version"
+        },
+        "android_tablet": {
+          "$ref": "#/$defs/app_version"
+        },
+        "android_tv": {
+          "$ref": "#/$defs/app_version"
+        },
+        "wearos": {
+          "$ref": "#/$defs/app_version"
+        },
+        "web": {
+          "$ref": "#/$defs/app_version"
+        }
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "device_activity_event": {
+      "description": "Kind of a device activity event (Admin feed). paired: device paired (detail: platform, app_version; method pin|onboard|invite, confirmed_by = client id of the confirming device for onboard; invited_by = client id of the inviting device for invite). connected: app authenticated (detail: app_version, app_build, protocol_version). disconnected: last connection of the device closed. app_updated: the device reported another app version than before (detail: previous_app_version, app_version). upgrade_required: connection refused because the app is too old (detail: reason, app_version, protocol_version). token_issued: the integration delivered the first HA token of the device's HA user. token_rotated: the integration delivered a new HA token (rotation). device_added: this device confirmed the pairing of another device by QR code (detail: added_client_id, added_client_name). guest_invited: a guest paired with an invitation of this device (detail: guest_client_id, guest_client_name). rule_blocked: the hub rejected an action of this child device (detail: entity_id, blocked_reason, level, until; at most one entry per entity and reason per minute). profile_changed: the admin changed the device's profile (detail: profile_id or null, profile_name, kind). kids_override: the admin released the device (detail: action release, minutes, until) or lifted its pauses (action lift, cooldowns_cleared). Actions of adult devices (service calls) go directly to Home Assistant with the device's own HA user and are not visible to the hub (HA logbook); child devices control through the hub, allowed actions are only in the audit log.",
+      "enum": [
+        "paired",
+        "connected",
+        "disconnected",
+        "app_updated",
+        "upgrade_required",
+        "token_issued",
+        "token_rotated",
+        "device_added",
+        "guest_invited",
+        "rule_blocked",
+        "profile_changed",
+        "kids_override"
+      ]
+    },
+    "device_activity": {
+      "description": "One entry of a device's activity feed (ring buffer, newest first).",
+      "type": "object",
+      "required": [
+        "id",
+        "client_id",
+        "ts",
+        "event",
+        "detail"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Increasing per hub; newer events have higher ids."
+        },
+        "client_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "ts": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "event": {
+          "$ref": "#/$defs/device_activity_event"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/device_activity_detail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "device_activity_detail": {
+      "description": "Event-specific details; only the keys that apply are present.",
+      "type": "object",
+      "properties": {
+        "app_version": {
+          "type": "string"
+        },
+        "previous_app_version": {
+          "type": "string"
+        },
+        "app_build": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "protocol_version": {
+          "type": "integer"
+        },
+        "reason": {
+          "$ref": "#/$defs/upgrade_reason",
+          "description": "upgrade_required only."
+        },
+        "method": {
+          "$ref": "#/$defs/pairing_method",
+          "description": "paired only."
+        },
+        "confirmed_by": {
+          "$ref": "#/$defs/uuid",
+          "description": "paired with method onboard: client id of the device that confirmed."
+        },
+        "added_client_id": {
+          "$ref": "#/$defs/uuid",
+          "description": "device_added only."
+        },
+        "added_client_name": {
+          "type": "string",
+          "description": "device_added only."
+        },
+        "invited_by": {
+          "$ref": "#/$defs/uuid",
+          "description": "paired with method invite: client id of the member device that invited the guest."
+        },
+        "guest_client_id": {
+          "$ref": "#/$defs/uuid",
+          "description": "guest_invited only."
+        },
+        "guest_client_name": {
+          "type": "string",
+          "description": "guest_invited only."
+        },
+        "entity_id": {
+          "$ref": "#/$defs/entity_id",
+          "description": "rule_blocked only."
+        },
+        "blocked_reason": {
+          "$ref": "#/$defs/rule_blocked_reason",
+          "description": "rule_blocked only."
+        },
+        "level": {
+          "$ref": "#/$defs/rule_level",
+          "description": "rule_blocked only."
+        },
+        "until": {
+          "$ref": "#/$defs/timestamp",
+          "description": "rule_blocked (end of bedtime/pause) and kids_override release."
+        },
+        "profile_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/kids_profile_id"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "profile_changed only; null = adult."
+        },
+        "profile_name": {
+          "type": "string",
+          "description": "device_added and guest_invited: profile it got."
+        },
+        "kind": {
+          "$ref": "#/$defs/profile_kind",
+          "description": "device_added and guest_invited: kind the device was set up as."
+        },
+        "action": {
+          "$ref": "#/$defs/kids_override_action",
+          "description": "kids_override only."
+        },
+        "minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 240,
+          "description": "kids_override release only."
+        },
+        "cooldowns_cleared": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "kids_override lift only."
+        }
+      },
+      "additionalProperties": true
+    },
+    "upgrade_reason": {
+      "description": "Why a client must update: protocol = protocol_version missing or below min_protocol_version; app_version = app_version below min_app_version[platform].",
+      "enum": [
+        "protocol",
+        "app_version"
+      ]
+    },
+    "auth_error_reason": {
+      "description": "Machine-readable reason of auth_error. Clients decide on the reason, never on the message text (English, for logs only). invalid_secret = no paired device with this secret (unknown or purged: the device must pair again); revoked = the device was revoked (blocked) by an admin; guest_expired = the guest access has expired (the guest row is removed); rate_limited = too many auth attempts on this connection (reconnect later); invalid_client_info = malformed client info (protocol_version, platform, app_version, app_build, device_model). Clients must treat an unknown reason like invalid_client_info (keep the pairing, retry with backoff).",
+      "enum": [
+        "invalid_secret",
+        "revoked",
+        "guest_expired",
+        "rate_limited",
+        "invalid_client_info"
+      ]
+    },
+    "pair_error_reason": {
+      "description": "Machine-readable reason of pair_error. Clients localize by reason, never by message text (English, for logs only). invalid_request = pin/client_name missing, not strings or client_name longer than 100 characters; invalid_client_info = malformed client info; pin_invalid = no active PIN matches (wrong, already used or cancelled); pin_expired = the PIN matched but its 5-minute window has passed; too_many_failures = the PIN matched but was invalidated after too many failed attempts (ask the admin for a new PIN); rate_limited = attempt limit of this connection or source IP reached (reconnect / try again later); already_authenticated = the connection is already authenticated; connection_expired = the connection was evicted, reconnect; platform_not_allowed = the profile the PIN gives is not allowed on the platform the device reports (docs/setup.md, Platform of the profile): ask the admin for a PIN with another profile. Clients must treat an unknown reason like pin_invalid.",
+      "enum": [
+        "invalid_request",
+        "invalid_client_info",
+        "pin_invalid",
+        "pin_expired",
+        "too_many_failures",
+        "rate_limited",
+        "already_authenticated",
+        "connection_expired",
+        "platform_not_allowed"
+      ]
+    },
+    "area_display_name": {
+      "description": "Display name override of an area entity placement (area_entities.display_name). Trimmed by the hub, 1-100 characters, no control characters; an empty value is stored as null (= name from Home Assistant).",
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "tile_icon": {
+      "description": "Tile icon: mdi:<name> (kebab-case name of @mdi/js, as the hub's MDI table) or sf:<name> (SF Symbol name, expert option, Apple apps only). Curated MDI <-> SF pairs: data/tile-icons.json.",
+      "type": "string",
+      "maxLength": 100,
+      "pattern": "^(mdi:[a-z0-9]+(-[a-z0-9]+)*|sf:[a-z0-9]+(\\.[a-z0-9]+)*)$"
+    },
+    "tile_variant": {
+      "description": "Card layout: compact = today's card, large = prominent main value, slider = main control on the card (tvOS: level bar, select opens the overlay), action = quick action button. Allowed per domain: data/tile-capabilities.json. Unknown values: app default (compact).",
+      "enum": [
+        "compact",
+        "large",
+        "slider",
+        "action"
+      ]
+    },
+    "tile_accent": {
+      "description": "Accent color family of a tile (palette only, no hex; HubTint families with contrast-checked tokens): accent = coral (brand), light = yellow, heat = orange, safe = green, sea = teal, cool = blue, media = purple, neutral = grey. Applied only while the entity is active. Unknown values: domain tint.",
+      "enum": [
+        "accent",
+        "light",
+        "heat",
+        "safe",
+        "sea",
+        "cool",
+        "media",
+        "neutral"
+      ]
+    },
+    "tile_action_kind": {
+      "description": "Tap action of a tile: default = app behavior of today, toggle = switch the own entity, more_info = open the control sheet / TV overlay, run = run target_entity_id (scene.turn_on, script.turn_on, button.press, input_button.press, never with service data), none = nothing. Allowed per domain: data/tile-capabilities.json. Unknown values: default.",
+      "enum": [
+        "default",
+        "toggle",
+        "more_info",
+        "run",
+        "none"
+      ]
+    },
+    "tile_hold_action_kind": {
+      "description": "Press-and-hold action of a tile (long press on iOS, hold on the Siri Remote). toggle and run are not allowed on hold. Unknown values: default (= open details).",
+      "enum": [
+        "default",
+        "more_info",
+        "none"
+      ]
+    },
+    "tile_form_factor": {
+      "description": "Form factor for tile.hidden_on: phone = iPhone or Android phone, tablet = iPad or Android tablet (also as wall panel), tv = Apple TV or Android TV. Not the OS.",
+      "enum": [
+        "phone",
+        "tablet",
+        "tv"
+      ]
+    },
+    "tile_run_target": {
+      "description": "Target of a run action: a scene, script, button or input_button entity. The hub checks that it exists in Home Assistant when saving (the admin decides; the target does not have to be visible to every device).",
+      "type": "string",
+      "maxLength": 255,
+      "pattern": "^(scene|script|button|input_button)\\.[a-z0-9_]+$"
+    },
+    "tile_secondary_source": {
+      "description": "Source of the extra line of a tile: state = today's status text (default), last_changed = relative time since the last state change, attribute = one attribute from the domain allowlist (data/tile-capabilities.json), entity = state of another sensor/binary_sensor entity, none = no extra line.",
+      "enum": [
+        "state",
+        "last_changed",
+        "attribute",
+        "entity",
+        "none"
+      ]
+    },
+    "tile_secondary": {
+      "description": "Extra line of a tile (tile.secondary).",
+      "type": "object",
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/tile_secondary_source"
+        },
+        "attribute": {
+          "description": "Only with source=attribute: attribute name from the allowlist of the domain.",
+          "type": "string",
+          "pattern": "^[a-z0-9_]{1,64}$"
+        },
+        "entity_id": {
+          "description": "Only with source=entity: a sensor or binary_sensor entity that exists in Home Assistant.",
+          "type": "string",
+          "maxLength": 255,
+          "pattern": "^(sensor|binary_sensor)\\.[a-z0-9_]+$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "attribute"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "attribute"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "attribute"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "entity"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "entity_id"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "entity_id"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "tile_tap_action": {
+      "description": "Tap action of a tile (tile.tap_action).",
+      "type": "object",
+      "required": [
+        "action"
+      ],
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/tile_action_kind"
+        },
+        "target_entity_id": {
+          "$ref": "#/$defs/tile_run_target"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "run"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "target_entity_id"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "target_entity_id"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "tile_hold_action": {
+      "description": "Press-and-hold action of a tile (tile.hold_action).",
+      "type": "object",
+      "required": [
+        "action"
+      ],
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/tile_hold_action_kind"
+        }
+      }
+    },
+    "tile_settings_base": {
+      "description": "Writable tile settings of an area entity placement. Every field is optional; null or absent = app default. Allowed values per domain: data/tile-capabilities.json (the hub answers 422 for anything else). Clients MUST fall back to the default for unknown enum values and for values not allowed for the domain. The hub always delivers the settings; an app may show the standard card instead (guests always do).",
+      "type": "object",
+      "properties": {
+        "icon": {
+          "description": "null = Home Assistant icon (attributes.icon), else the app's domain/state symbol. A custom icon is static (replaces the state-dependent symbol).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/tile_icon"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/tile_variant"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "secondary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/tile_secondary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tap_action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/tile_tap_action"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hold_action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/tile_hold_action"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confirm": {
+          "description": "Ask before toggle/run. Locks and alarm panels always confirm (field not allowed there).",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "accent": {
+          "description": "Palette color family, applied only while the entity is active. null = domain tint.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/tile_accent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hidden_on": {
+          "description": "Form factors that do not show this card (1-2 entries; all three = use is_visible). Filtered by the app, not a security boundary.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/tile_form_factor"
+          }
+        }
+      }
+    },
+    "onboard_error_reason": {
+      "description": "Machine-readable reason of onboard_error. Clients localize by reason, never by message text. Waiting device side (every app platform: iPhone, iPad, Apple TV, Apple Watch through its iPhone and the Android counterparts): invalid_request = public_key/client_name missing or malformed; invalid_client_info = malformed client info; platform_not_supported = this client cannot be set up by another device (web); tls_required = onboard_start over the cleartext port (TLS :8100 with the pinned fingerprint is mandatory); rate_limited = start limit of this source IP reached; already_authenticated = the connection is already authenticated; connection_expired = the connection was evicted; session_expired = the 5-minute window has passed (the hub closes 4002 right after); session_invalidated = a confirmation carried another public key or hub id than the session (possible man in the middle), the session is gone; declined = the confirming device declined; cancelled = an admin cancelled the session. Confirming device side additionally: session_not_found = unknown, used, expired or cancelled session id or code (“Code not found”); hub_mismatch = the QR code belongs to another hub; not_permitted = this device may not set up devices (effective rule setup_devices off: guests, parental controls, a profile that is not of kind person, or not allowed by profile or adjustment; a watch additionally needs the rule watch); too_many_attempts = too many wrong codes from this device or on the hub (x-limits onboard_code_*; scan the QR code or wait); rate_limited = failure limit of this device reached; kind_not_allowed = the kind is not in setup_devices.kinds of this device or does not fit the platform of the waiting device (also in onboard_lookup when no allowed kind fits it); profile_not_allowed = the profile is not offered for this kind (onboard_info.grant): unknown, another kind, stronger than the rights of the confirming device, or not allowed on the platform of the new device (docs/setup.md, Platform of the profile); areas_not_allowed = the area choice is empty, names an unknown or inactive area, an area the confirming device does not see itself, or all_areas although the confirming device does not see all areas; also an own_area_id or start_area outside grant.areas; expiry_not_allowed = a guest, house sitter or babysitter without expires_at, in the past or more than 90 days ahead (guest_access.max_hours), or an expiry for another kind; managers_not_allowed = managers sent without the right family_manager, or a device that is no family manager; access_hours_not_allowed = access_windows sent although the grant does not offer access hours for the profile (access_hours_choice false: the profile fixes the rule access_hours); device_not_found = set_up_device_remove names no active device set up by this device. Validation errors of onboard_confirm (kind_not_allowed, profile_not_allowed, areas_not_allowed, expiry_not_allowed, managers_not_allowed, access_hours_not_allowed) keep the session open and count as a failed attempt. Clients must treat an unknown reason like session_not_found (show a new code / scan again).",
+      "enum": [
+        "invalid_request",
+        "invalid_client_info",
+        "tls_required",
+        "rate_limited",
+        "already_authenticated",
+        "connection_expired",
+        "session_not_found",
+        "session_expired",
+        "session_invalidated",
+        "hub_mismatch",
+        "not_permitted",
+        "declined",
+        "cancelled",
+        "platform_not_supported",
+        "areas_not_allowed",
+        "too_many_attempts",
+        "kind_not_allowed",
+        "profile_not_allowed",
+        "expiry_not_allowed",
+        "managers_not_allowed",
+        "device_not_found",
+        "access_hours_not_allowed"
+      ]
+    },
+    "onboard_public_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$",
+      "description": "Raw X25519 public key (32 bytes) of the waiting device (TV, tablet), base64url without padding (RFC 4648 §5). Ephemeral: created for one onboarding session and kept in memory only."
+    },
+    "onboard_session_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{22}$",
+      "description": "Onboarding session id: 16 random bytes, base64url without padding. Not a secret on its own (it is in the QR code); confirming needs a paired, permitted device."
+    },
+    "onboard_code": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$",
+      "x-sensitive": true,
+      "description": "Short code of an onboarding session: 6 digits, shown by the waiting device under its QR code in two groups of three (“428 913”) and typed on the confirming device instead of scanning. Valid as long as the session (5 minutes), unique among the open sessions, used up by the first successful onboard_lookup with it. Not a secret of the pairing: the sealed secret only reaches the waiting device over its own pinned TLS connection."
+    },
+    "hub_instance_id": {
+      "$ref": "#/$defs/uuid",
+      "description": "Stable instance id of the hub (Bonjour TXT iid)."
+    },
+    "onboard_short_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$",
+      "description": "First 32 hex characters (128 bit) of the hub's TLS fingerprint (common/defs.json#/$defs/fingerprint) as seen by the waiting device. The confirming device compares it with its own pin; screens show the first 16 characters in groups of 4."
+    },
+    "pairing_method": {
+      "description": "How a device was paired: pin = pairing PIN of the admin (or the integration); onboard = QR code confirmed by an already paired device; invite = guest PIN or QR code of an invitation by a member device.",
+      "enum": [
+        "pin",
+        "onboard",
+        "invite"
+      ]
+    },
+    "onboarding_result": {
+      "description": "How an onboarding session ended: confirmed, declined (by the confirming device), expired, cancelled (admin), invalidated (key or hub mismatch), replaced (new code on the same connection), disconnected (the waiting device closed the connection).",
+      "enum": [
+        "confirmed",
+        "declined",
+        "expired",
+        "cancelled",
+        "invalidated",
+        "replaced",
+        "disconnected"
+      ]
+    },
+    "guest_invite_id": {
+      "$ref": "#/$defs/uuid",
+      "description": "Id of a guest invitation. Not secret: the PIN is the secret."
+    },
+    "guest_invite_result": {
+      "description": "How a guest invitation ended: paired = a guest paired with it; expired = the 5-minute window passed; cancelled = the inviting device withdrew it; revoked = an admin cancelled it, removed the right (setup_devices without guest) or the inviting device; replaced = the inviting device created a new invitation; invalidated = too many wrong PINs (like the admin PIN: a PIN is invalidated after repeated failures from several source addresses).",
+      "enum": [
+        "paired",
+        "expired",
+        "cancelled",
+        "revoked",
+        "replaced",
+        "invalidated"
+      ]
+    },
+    "guest_invite_error_reason": {
+      "description": "Machine-readable reason of guest_invite_error. Clients localize by reason, never by message text. invalid_request = malformed message; not_permitted = this device may not invite guests (setup_devices off or without the kind guest: guests, parental controls, a profile not of kind person, or not allowed by profile or adjustment), or the connection is not a paired device; rate_limited = invitation limit of this device reached (x-limits guest_invites_per_device) or too many open invitations on the hub; no_guest_areas = the guest profile shows no area, an invitation would give the guest nothing (ask the admin); profile_not_allowed = the profile is not offered (setup_grant purpose invite); expiry_not_allowed = expires_at in the past or more than 90 days ahead, or remote without remote_choice; access_hours_not_allowed = access_windows although the profile fixes access_hours; invite_not_found = unknown, finished or foreign invitation id (guest_invite_cancel). Clients must treat an unknown reason like not_permitted.",
+      "enum": [
+        "invalid_request",
+        "not_permitted",
+        "rate_limited",
+        "no_guest_areas",
+        "profile_not_allowed",
+        "expiry_not_allowed",
+        "access_hours_not_allowed",
+        "invite_not_found"
+      ]
+    },
+    "guest_invite_grant": {
+      "description": "What a guest of an invitation gets: the profile, end of the access and remote access the member chose (within setup_grant), the areas of the profile. For display only.",
+      "type": "object",
+      "required": [
+        "all_areas",
+        "area_names",
+        "expires_hours",
+        "expires_at",
+        "profile",
+        "remote_allowed"
+      ],
+      "properties": {
+        "all_areas": {
+          "type": "boolean",
+          "description": "true = the guest sees every active area (rule areas of the default guest profile)."
+        },
+        "area_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 200,
+          "description": "Names of the active areas the guest would see now, in display order."
+        },
+        "expires_hours": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2160,
+          "description": "Default duration (house setting): the access ends this many hours after pairing when expires_at is null."
+        },
+        "profile": {
+          "$ref": "#/$defs/profile_summary",
+          "description": "Profile the guest gets."
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "End chosen by the member; null = expires_hours after pairing."
+        },
+        "remote_allowed": {
+          "type": "boolean",
+          "description": "Effective remote access of the guest."
+        },
+        "owner_label": {
+          "$ref": "#/$defs/owner_label"
+        },
+        "access_hours": {
+          "$ref": "#/$defs/access_hours",
+          "description": "Access hours the guest gets (profile value or the chosen access_windows)."
+        }
+      },
+      "additionalProperties": true
+    },
+    "device_ref": {
+      "description": "A paired device by id and by its name at that time (the device may have been removed since).",
+      "type": "object",
+      "required": [
+        "client_id",
+        "name"
+      ],
+      "properties": {
+        "client_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        }
+      },
+      "additionalProperties": true
+    },
+    "set_up_method": {
+      "description": "How a member device set up another device: onboard = QR code or code confirmed by it; invite = guest invitation of it.",
+      "enum": [
+        "onboard",
+        "invite"
+      ]
+    },
+    "set_up_by": {
+      "description": "Who set up a device: the member device that confirmed its onboarding (method onboard) or whose guest invitation it used (method invite), with the name of that device at that time (it may have been removed since). Devices paired with the admin PIN have none. The setting-up device sees the device in “Set up by me” (get_set_up_devices) and may remove it; the admin sees and may change everything.",
+      "type": "object",
+      "required": [
+        "client_id",
+        "name",
+        "method"
+      ],
+      "properties": {
+        "client_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "method": {
+          "$ref": "#/$defs/set_up_method"
+        }
+      },
+      "additionalProperties": true
+    },
+    "set_up_by_shown": {
+      "description": "Who set up this device, as the device itself may show it (client_config.access.set_up_by): name of the setting-up device at that time and how. Never its client_id, so a device does not learn the ids of other devices. The admin keeps the full set_up_by with client_id (rest/paired-client.json, integration status).",
+      "type": "object",
+      "required": [
+        "name",
+        "method"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "method": {
+          "$ref": "#/$defs/set_up_method"
+        }
+      },
+      "additionalProperties": false
+    },
+    "quick_access_level": {
+      "description": "Quick access: where an entity may appear outside the app (widgets, controls, Siri/Shortcuts, Spotlight, Apple Watch through the iPhone). off = nowhere, status = state shown, tapping opens the app, control = may be switched without opening the app. Per domain defaults and maxima: data/quick-access.json.",
+      "enum": [
+        "off",
+        "status",
+        "control"
+      ]
+    },
+    "quick_access_device_max": {
+      "description": "Highest quick access level of a device (managed key quick_access_max): status = widgets only show states (e.g. a child's iPhone), control = may switch.",
+      "enum": [
+        "status",
+        "control"
+      ]
+    },
+    "profile_kind": {
+      "description": "Kind of a profile: what the devices of the profile are for. person = a member of the household (adult, parent, easy mode); child = a child (independent of parental controls: a teen profile without parental controls is still child); panel = wall panel; tv = Apple TV / Android TV; guest = a guest (always a guest access with expiry); house_sitter = a house sitter or helper (guest access with expiry, usually longer and remote); babysitter = a babysitter (guest access with expiry, only at home, may answer the children's requests with the rule babysitter_requests). The kind groups the profiles for “Set up new devices” (rule setup_devices) and decides which profiles a member may give; it changes no rule by itself, except that some rules apply only to some kinds (catalog profile_kinds: setup_devices only person, babysitter_requests only babysitter). Devices of the kinds guest, house_sitter and babysitter always have an access switch in Home Assistant. Clients show an unknown kind like person.",
+      "enum": [
+        "guest",
+        "child",
+        "panel",
+        "tv",
+        "house_sitter",
+        "babysitter",
+        "person"
+      ]
+    },
+    "kids_profile_id": {
+      "$ref": "#/$defs/uuid",
+      "description": "Id of a child profile."
+    },
+    "kids_profile_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[^\\u0000-\\u001f]+$",
+      "description": "Name of a child profile, unique case-insensitively; whitespace collapsed by the hub."
+    },
+    "kids_rule_type": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]{1,64}(:[a-z0-9_]{1,64})?$",
+      "description": "Device type of blocked_types: a Home Assistant domain (lock, alarm_control_panel, camera, media_player …) or domain:device_class (cover:garage, cover:gate). An entity matches its domain and domain:<attributes.device_class>."
+    },
+    "kids_weekday": {
+      "enum": [
+        "mon",
+        "tue",
+        "wed",
+        "thu",
+        "fri",
+        "sat",
+        "sun"
+      ]
+    },
+    "kids_hhmm": {
+      "type": "string",
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+      "description": "Local time HH:MM in the hub time zone (Home Assistant's time_zone)."
+    },
+    "quiet_hours_window": {
+      "description": "Bedtime window. end <= start crosses midnight and belongs to the start day (fri 21:00-07:00 ends Saturday 07:00); start == end = the whole day. During a window only reducing actions are allowed (turn_off, toggle of a device that is on, media_pause, media_stop, volume_down, volume_mute with is_volume_muted true, close_cover, stop_cover).",
+      "type": "object",
+      "required": [
+        "days",
+        "start",
+        "end"
+      ],
+      "properties": {
+        "days": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/kids_weekday"
+          }
+        },
+        "start": {
+          "$ref": "#/$defs/kids_hhmm"
+        },
+        "end": {
+          "$ref": "#/$defs/kids_hhmm"
+        }
+      },
+      "additionalProperties": false
+    },
+    "access_window": {
+      "description": "Window of the rule access_hours in the hub time zone (Home Assistant's time_zone): the device has access from start to end on the listed days. Same form as a bedtime window: end <= start crosses midnight and belongs to the start day (fri 18:00-01:00 ends Saturday 01:00); start == end = 24 hours from start. Windows that touch or overlap are one continuous access.",
+      "type": "object",
+      "required": [
+        "days",
+        "start",
+        "end"
+      ],
+      "properties": {
+        "days": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/kids_weekday"
+          }
+        },
+        "start": {
+          "$ref": "#/$defs/kids_hhmm"
+        },
+        "end": {
+          "$ref": "#/$defs/kids_hhmm"
+        }
+      },
+      "additionalProperties": false
+    },
+    "access_hours": {
+      "description": "Value of the profile rule access_hours (“Access hours”, docs/access.md): enabled = the device has access only inside the windows; outside it stays paired but sees nothing (no areas, no states, no control) and only shows when access opens again. enabled false = no time limit (the access switch still applies). enabled with no window = no access at all.",
+      "type": "object",
+      "required": [
+        "enabled",
+        "windows"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "windows": {
+          "type": "array",
+          "maxItems": 14,
+          "items": {
+            "$ref": "#/$defs/access_window"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "access_windows": {
+      "description": "Access hours chosen when setting up a device or inviting a guest (onboard_confirm.access_windows, guest_invite_create.access_windows): 1–14 windows, validated like the rule editor ($defs/access_window). The hub stores {enabled: true, windows} as a permanent device adjustment of the rule access_hours (none when equal to the profile value). Only when the grant offers it (access_hours_choice, the profile does not fix access_hours); otherwise access_hours_not_allowed. Choosing “any time” is not possible this way: the field is left out and the profile value applies.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 14,
+      "items": {
+        "$ref": "#/$defs/access_window"
+      }
+    },
+    "access_closed_reason": {
+      "description": "Why a device has no access right now: switch = its access switch in Home Assistant (switch.<ns>_<name>_access) is off (wins over schedule); schedule = outside its access hours.",
+      "enum": [
+        "schedule",
+        "switch"
+      ]
+    },
+    "access_now": {
+      "description": "Access of a device right now (docs/access.md): open = access hours (when enabled) allow now AND the access switch (when the device has one) is on. Computed by the hub in Home Assistant's time zone; reference tools/access_ref.py, vectors fixtures/profiles/access-hours. The app shows only “Access again from …” while open is false. early = a running early access (a Yes to the device's request): open while the switch allows it, until follows the early access and the windows that continue it.",
+      "type": "object",
+      "required": [
+        "open",
+        "reason",
+        "until",
+        "opens_at",
+        "schedule",
+        "switch"
+      ],
+      "properties": {
+        "open": {
+          "type": "boolean"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/access_closed_reason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Only while closed; null while open."
+        },
+        "until": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Open: end of the running access window (windows that touch are followed to their common end); null = open without a time limit (no access hours). Closed: null."
+        },
+        "opens_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Closed by the schedule with the switch on: start of the next window (within 8 days). null while open, while the switch is off (nobody knows when it is switched on again) and when no window comes."
+        },
+        "schedule": {
+          "type": "boolean",
+          "description": "The effective rule access_hours is enabled."
+        },
+        "switch": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "State of the device's access switch; null = the device has no switch (no access hours and not of kind guest, house_sitter or babysitter)."
+        },
+        "early": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/access_early"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Running early access (until in the future), null or missing = none. While it runs, open is true unless the switch is off; until is the end of the early access or of the windows that follow it directly."
+        }
+      },
+      "additionalProperties": false
+    },
+    "enforcement_access": {
+      "description": "Access of the device in the rule snapshot: <ns>.control rejects every entity with blocked_access_closed while the switch is off or (with hours) the integration's own clock in time_zone is outside every window. The integration evaluates the windows itself, so access hours keep working while the hub is unreachable. null in the snapshot = the device has neither access hours nor a switch. early_until opens a device outside its windows until then.",
+      "type": "object",
+      "required": [
+        "switch",
+        "hours",
+        "windows",
+        "time_zone",
+        "early_until"
+      ],
+      "properties": {
+        "switch": {
+          "type": "boolean",
+          "description": "Access switch on (true for a device without switch but with access hours)."
+        },
+        "windows": {
+          "type": "array",
+          "maxItems": 14,
+          "items": {
+            "$ref": "#/$defs/access_window"
+          },
+          "description": "Access windows of the effective rule access_hours (empty when hours is false)."
+        },
+        "hours": {
+          "type": "boolean",
+          "description": "The effective rule access_hours is enabled: access only inside windows (none = never)."
+        },
+        "time_zone": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "IANA time zone of the windows (Home Assistant's time_zone); null = UTC."
+        },
+        "early_until": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "End of a running early access (a Yes to the device's request); until then the windows do not close the device (the switch still does). null = none. The integration decides with its own clock like the windows."
+        }
+      },
+      "additionalProperties": false
+    },
+    "access_switch_actor": {
+      "description": "Who changed an access switch: admin = admin UI; ha = Home Assistant (an admin or an automation through switch.<ns>_<name>_access).",
+      "enum": [
+        "admin",
+        "ha"
+      ]
+    },
+    "access_request_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "access_request_status": {
+      "description": "Open = waiting for an answer; approved / declined = answered (answer set); expired = nobody answered within request_timeout_minutes; cancelled = the device withdrew it, its access opened by itself (window start, switch), it was removed or lost the rule.",
+      "enum": [
+        "open",
+        "approved",
+        "declined",
+        "expired",
+        "cancelled"
+      ]
+    },
+    "access_request_duration": {
+      "description": "How long a Yes opens the device (data/access-requests.json durations): until_window_start = until the start of its next regular access window (offered only while that start is known and at most until_window_start_max_hours ahead); 1h, 3h; today = until midnight in Home Assistant's time zone. Windows that follow the early access directly continue it.",
+      "enum": [
+        "until_window_start",
+        "1h",
+        "3h",
+        "today"
+      ]
+    },
+    "access_decline_message": {
+      "description": "Optional short answer with a No (data/access-requests.json decline_messages).",
+      "enum": [
+        "not_now",
+        "not_today",
+        "later",
+        "call_me"
+      ]
+    },
+    "access_request_role": {
+      "description": "Why a device gets the early access requests of another device: set_up_by = it set that device up (set_up_by); setup = its effective rule setup_devices holds the kind of that device; family_manager = it is a family manager (effective rule family_manager) and the requesting device is a babysitter. A device that fits several roles is listed once with the first.",
+      "enum": [
+        "set_up_by",
+        "setup",
+        "family_manager"
+      ]
+    },
+    "access_request_actor_kind": {
+      "description": "Device = a recipient device; admin = admin UI; hub = the hub (expiry, ended by itself).",
+      "enum": [
+        "device",
+        "admin",
+        "hub"
+      ]
+    },
+    "access_request_actor": {
+      "description": "Who opened a device early or answered its request: device = a recipient device (set up the device, may set up its kind, or a family manager for a babysitter); admin = the admin UI; hub = the hub (expiry). Names are display names at that time; never HA user ids, tokens or IP addresses.",
+      "type": "object",
+      "required": [
+        "kind",
+        "client_id",
+        "name"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/access_request_actor_kind"
+        },
+        "client_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Owner label (first name) of the device, else its name; admin display name for admin."
+        },
+        "owner_label": {
+          "$ref": "#/$defs/owner_label"
+        },
+        "via": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/family_route"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "access_early": {
+      "description": "A running early access of a device – a Yes to its request (or the admin) opened it before its access hours allow. Only the schedule part: the access switch still applies. The hub deletes it at until; until is never in the past while it is shown.",
+      "type": "object",
+      "required": [
+        "until",
+        "by",
+        "request_id",
+        "at"
+      ],
+      "properties": {
+        "until": {
+          "$ref": "#/$defs/timestamp",
+          "description": "End of the early access (UTC)."
+        },
+        "by": {
+          "$ref": "#/$defs/access_request_actor"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/access_request_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/access_request_duration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "at": {
+          "$ref": "#/$defs/timestamp",
+          "description": "When it was granted."
+        }
+      },
+      "additionalProperties": true
+    },
+    "access_request_error_reason": {
+      "description": "Why the hub rejected an early access message. Clients localize by reason, never by message text. invalid_request = malformed message; not_permitted = the device may not ask (effective rule access_requests off, no access hours, a watch) or may not answer (not a recipient of this request); not_closed = the device has access right now; switch_off = closed by the access switch (Home Assistant) – a request cannot open it; home_only = the request came through the integration relay: a device without access holds no valid Home Assistant key, it asks only over the hub WebSocket at home; no_recipients = nobody can answer (no recipient device and no admin notification rule for access_requested); request_limit = an open request exists or requests_per_hour is reached; cooldown = after a No the device waits decline_cooldown_minutes; rate_limited = too many messages; request_not_found = unknown, foreign or not addressed to this device; already_answered = another recipient or the admin was faster or the request is closed (request attached); duration_not_allowed = the duration is not offered for this request (until_window_start without a known start or too far ahead); hub_unreachable = the integration relay could not reach the hub. Clients must treat an unknown reason like not_permitted.",
+      "enum": [
+        "invalid_request",
+        "not_permitted",
+        "not_closed",
+        "switch_off",
+        "home_only",
+        "no_recipients",
+        "request_limit",
+        "cooldown",
+        "rate_limited",
+        "request_not_found",
+        "already_answered",
+        "duration_not_allowed",
+        "hub_unreachable"
+      ]
+    },
+    "kids_rate_limit": {
+      "description": "Rate limit per entity and device: more than max_actions successful actions within window_seconds start a pause of cooldown_seconds for this entity (0 = no pause, free again when the oldest action leaves the window). Rejected attempts do not count.",
+      "type": "object",
+      "required": [
+        "max_actions",
+        "window_seconds",
+        "cooldown_seconds"
+      ],
+      "properties": {
+        "max_actions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "window_seconds": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 3600
+        },
+        "cooldown_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400
+        }
+      },
+      "additionalProperties": false
+    },
+    "kids_rate_limit_all": {
+      "description": "Overall rate limit of a child device (failsafe next to the rate limit per entity): when the child switches more than max_entities different entities or more than max_actions actions in total within window_seconds, everything pauses for cooldown_seconds (every entity of the device, hub path and <ns>.control alike). The action that would exceed a limit is rejected and starts the pause (reason paused_all with until). Successful actions count, rejected attempts do not. enabled false = off (the values are kept so switching on restores them). A parental release (override_until) and the family release kind pause end a running pause and suspend the limit until they end.",
+      "type": "object",
+      "required": [
+        "enabled",
+        "max_actions",
+        "max_entities",
+        "window_seconds",
+        "cooldown_seconds"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "max_actions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "description": "Actions in total within the window; one more starts the pause."
+        },
+        "max_entities": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50,
+          "description": "Different entities within the window; one more starts the pause."
+        },
+        "window_seconds": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 3600
+        },
+        "cooldown_seconds": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 86400,
+          "description": "Length of the pause of everything."
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule_level": {
+      "description": "Level of the rule that decided: profile, area or entity (the more specific level wins per rule).",
+      "enum": [
+        "profile",
+        "area",
+        "entity"
+      ]
+    },
+    "rule_blocked_reason": {
+      "description": "Why the hub rejected a control action of a child device. blocked = blocked type or blocked scope (no time, only a parent can change it); quiet_hours = bedtime, until = end of the window; rate_limited = too many actions, a pause starts now (until = end of the pause); cooldown = a pause of this entity is running (until); paused_all = everything is paused (overall rate limit kids_rate_limit_all exceeded or its pause running; until = end of the pause, limit = {max_actions, max_entities, window_seconds}); color_locked = colors/effects of lights are locked (on/off, brightness and white tone work); volume_limit = volume cap reached (limit.volume_max). access_closed = the device has no access right now (outside its access hours or its access switch is off; until = when access opens again, null when unknown). Apps localize by reason with child-friendly texts; an unknown reason is shown like blocked.",
+      "enum": [
+        "blocked",
+        "quiet_hours",
+        "rate_limited",
+        "cooldown",
+        "paused_all",
+        "color_locked",
+        "volume_limit",
+        "access_closed"
+      ]
+    },
+    "control_error_reason": {
+      "description": "Why a control or read request of the hub path (control, state_subscribe, history_get, forecast_get, camera_image_get, media_image_get) failed without a rule. not_hub_controlled = the device is not on the hub path (its effective rule control_path is not hub and it has no parental controls: it reads and switches through Home Assistant with its own key), it is a watch, or it is not a paired device; not_visible = the entity is not visible to the device (not placed in one of its areas, not a run target of such a tile; also every entity while its access is closed); invalid_request = malformed request, a request_id of a request of this device that is still open, data > 4 KB, Home Assistant rejected the service (400/404), or forecast_get for an entity that is no weather entity or does not offer the type; not_ready = the device's HA token has not arrived yet; ha_error = Home Assistant answered with an error, or (camera_image_get, media_image_get) it sent no image, an image larger than 2 MiB or one of another type than JPEG, PNG, WebP or GIF; ha_unavailable = Home Assistant not reachable; rate_limited = more requests than the hub allows for this device or entity (x-limits hub_*) (control_error.retry_after seconds until the next one is accepted). Apps treat an unknown reason like ha_error.",
+      "enum": [
+        "not_hub_controlled",
+        "not_visible",
+        "invalid_request",
+        "not_ready",
+        "ha_error",
+        "ha_unavailable",
+        "rate_limited"
+      ]
+    },
+    "control_request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Chosen by the device, echoed in the answer."
+    },
+    "kids_override_action": {
+      "description": "kids_override activity: release = admin released the device for minutes; lift = admin ended the release and every running pause.",
+      "enum": [
+        "release",
+        "lift"
+      ]
+    },
+    "localized_text": {
+      "description": "Text in the two languages of the catalog (de, en).",
+      "type": "object",
+      "required": [
+        "de",
+        "en"
+      ],
+      "properties": {
+        "de": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "profile_rule_key": {
+      "description": "Key of a profile rule (data/profile-rules.json). Clients ignore keys they do not know.",
+      "enum": [
+        "remote_access",
+        "connection_insecure_http",
+        "control_path",
+        "access_hours",
+        "setup_devices",
+        "family_manager",
+        "babysitter_requests",
+        "access_requests",
+        "app_settings",
+        "app_settings_biometrics",
+        "remote_control",
+        "areas",
+        "control_mode_max",
+        "camera_live",
+        "kids_blocked_types",
+        "kids_quiet_hours",
+        "kids_rate_limit",
+        "kids_rate_limit_all",
+        "kids_volume_max",
+        "kids_color_lock",
+        "kids_requests",
+        "kids_exceptions",
+        "kids_watch",
+        "quick_access",
+        "watch",
+        "scan_tags",
+        "card_style",
+        "appearance",
+        "header",
+        "home_header",
+        "search_filter",
+        "columns",
+        "power_button",
+        "notification_level",
+        "notification_stack",
+        "kiosk",
+        "panel_start",
+        "panel_auto_home",
+        "panel_dim",
+        "panel_screensaver",
+        "panel_night",
+        "panel_remote",
+        "panel_sensors",
+        "panel_wake",
+        "panel_brightness",
+        "panel_announce",
+        "panel_off_mode",
+        "location",
+        "location_required"
+      ]
+    },
+    "profile_rule_group": {
+      "description": "Group of profile rules in the editor.",
+      "enum": [
+        "access",
+        "remote",
+        "areas",
+        "kids",
+        "features",
+        "home",
+        "display",
+        "panel",
+        "location"
+      ]
+    },
+    "rule_source": {
+      "description": "Layer that delivered the effective value of a profile rule: default = catalog default, profile, device = device adjustment (possibly temporary), boundary = guest access, parental controls, Hub only, the platform (platform_needs_key) or the phone of a watch, prerequisite = a precondition is missing (fail closed), not_applicable = rule does not apply to the device (admin view only), access_expired = guest access expired.",
+      "enum": [
+        "default",
+        "profile",
+        "device",
+        "boundary",
+        "prerequisite",
+        "not_applicable",
+        "access_expired"
+      ]
+    },
+    "rule_reason": {
+      "description": "Reason code of an effective value; sentences in data/profile-rules.json reasons. Closed list; clients show a neutral text for an unknown code.",
+      "enum": [
+        "catalog_default",
+        "profile",
+        "user_choice",
+        "device",
+        "device_temporary",
+        "boundary_guest",
+        "boundary_child_protection",
+        "boundary_kids_watch",
+        "boundary_hub_only",
+        "platform_needs_key",
+        "limited_by_phone",
+        "prerequisite_missing",
+        "not_applicable",
+        "requires_remote_access",
+        "requires_child_protection",
+        "requires_profile_kind",
+        "requires_location",
+        "access_expired"
+      ]
+    },
+    "rule_boundary": {
+      "description": "The boundaries of the profile model: guest = guest access of the device (set when pairing, expires); child_protection = profile switch parental controls (every action checked: by the hub where it is reachable, otherwise through <ns>.control with a read-only HA key); hub_only = the effective rule control_path is hub (the device holds no Home Assistant key unless remote access gives it a read-only one; features that work without the app need such a key).",
+      "enum": [
+        "guest",
+        "child_protection",
+        "hub_only"
+      ]
+    },
+    "rule_security": {
+      "description": "Security class of a profile rule: critical and sensitive rules get a confirmation when loosened and the strictest value after a guest expiry.",
+      "enum": [
+        "critical",
+        "sensitive",
+        "normal"
+      ]
+    },
+    "rule_expiry_preset": {
+      "description": "Duration presets of a temporary device adjustment: 1h, today (until local midnight), tomorrow_morning (07:00 local), 7d. A custom end is sent as expires_at.",
+      "enum": [
+        "1h",
+        "today",
+        "tomorrow_morning",
+        "7d"
+      ]
+    },
+    "device_access": {
+      "description": "Access of a device: member or guest. Set when pairing and never changed (a guest becomes a member only by pairing again). Guests always have an expiry.",
+      "enum": [
+        "member",
+        "guest"
+      ]
+    },
+    "default_profile_slot": {
+      "description": "Device type with its own default profile: platform of the new device, or guest for every guest access.",
+      "enum": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos",
+        "guest"
+      ]
+    },
+    "profile_id": {
+      "$ref": "#/$defs/uuid",
+      "description": "Id of a profile."
+    },
+    "profile_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[^\\u0000-\\u001f]+$",
+      "description": "Name of a profile, unique case-insensitively; whitespace collapsed by the hub."
+    },
+    "profile_suggestion_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,39}$",
+      "description": "Id of a profile suggestion (data/profile-suggestions.json)."
+    },
+    "power_button_domain": {
+      "description": "Device kind the power button of an area switches off.",
+      "enum": [
+        "light",
+        "switch",
+        "fan",
+        "input_boolean",
+        "cover",
+        "media_player",
+        "climate",
+        "vacuum",
+        "humidifier",
+        "automation"
+      ]
+    },
+    "remote_control_level": {
+      "description": "Level of the rule remote_control for a domain or an entity while the device is connected from away: hidden = not shown, view = show only (safe direction of locks/alarms still allowed), control = operate. Order hidden < view < control.",
+      "enum": [
+        "hidden",
+        "view",
+        "control"
+      ]
+    },
+    "rule_enforcement": {
+      "description": "Who enforces a profile rule: ha = Home Assistant itself, ha_control = Home Assistant enforces operating (device user read-only, switching only through the checked integration action), hiding stays in the app; hub = the hub, app = the app only (honest label “Applies in <brand>”).",
+      "enum": [
+        "hub",
+        "app",
+        "ha",
+        "ha_control"
+      ]
+    },
+    "remote_pin_source": {
+      "description": "Origin of the effective remote PIN of a device: device = its own PIN, profile = the PIN of its profile (a device PIN wins unless the profile PIN is fixed). The PIN itself only ever travels as PBKDF2 hash and salt.",
+      "enum": [
+        "profile",
+        "device"
+      ]
+    },
+    "profile_audit_action": {
+      "description": "Action of a profile audit entry. Clients show an unknown action generically (forward compatible). access_switch_set: the access switch of a device was turned on or off (admin UI or Home Assistant).",
+      "enum": [
+        "profile_created",
+        "profile_updated",
+        "profile_deleted",
+        "profile_assigned",
+        "override_set",
+        "override_removed",
+        "override_expired",
+        "own_area_set",
+        "remote_pin_set",
+        "profile_remote_pin_set",
+        "default_profiles_changed",
+        "suggestion_added",
+        "suggestion_applied",
+        "guest_extended",
+        "migration_v9",
+        "access_switch_set"
+      ]
+    },
+    "profile_ref": {
+      "description": "Id and name of a profile, for display.",
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/profile_id"
+        },
+        "name": {
+          "$ref": "#/$defs/profile_name"
+        }
+      },
+      "additionalProperties": true
+    },
+    "profile_summary": {
+      "description": "Profile by id, name and kind.",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/profile_id"
+        },
+        "name": {
+          "$ref": "#/$defs/profile_name"
+        },
+        "kind": {
+          "$ref": "#/$defs/profile_kind"
+        }
+      },
+      "additionalProperties": true
+    },
+    "control_path_rule": {
+      "description": "Value of the profile rule control_path (“Home Assistant access”), strict to loose: hub = the device gets no Home Assistant key (unless remote access gives it a read-only one) and reads and switches only through the hub (WS state_subscribe, get_area, history_get, forecast_get, camera_image_get, media_image_get, control; REST POST /api/client/control); in Home Assistant its user is read-only like checked. checked = a read-only Home Assistant key, switching only through <ns>.control. direct = full rights in Home Assistant, the rules apply in the app only. Strictest value: hub. Home Assistant only knows checked and direct ($defs/control_path): hub is checked there.",
+      "enum": [
+        "hub",
+        "checked",
+        "direct"
+      ]
+    },
+    "control_path": {
+      "description": "Control path of a device in Home Assistant (rule snapshot, client_config.ha_enforcement, control_paths): checked = its Home Assistant user is in the built-in group system-read-only (reading works, direct actions are rejected by Home Assistant) and it switches through the integration action <ns>.control, which checks the rule snapshot; direct = its user is in system-users (full rights), the rules apply in the app only. Strictest value: checked. A device whose rule control_path is hub is checked here. No automatic fallback to direct when the integration is down.",
+      "enum": [
+        "checked",
+        "direct"
+      ]
+    },
+    "ha_user_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$",
+      "description": "Home Assistant user id (uuid4 hex without dashes)."
+    },
+    "rules_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 (hex) of the canonical JSON of a rule snapshot without rules_hash and issued_at: keys sorted, no whitespace (separators \",\" and \":\"), UTF-8 without escaping non-ASCII. The integration recomputes it and ignores a snapshot whose hash does not match."
+    },
+    "enforcement_control_paths": {
+      "type": "object",
+      "maxProperties": 1000,
+      "additionalProperties": {
+        "$ref": "#/$defs/control_path"
+      },
+      "description": "client_id -> control path of the device, next to the rule snapshots and outside their versioned body (docs/enforcement.md#control-paths-next-to-the-snapshots): the resolved control path of every device whose snapshot is in the same message (equal to the snapshot's control_path; Hub only and parental controls give checked) and, in the first message of a push and in the REST answer, also of every active device with an HA user (or one being provisioned) that has no snapshot in it because the hub could not build it. It does not change with the snapshot format, so an integration that rejects a snapshot (unknown version, wrong hash, foreign HA user) or gets none for a named device still knows whether the device may be a full Home Assistant user: anything but direct holds its user read-only; direct keeps its earlier snapshot. It never loosens: direct here does not lift a checked snapshot or a hold."
+    },
+    "control_route": {
+      "description": "Route of a call as Home Assistant judges local_only, extended by the household's home networks: local = request from a local network address (loopback, link-local, RFC 1918, fc00::/7) or from an address inside one of the home_networks of the snapshot; external = through Nabu Casa or from any other address; unknown = no HTTP request (automation, script, internal call), treated like external.",
+      "enum": [
+        "local",
+        "external",
+        "unknown"
+      ]
+    },
+    "home_network_cidr": {
+      "type": "string",
+      "minLength": 9,
+      "maxLength": 43,
+      "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(?:\\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}/(?:3[0-2]|[12]?[0-9])|[0-9a-f:]{2,39}/(?:12[0-8]|1[01][0-9]|[1-9]?[0-9]))$",
+      "description": "One network that counts as at home, in canonical CIDR form (network address with the host bits zero, IPv6 lowercase and compressed as Python's ipaddress prints it). Only inside the private ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 100.64.0.0/10 (shared address space: Tailscale, but also mobile carrier CGNAT) and fc00::/7; never a public range. tools/validate.py checks canonical form and range."
+    },
+    "home_networks": {
+      "type": "array",
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/home_network_cidr"
+      },
+      "description": "The household's additional networks that count as at home (admin UI Settings > Network), sorted, without overlaps (a network inside another is merged into it). Empty = only the built-in local ranges. The same list decides in the app (home network: hosts in these ranges count as local for pairing, pinning on first use and the route order), in the integration (<ns>.control: a caller from these ranges is on the local route, also for 'When away') and in the hub."
+    },
+    "control_origin": {
+      "description": "Where the app triggered the action: app = inside the app, quick_access = widget, control, Siri/Shortcuts or Apple Watch (then the stricter quick access level of the entity applies). NFC/QR tags (docs/links.md), notification buttons and car surfaces count as quick_access too; no new value.",
+      "enum": [
+        "app",
+        "quick_access"
+      ]
+    },
+    "entity_control_level": {
+      "description": "What a device may do with an entity on one route (rule snapshot): control = operate, view = only the safe direction (lock the lock, arm the alarm; data/control-allowlist.json safe), hidden = nothing (also not shown in the app on that route).",
+      "enum": [
+        "hidden",
+        "view",
+        "control"
+      ]
+    },
+    "control_denial_reason": {
+      "description": "Why the integration action <ns>.control rejected a call or one entity of it. Doubles as translation_key of the ServiceValidationError (translation_domain <ns>). Apps localize by reason and show an unknown reason like not_allowed_action. blocked_remote = not allowed from away (remote level or no remote access); blocked_area = entity not controllable for the device (not in its areas); blocked_view_only = only the safe direction is allowed; blocked_quick_access = not allowed from widgets/Siri/Watch; blocked_group_member = a member of the group entity, or an entity the scene or script switches, is not allowed for the device (outside its areas, view only, own entity, domain not in the allowlist, not released); blocked_access_closed = the device has no access right now (access switch off or outside its access hours; until = next opening when the windows say so, missing while the switch is off), for every entity of the call; blocked_kids = blocked type (parental controls); blocked_kids_bedtime = bedtime (until); blocked_kids_cooldown = too many actions, pause running (until); blocked_kids_paused_all = too many devices or actions in a short time, everything is paused (until); blocked_kids_color = colors locked; blocked_kids_volume = volume cap reached; kids_hub_unreachable = a kids rule needs the hub (counter) and the hub does not answer; not_allowed_action = action not in the allowlist of the domain; not_allowed_field = data field not allowed for the action (also every target or entity reference); not_allowed_value = value out of range or of the wrong type; scene_not_released = scene, script, automation or remote not released for the device; unknown_entity = entity does not exist; own_entity = an entity of the <ns> integration itself (wall panel controls, hub buttons and switches) – only admins and Home Assistant automations operate them, never a device through <ns>.control; not_a_device = caller is neither a device user of the integration nor an admin; rules_missing = no rule snapshot for the device yet; rate_limited = too many calls of the device; action_failed = Home Assistant rejected the executed action.",
+      "enum": [
+        "blocked_remote",
+        "blocked_area",
+        "blocked_view_only",
+        "blocked_quick_access",
+        "blocked_group_member",
+        "blocked_access_closed",
+        "blocked_kids",
+        "blocked_kids_bedtime",
+        "blocked_kids_cooldown",
+        "blocked_kids_paused_all",
+        "blocked_kids_color",
+        "blocked_kids_volume",
+        "kids_hub_unreachable",
+        "not_allowed_action",
+        "not_allowed_field",
+        "not_allowed_value",
+        "scene_not_released",
+        "unknown_entity",
+        "own_entity",
+        "not_a_device",
+        "rules_missing",
+        "rate_limited",
+        "action_failed"
+      ]
+    },
+    "enforcement_event_type": {
+      "description": "Event the integration sends to the hub log: every kind of data/events.json with source integration, plus rules_applied (internal, not fired in Home Assistant). control/kids_control = an action ran through <ns>.control (kids_control for a device with parental controls); denied = <ns>.control rejected an entity (kids bedtime: kids_bedtime_attempt, kids pause: kids_pause); access_group_restored = a device user with control path checked had other rights (saved in the Home Assistant user settings or changed while the integration was not running) and was set back to read-only; direct_access_attempt = repeated direct actions of a read-only device user were rejected by Home Assistant (best effort, docs/enforcement.md); integration_started; integration_outage = the integration was not running while Home Assistant ran (detected at the next start); rules_applied = the integration applied a rule snapshot.",
+      "enum": [
+        "kids_control",
+        "kids_bedtime_attempt",
+        "kids_pause",
+        "control",
+        "denied",
+        "access_group_restored",
+        "direct_access_attempt",
+        "integration_outage",
+        "integration_started",
+        "rules_applied"
+      ]
+    },
+    "alarm_kind": {
+      "description": "Kind of an alarm: the event types that are alarms. HA event <ns>_alarm, hub alarm settings (rest/alarm-settings.json).",
+      "enum": [
+        "denied",
+        "access_group_restored",
+        "direct_access_attempt",
+        "integration_outage"
+      ]
+    },
+    "ha_user_group": {
+      "description": "Home Assistant group of a device user: read_only = system-read-only (control path checked), users = system-users.",
+      "enum": [
+        "read_only",
+        "users"
+      ]
+    },
+    "enforcement_entity_access": {
+      "type": "object",
+      "required": [
+        "local",
+        "remote",
+        "quick"
+      ],
+      "properties": {
+        "local": {
+          "$ref": "#/$defs/entity_control_level",
+          "description": "Route local (home network). hidden is not used here: an entity the device may not operate at home is not listed."
+        },
+        "remote": {
+          "$ref": "#/$defs/entity_control_level",
+          "description": "Route external or unknown: tools/profiles_ref.py entity_access(route external).app; hidden without remote access."
+        },
+        "quick": {
+          "$ref": "#/$defs/quick_access_level",
+          "description": "Calls with origin quick_access: control = may switch, otherwise blocked_quick_access. Already the strictest of quick access level and remote level for the external route is applied by the integration (min with remote)."
+        },
+        "run": {
+          "type": "boolean",
+          "description": "Released for running: required for domains with release_required (scene, script, automation, remote). Missing = false."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Rule snapshot: what a device may do with one entity."
+    },
+    "enforcement_kids": {
+      "type": "object",
+      "required": [
+        "time_zone",
+        "override_until",
+        "entities"
+      ],
+      "properties": {
+        "time_zone": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "IANA zone of the bedtime windows (Home Assistant's time_zone); null = UTC."
+        },
+        "override_until": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Parent release: until then bedtime and the rate limit do not apply (blocked types, color lock and volume cap do)."
+        },
+        "entities": {
+          "type": "object",
+          "maxProperties": 10000,
+          "additionalProperties": {
+            "$ref": "#/$defs/enforcement_kids_entity"
+          },
+          "description": "entity_id -> kids rules resolved by the hub (entity -> area -> profile, strictest over several areas). An entity of entities without an entry here is blocked (blocked_kids)."
+        },
+        "bedtime_released_until": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Release of a family manager or the admin (kind bedtime): until then bedtime does not apply. Missing or null = none; a past time counts as none (the integration decides with its own clock, also while the hub is away)."
+        },
+        "pause_released_until": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Release “End pause” (kind pause): until then the rate limit does not apply (no kids-check). Missing or null = none."
+        },
+        "rate_limit_all": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/kids_rate_limit_all"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Overall rate limit of the device (rule kids_rate_limit_all). With enabled true the integration asks the hub before every action of the device (POST /api/integration/kids-check), also for entities without rate_limit: counter and pause of everything live in the hub; hub unreachable = kids_hub_unreachable. A pause release (override_until, pause_released_until) skips the question like for rate_limit. Missing or null = off."
+        }
+      },
+      "additionalProperties": false
+    },
+    "enforcement_kids_entity": {
+      "type": "object",
+      "required": [
+        "blocked",
+        "quiet_hours",
+        "color_lock",
+        "volume_max",
+        "rate_limit"
+      ],
+      "properties": {
+        "blocked": {
+          "type": "boolean"
+        },
+        "quiet_hours": {
+          "type": "array",
+          "maxItems": 14,
+          "items": {
+            "$ref": "#/$defs/quiet_hours_window"
+          }
+        },
+        "color_lock": {
+          "type": "boolean"
+        },
+        "volume_max": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rate_limit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/kids_rate_limit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Not null = the integration asks the hub before executing (POST /api/integration/kids-check: counter and pause live in the hub); hub unreachable = kids_hub_unreachable."
+        },
+        "release_until": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Release of this one entity (kind entity): until then blocked = true (a blocked device type) and bedtime do not apply to it; afterwards the entry counts as written. The hub never sets it for locks, alarm panels or entities the admin blocked in the exceptions. Missing or null = none."
+        }
+      },
+      "additionalProperties": false
+    },
+    "event_kind": {
+      "description": "Event of the taxonomy (data/events.json): category devices, guests, kids, activity, alarms, system. Every event is fired as Home Assistant event <ns>_event; the alarm kinds additionally as <ns>_alarm. Clients and automations ignore unknown kinds. device_set_up: a member device set up another device or a guest (detail: kind, set_up_by, method onboard|invite); the device_paired/guest_paired entry of the same pairing stays. access_opened / access_closed: a device with access hours or an access switch got or lost its access (detail: reason schedule|switch, until or opens_at, by admin|ha when the switch changed). tag_scanned: a device resolved an NFC or QR tag (detail: tag_id, tag_name, result); the integration also fires <ns>_tag_scanned. access_requested / access_request_answered / access_request_expired: a device outside its access hours asked for early access, a recipient or the admin answered (action yes|no, until), nobody answered in time.",
+      "enum": [
+        "device_paired",
+        "device_set_up",
+        "device_removed",
+        "access_opened",
+        "access_closed",
+        "access_requested",
+        "access_request_answered",
+        "access_request_expired",
+        "profile_changed",
+        "adjustment_expiring",
+        "adjustment_expired",
+        "guest_invited",
+        "guest_paired",
+        "guest_expiring",
+        "guest_expired",
+        "kids_control",
+        "kids_bedtime_attempt",
+        "kids_pause",
+        "kids_paused_all",
+        "kids_release_requested",
+        "kids_request_answered",
+        "kids_request_expired",
+        "family_change",
+        "control",
+        "panel_command",
+        "panel_command_rejected",
+        "tag_scanned",
+        "denied",
+        "access_group_restored",
+        "direct_access_attempt",
+        "integration_outage",
+        "integration_started"
+      ]
+    },
+    "event_category": {
+      "enum": [
+        "devices",
+        "guests",
+        "kids",
+        "activity",
+        "alarms",
+        "system"
+      ]
+    },
+    "kids_check_reason": {
+      "description": "Hub answer of POST /api/integration/kids-check when not allowed ($defs/rule_blocked_reason subset); the integration maps rate_limited/cooldown to blocked_kids_cooldown, paused_all to blocked_kids_paused_all, blocked to blocked_kids, quiet_hours to blocked_kids_bedtime.",
+      "enum": [
+        "rate_limited",
+        "cooldown",
+        "blocked",
+        "quiet_hours",
+        "paused_all"
+      ]
+    },
+    "kids_requests": {
+      "description": "Kids rule “Can I have more time?”: whether the child may ask a family manager, and for what. enabled false = no request button, the hub refuses kids_request (requests_disabled); categories = the kinds the child may ask for (kept while off, so switching on restores them).",
+      "type": "object",
+      "required": [
+        "enabled",
+        "categories"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/family_request_category"
+          },
+          "uniqueItems": true,
+          "maxItems": 3
+        }
+      },
+      "additionalProperties": false
+    },
+    "family_children_scope": {
+      "description": "Which children a family manager looks after, set by the admin per device. all = every device with parental controls (also ones paired later); otherwise exactly the listed child devices (client ids). The hub ignores ids that are no child device (anymore).",
+      "type": "object",
+      "required": [
+        "all",
+        "client_ids"
+      ],
+      "properties": {
+        "all": {
+          "type": "boolean"
+        },
+        "client_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uuid"
+          },
+          "maxItems": 50,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "family_request_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "family_request_category": {
+      "description": "What a child asks for (data/family.json request_categories): stay_up = longer awake (bedtime), unlock_device = one device (entity) for a while, end_pause = end a running pause. Clients ignore unknown categories.",
+      "enum": [
+        "stay_up",
+        "unlock_device",
+        "end_pause"
+      ]
+    },
+    "family_request_status": {
+      "description": "open = waiting for an answer; approved / declined = answered (answer set); expired = nobody answered within request_timeout_minutes; cancelled = the child withdrew it, the child device was removed or lost parental controls.",
+      "enum": [
+        "open",
+        "approved",
+        "declined",
+        "expired",
+        "cancelled"
+      ]
+    },
+    "family_release_kind": {
+      "description": "Runtime release on a child device, separate from rule adjustments: bedtime = bedtime does not apply until `until`; pause = running pauses end now and the rate limit does not apply until `until`; entity = one entity may be used despite blocked type and bedtime until `until` (never locks or alarm panels, never an entity the admin blocked in kids_exceptions).",
+      "enum": [
+        "bedtime",
+        "pause",
+        "entity"
+      ]
+    },
+    "family_release_preset": {
+      "description": "Duration of a release or an approved request (data/family.json release_presets): 15m, 30m, 1h, 2h, bedtime_end (until the end of the running or next bedtime window today; only for bedtime and entity releases), access_end (only babysitters: until the end of the babysitter's running access window, “until the end of babysitting”).",
+      "enum": [
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "bedtime_end",
+        "access_end"
+      ]
+    },
+    "family_decline_message": {
+      "description": "Optional short answer with a No, shown to the child in child-friendly words (data/family.json decline_messages).",
+      "enum": [
+        "not_now",
+        "come_to_me",
+        "tomorrow"
+      ]
+    },
+    "family_answer": {
+      "enum": [
+        "yes",
+        "no"
+      ]
+    },
+    "family_actor_kind": {
+      "description": "Who did it: admin (admin UI), family_manager (a member device with the right), babysitter (a device of kind babysitter with the rule babysitter_requests, only answers), child (the child device itself: request, withdraw), hub (expiry, timeout).",
+      "enum": [
+        "admin",
+        "family_manager",
+        "babysitter",
+        "child",
+        "hub"
+      ]
+    },
+    "family_route": {
+      "description": "How a family action reached the hub: home = app over the hub WebSocket in the home network; away = app over Home Assistant and the integration relay (remote access); ha_notification = answer button of a Home Assistant notification; admin_ui = admin UI.",
+      "enum": [
+        "home",
+        "away",
+        "ha_notification",
+        "admin_ui"
+      ]
+    },
+    "family_error_reason": {
+      "description": "Why the hub rejected a family request. not_permitted = the device has no effective right family_manager (or is a guest/child device); not_your_child = the child device is outside the scope; rule_not_manageable = family managers never change this rule (data/family.json manageable_rules); rule_fixed = fixed in the child's profile; boundary = a boundary decides the rule on the child device; value_invalid = value does not match the rule; areas_not_allowed = areas beyond those the family manager sees; release_not_allowed = the release would loosen a fixed rule, targets a lock/alarm panel or an entity the admin blocked; request_not_found; already_answered (another family manager or the admin was faster, the answer is attached); request_limit = a child device has an open request or reached the hourly limit; cooldown = after a No the same category waits; requests_disabled = requests are switched off or nobody can answer; rate_limited = too many family actions; preset_not_allowed = a babysitter answered with a duration it may not give (only 15m, 30m, access_end; access_end only while its access has a known end); not_permitted also = a babysitter without access right now, away from home, or for anything but answering; hub_unreachable = the integration relay could not reach the hub; invalid_request.",
+      "enum": [
+        "invalid_request",
+        "not_permitted",
+        "not_your_child",
+        "rule_not_manageable",
+        "rule_fixed",
+        "boundary",
+        "value_invalid",
+        "areas_not_allowed",
+        "release_not_allowed",
+        "request_not_found",
+        "already_answered",
+        "request_limit",
+        "cooldown",
+        "requests_disabled",
+        "rate_limited",
+        "hub_unreachable",
+        "preset_not_allowed"
+      ]
+    },
+    "family_activity_kind": {
+      "description": "Entry of the children's activity (read view of the log): control = the child switched something; blocked = a rule rejected an action (reason); pause = a pause started (one entity, or everything: kids_paused_all); request = the child asked; answer = a request was answered or expired; release = a release started or ended; change = a rule of the child was changed (adjustment set, reset or expired).",
+      "enum": [
+        "control",
+        "blocked",
+        "pause",
+        "request",
+        "answer",
+        "release",
+        "change"
+      ]
+    },
+    "family_notify_kind": {
+      "description": "Automatic child notifications of a family manager, the kinds of the event taxonomy (category kids) plus family_change. kids_release_requested is always delivered (cannot be switched off while the right is active).",
+      "enum": [
+        "kids_release_requested",
+        "kids_request_answered",
+        "kids_bedtime_attempt",
+        "kids_pause",
+        "kids_control",
+        "family_change"
+      ]
+    },
+    "family_override_origin": {
+      "description": "Who set a device adjustment: admin (admin UI/API), family_manager (member device with the right; created_by_client_id is set), system (migration, or a choice of the member device that set the device up: areas, panel_start, remote_access; created_by_client_id is set).",
+      "enum": [
+        "admin",
+        "family_manager",
+        "system"
+      ]
+    },
+    "family_op": {
+      "description": "Family operation answered by family_result.",
+      "enum": [
+        "rule_set",
+        "rule_reset",
+        "release",
+        "release_end"
+      ]
+    },
+    "panel_screen": {
+      "description": "Screen state of a wall panel or TV: active = in use; dimmed = idle, backlight lowered; screensaver = screensaver shown; night = night mode (panel_night); off = the app is not in front or the screen is off (Android: black screen or locked). tvOS reports only active and screensaver. Clients and the integration show an unknown value as unknown.",
+      "enum": [
+        "active",
+        "dimmed",
+        "screensaver",
+        "night",
+        "off"
+      ]
+    },
+    "battery_state": {
+      "description": "Charging state of the device battery, sent with battery_level independently of location: charging, full (on power, fully charged), unplugged, unknown (no battery, e.g. Apple TV, or not readable).",
+      "enum": [
+        "charging",
+        "full",
+        "unplugged",
+        "unknown"
+      ]
+    },
+    "panel_action": {
+      "description": "Action of a panel_command. wake = like a touch (leave dimmed/screensaver/night); screensaver = start the screensaver now; home = back to the start area (panel_start); reload = reload areas and states; set_brightness = set the backlight to level (0–1) until the next phase change or set_brightness_mode auto; set_brightness_mode = auto (panel_brightness rule) or manual. screen_off = Android only: black screen or real off depending on the lock level (reserved, apps without it answer unsupported). Apple TV supports wake, screensaver, home and reload. Clients answer an unknown action with panel_command_error unsupported. announce (reserved) = speak or show text with an optional chime on a wall panel (text, volume 0–100, chime; rule panel_announce: off = announce_off, volume_max caps the volume, respect_night = silent text during night mode); show_camera (reserved) = open the camera view of entity_id (a camera the device may see; live only with camera_live, else still images) on a wall panel or TV – picture-in-picture starts only by the user or as the platform allows. Both are offered only when the app lists them in panel.actions.",
+      "enum": [
+        "wake",
+        "screensaver",
+        "home",
+        "reload",
+        "set_brightness",
+        "set_brightness_mode",
+        "screen_off",
+        "announce",
+        "show_camera"
+      ]
+    },
+    "panel_brightness_mode": {
+      "description": "Who decides the panel brightness: auto = the rule panel_brightness (and panel_night as upper limit at night); manual = a value set from Home Assistant or the admin UI until the next phase change.",
+      "enum": [
+        "auto",
+        "manual"
+      ]
+    },
+    "panel_sensor": {
+      "description": "Device value that may appear as entity in Home Assistant (rule panel_sensors, on every device except watches): battery = battery level, charging = charging (binary sensor), screen = screen state on a wall panel or TV and “app active” on every other device (the hub maps it to the panel_ha item app), brightness = actual backlight (phones and tablets outside the wall panel only while the app is in front), illuminance = light sensor of the device (Android only, reported when the device has one). battery_temperature = battery temperature in °C with the attribute battery_health (Android only).",
+      "enum": [
+        "battery",
+        "charging",
+        "screen",
+        "brightness",
+        "illuminance",
+        "battery_temperature"
+      ]
+    },
+    "panel_ha_sensor": {
+      "description": "Sensor entity the integration creates (panel_ha.sensors), decided by the hub from the rule panel_sensors and the platform: battery, charging, screen (enum sensor, only on wall panels and TVs), app (binary sensor “app active”: the rule value screen on every device that is no wall panel – phones, tablets with wall panel mode off), brightness, illuminance. battery_temperature (Android phones and tablets, attribute battery_health).",
+      "enum": [
+        "battery",
+        "charging",
+        "screen",
+        "app",
+        "brightness",
+        "illuminance",
+        "battery_temperature"
+      ]
+    },
+    "panel_control": {
+      "description": "Control entity of a panel in Home Assistant: brightness = number 5–100 %, brightness_mode = select auto/manual, wake / screensaver / home / reload = buttons. The hub offers the ones the platform supports when panel_remote is on.",
+      "enum": [
+        "brightness",
+        "brightness_mode",
+        "wake",
+        "screensaver",
+        "home",
+        "reload"
+      ]
+    },
+    "panel_command_id": {
+      "description": "Id of one panel_command; the app echoes it in panel_command_ok / panel_command_error.",
+      "$ref": "#/$defs/uuid"
+    },
+    "panel_command_error_code": {
+      "description": "Why a panel command failed. From the hub: not_found (unknown device), deactivated, guest (guests never get panel control), not_a_panel (platform without panel, or the tablet (iPad, Android tablet) is not in wall panel mode: rule kiosk off), remote_off (rule panel_remote off), unsupported (action not offered on the platform or not supported by the app), not_connected (no live WebSocket), timeout (no answer within 5 s), invalid (level/mode missing or out of range). From the app (panel_command_error): unsupported, not_in_panel_mode (panel mode not shown right now), not_pro (the app offers the rule only with Pro), invalid, failed. Also from the hub: announce_off (rule panel_announce off), not_visible (show_camera: the entity is no camera the device may see). Clients show an unknown code like failed.",
+      "enum": [
+        "not_found",
+        "deactivated",
+        "guest",
+        "not_a_panel",
+        "remote_off",
+        "unsupported",
+        "not_connected",
+        "timeout",
+        "invalid",
+        "not_in_panel_mode",
+        "not_pro",
+        "failed",
+        "announce_off",
+        "not_visible"
+      ]
+    },
+    "panel_actor_kind": {
+      "description": "Who triggered a panel command (for the log): ha_admin = a Home Assistant administrator (entity or action), automation = Home Assistant without a user (automation, script, blueprint), admin_ui = the hub admin UI (test buttons).",
+      "enum": [
+        "ha_admin",
+        "automation",
+        "admin_ui"
+      ]
+    },
+    "panel_wake_entity": {
+      "type": "string",
+      "pattern": "^(binary_sensor|person|device_tracker|input_boolean|event)\\.[a-z0-9_]+$",
+      "maxLength": 255,
+      "description": "Entity that wakes a panel: motion, presence, door, doorbell (event) or helper. No camera."
+    },
+    "panel_lock": {
+      "description": "Android lock level of a wall panel (reported in panel.lock): none; pinning = screen pinning (the user can leave); lock_task = lock task mode (device owner); device_admin = the app is device administrator (real screen off with panel_off_mode off, no lock task). Clients show an unknown value like none.",
+      "enum": [
+        "none",
+        "pinning",
+        "lock_task",
+        "device_admin"
+      ]
+    },
+    "panel_off_mode": {
+      "description": "How a wall panel switches its screen off (rule panel_off_mode): black = black screen, the app stays in front (default, every platform); off = real screen off through the device administrator (Android with panel.device_admin; otherwise like black).",
+      "enum": [
+        "black",
+        "off"
+      ]
+    },
+    "battery_health": {
+      "description": "Battery health reported by Android (BatteryManager): good, overheat, cold, dead, over_voltage, failure (unspecified failure), unknown. Clients show an unknown value as unknown.",
+      "enum": [
+        "good",
+        "overheat",
+        "cold",
+        "dead",
+        "over_voltage",
+        "failure",
+        "unknown"
+      ]
+    },
+    "camera_entity_id": {
+      "type": "string",
+      "pattern": "^camera\\.[a-z0-9_]+$",
+      "maxLength": 255,
+      "description": "Home Assistant camera entity (show_camera, open link camera/<entity_id>)."
+    },
+    "tag_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{22}$",
+      "description": "Id of an NFC or QR tag (docs/links.md): 22 characters base64url (128 random bits), written once on a physical tag as https://<website>/t/<tag_id>. No secret: what a tag does is decided by the hub it is registered in (hub tag table), never by the tag."
+    },
+    "tag_action_kind": {
+      "description": "What a tag does on the scanning device: show = open the entity or area (read); toggle, turn_on, turn_off = switch the entity; run = activate a scene, run a script or press a button. Switching runs like a widget (control_origin quick_access: the stricter quick access level, the profile and <ns>.control apply). Clients treat an unknown kind like show.",
+      "enum": [
+        "show",
+        "toggle",
+        "turn_on",
+        "turn_off",
+        "run"
+      ]
+    },
+    "tag_action": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/tag_action_kind"
+        },
+        "entity_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/entity_id"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Target entity; required except for show with area_id."
+        },
+        "area_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/uuid"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "show only: hub area to open instead of an entity."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "toggle",
+                  "turn_on",
+                  "turn_off",
+                  "run"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "entity_id"
+            ],
+            "properties": {
+              "entity_id": {
+                "$ref": "#/$defs/entity_id"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false,
+      "description": "Assignment of a tag in the hub."
+    },
+    "tag_scan_result": {
+      "description": "Answer of the hub to a scanned tag (tag_result.result, event tag_scanned): ok = registered and usable (tag attached); unknown_tag = not registered in this hub (with several homes the app asks the next one); tags_off = rule scan_tags off or not applicable (guests, platforms without tags); not_visible = the target is outside the device's areas; rate_limited = more than 10 scans per minute. Clients show an unknown result like unknown_tag.",
+      "enum": [
+        "ok",
+        "unknown_tag",
+        "tags_off",
+        "not_visible",
+        "rate_limited"
+      ]
+    },
+    "illuminance_entity": {
+      "type": "string",
+      "pattern": "^sensor\\.[a-z0-9_]+$",
+      "maxLength": 255,
+      "description": "Home Assistant sensor with device_class illuminance (lx)."
+    },
+    "location_shared": {
+      "description": "What the app actually shares (the lower of the system permission and the rule location): none, foreground (only while the app is in use), background (also when the app is closed).",
+      "enum": [
+        "none",
+        "foreground",
+        "background"
+      ]
+    },
+    "location_fix": {
+      "description": "One position of a device for its device_tracker (from a location_report the hub accepted). Never in logs, never in the admin UI, never stored by the hub.",
+      "type": "object",
+      "x-pii": true,
+      "required": [
+        "latitude",
+        "longitude",
+        "accuracy",
+        "ts"
+      ],
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000,
+          "description": "Horizontal accuracy in m."
+        },
+        "altitude": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -1000,
+          "maximum": 100000,
+          "description": "m above sea level."
+        },
+        "vertical_accuracy": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100000,
+          "description": "m."
+        },
+        "speed": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1000,
+          "description": "m/s."
+        },
+        "course": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 360,
+          "description": "Degrees, 0 = north."
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time of the fix (UTC)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "location_report_reason": {
+      "description": "Why a position was refused, on both ways (docs/location.md). Hub (location_report, POST /api/client/location): invalid_request = a field missing or out of range; not_hub_controlled = the device holds a Home Assistant key and reports with the action <ns>.report_location. Both: location_stale = ts older than 15 min or more than 5 min in the future; location_not_allowed = effective rule location off or not applicable; location_background_not_allowed = a background fix while the rule is foreground; rate_limited = less than 5 s after the last accepted report. Action only: not_a_device = caller is no device user of the integration; rules_missing = no rule snapshot for the device yet. In the action the reason doubles as translation_key of the ServiceValidationError (translation_domain <ns>).",
+      "enum": [
+        "invalid_request",
+        "not_hub_controlled",
+        "location_stale",
+        "location_not_allowed",
+        "location_background_not_allowed",
+        "rate_limited",
+        "not_a_device",
+        "rules_missing"
+      ]
+    },
+    "scene_hint_reason": {
+      "description": "Why a target of a scene or script would be refused (scene hints of the admin API, docs/enforcement.md §2 step 4): outside_areas = not in the areas of the profile or device (snapshot entities), also a scene or script among the targets; not_controllable = domain outside the control allowlist, an entity of the integration, or nested deeper than run_targets.max_depth; kids_blocked = blocked for children (device type, area or entity); remote = the scene or script may run from away but the target may not (a lock or alarm with level view counts as the possible safe direction and is not listed). A client that does not know a reason leaves that target out.",
+      "enum": [
+        "outside_areas",
+        "not_controllable",
+        "kids_blocked",
+        "remote"
+      ]
+    },
+    "watch_removed_reason": {
+      "description": "Why the hub removed a watch (its phone's effective rule watch turned off, also when a temporary adjustment ends: the hub evaluates again at that time and withdraws the watch's key): kids_watch_off = “Allow a watch” is off for its phone; remote_access_off = its phone with parental controls has no remote access (the watch has no other way to switch); parental_controls = its phone came under parental controls without “Allow a watch”; hub_only = its phone without parental controls is on “Hub only” without remote access (it holds no Home Assistant key, so it carries no watch).",
+      "enum": [
+        "kids_watch_off",
+        "remote_access_off",
+        "parental_controls",
+        "hub_only"
+      ]
+    }
+  }
+}

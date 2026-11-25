@@ -1,0 +1,37 @@
+{
+  "description": "Guests never get panel control from Home Assistant, even if the profile or an adjustment allows it.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-23T18:00:00Z"
+    },
+    "profile": {
+      "from_suggestion": "guest",
+      "rules": {
+        "panel_remote": true
+      }
+    },
+    "overrides": [
+      {
+        "rule": "panel_remote",
+        "value": true
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "panel_remote": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "median-even",
+  "description": "Two room sensors: the mean of the middle two.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "sensor.a_temperature",
+      "state": {
+        "state": "20.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "A"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.b_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "B"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.a_humidity",
+      "state": {
+        "state": "40",
+        "attributes": {
+          "device_class": "humidity",
+          "unit_of_measurement": "%",
+          "friendly_name": "A"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.b_humidity",
+      "state": {
+        "state": "51",
+        "attributes": {
+          "device_class": "humidity",
+          "unit_of_measurement": "%",
+          "friendly_name": "B"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.a_temperature",
+          "sensor.b_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.a_humidity",
+          "sensor.b_humidity"
+        ]
+      }
+    },
+    "value": {
+      "temperature": 20.5,
+      "humidity": 45.5
+    },
+    "local": {
+      "temperature": 20.5,
+      "humidity": 45.5
+    },
+    "primary_sensor": {
+      "temperature": "sensor.a_temperature",
+      "humidity": "sensor.a_humidity"
+    }
+  }
+}

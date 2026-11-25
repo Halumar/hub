@@ -1,0 +1,96 @@
+{
+  "description": "Babysitter suggestion: every day 17:00-01:00 Europe/Zurich; open, closed by schedule (next start), closed by switch, after midnight inside the window.",
+  "time_zone": "Europe/Zurich",
+  "access_hours": {
+    "enabled": true,
+    "windows": [
+      {
+        "days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri",
+          "sat",
+          "sun"
+        ],
+        "start": "17:00",
+        "end": "01:00"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "now": "2026-11-20T17:00:00Z",
+      "switch": true,
+      "expected": {
+        "open": true,
+        "reason": null,
+        "until": "2026-11-21T00:00:00Z",
+        "opens_at": null,
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2026-11-20T11:00:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2026-11-20T16:00:00Z",
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2026-11-20T17:00:00Z",
+      "switch": false,
+      "expected": {
+        "open": false,
+        "reason": "switch",
+        "until": null,
+        "opens_at": null,
+        "schedule": true,
+        "switch": false
+      }
+    },
+    {
+      "now": "2026-11-20T23:30:00Z",
+      "switch": true,
+      "expected": {
+        "open": true,
+        "reason": null,
+        "until": "2026-11-21T00:00:00Z",
+        "opens_at": null,
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2026-11-21T00:00:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2026-11-21T16:00:00Z",
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2026-11-20T11:00:00Z",
+      "switch": null,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2026-11-20T16:00:00Z",
+        "schedule": true,
+        "switch": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+
+# Node.js / Frontend
+node_modules/
+frontend/dist/
+frontend/.svelte-kit/
+frontend/build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite3
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+
+# SVG files are not tracked, except the ones below.
+*.svg
+# The wordmark of the README.
+!docs/images/brand/*.svg
+# The favicon every admin UI page and the web manifest reference, and its copy
+# in the built admin UI bundle.
+!frontend/static/favicon.svg
+!halumar/rootfs/opt/hub/static/favicon.svg
+
+# Contract checkout of CI and local runs
+.contracts/
+
+# Test coverage data
+.coverage
+.coverage.*

@@ -1,0 +1,45 @@
+{
+  "description": "Hub only on an Apple TV: the TV app needs its own key, so the value becomes checked (platform_needs_key), never direct.",
+  "input": {
+    "platform": "tvos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "apple_tv",
+      "rules": {
+        "control_path": "hub"
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "boundary",
+      "reason": "platform_needs_key",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

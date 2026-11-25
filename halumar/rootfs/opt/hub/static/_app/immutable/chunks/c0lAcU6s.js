@@ -1,0 +1,1 @@
+import{l as t,k as o,h as r}from"./BBDllho2.js";let s=o(!1),a=o("member"),n=o(!1);const p={get open(){return r(s)},set open(e){t(s,e,!0)},get role(){return r(a)},set role(e){t(a,e,!0)},get stay(){return r(n)}};function g(e="member",{stay:l=!1}={}){t(a,e,!0),t(n,l,!0),t(s,!0)}export{g as o,p};

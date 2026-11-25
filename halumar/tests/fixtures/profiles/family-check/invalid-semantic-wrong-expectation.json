@@ -1,0 +1,50 @@
+{
+  "description": "Must fail: a guest can never be a family manager.",
+  "cases": [
+    {
+      "name": "guest",
+      "manager": {
+        "client_id": "2a6f0c1e-4b7d-4e8a-9c1f-3d5e7a9b1c2d",
+        "access": "guest",
+        "child_protection": false,
+        "family_manager": true,
+        "scope": {
+          "all": false,
+          "client_ids": [
+            "6c1a2b3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+            "7d2b3c4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f"
+          ]
+        },
+        "visible_area_ids": null
+      },
+      "child": {
+        "client_id": "8e3c4d5f-6a7b-4c8d-8e9f-1a2b3c4d5e6f",
+        "child_protection": true,
+        "fixed": [
+          "kids_blocked_types",
+          "kids_exceptions"
+        ],
+        "blocked_types": [
+          "lock",
+          "alarm_control_panel",
+          "cover:garage",
+          "cover:gate",
+          "camera"
+        ],
+        "exception_blocked_entities": [
+          "media_player.eltern_tv"
+        ],
+        "quiet_now": true
+      },
+      "op": {
+        "kind": "release",
+        "release_kind": "bedtime"
+      },
+      "expected": {
+        "allowed": true,
+        "reason": null
+      }
+    }
+  ]
+}

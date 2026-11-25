@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/Halumar/hub/security/advisories/new
+    about: Please report vulnerabilities privately, not as a public issue.
+  - name: Help and questions
+    url: https://halumar.com/support/
+    about: Guides, frequently asked questions and contact.
+  - name: Documentation
+    url: https://github.com/Halumar/hub/blob/main/docs/README.md
+    about: Installation, pairing, guests and troubleshooting.
+  - name: Integration issues
+    url: https://github.com/Halumar/integration/issues
+    about: Problems with the devices and entities in Home Assistant.

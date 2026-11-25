@@ -1,0 +1,34 @@
+{
+  "description": "An Apple TV on Checked with a temporary Hub only: on the TV that is checked anyway, so nothing ends (no expires_at).",
+  "input": {
+    "platform": "tvos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "apple_tv"
+    },
+    "overrides": [
+      {
+        "rule": "control_path",
+        "value": "hub",
+        "expires_at": "2026-11-20T20:00:00Z"
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "boundary",
+      "reason": "platform_needs_key",
+      "locked": true,
+      "fixed": true
+    }
+  }
+}

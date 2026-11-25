@@ -1,0 +1,25 @@
+{
+  "description": "invalid: expected value differs from the reference resolver (remote access of an empty profile is off)",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {},
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_access": {
+      "value": true,
+      "source": "default",
+      "reason": "catalog_default",
+      "locked": true,
+      "fixed": false
+    }
+  }
+}

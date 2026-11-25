@@ -1,0 +1,54 @@
+{
+  "description": "Child profile with “Allow a watch” off; the admin allows it for this one iPhone (device adjustment): the boundary of watch is lifted on this device only.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child",
+      "rules": {
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "overrides": [
+      {
+        "rule": "kids_watch",
+        "value": true,
+        "expires_at": null
+      }
+    ]
+  },
+  "expected": {
+    "kids_watch": {
+      "value": true,
+      "source": "device",
+      "reason": "device",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "watch": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    }
+  }
+}

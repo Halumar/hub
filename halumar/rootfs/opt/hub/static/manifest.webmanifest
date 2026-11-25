@@ -1,0 +1,36 @@
+{
+	"name": "Halumar",
+	"short_name": "Halumar",
+	"description": "The right view of your Home Assistant for everyone.",
+	"start_url": "./",
+	"scope": "./",
+	"display": "standalone",
+	"background_color": "#F4EADB",
+	"theme_color": "#F4EADB",
+	"icons": [
+		{
+			"src": "favicon.svg",
+			"type": "image/svg+xml",
+			"sizes": "any",
+			"purpose": "any"
+		},
+		{
+			"src": "apple-touch-icon.png",
+			"type": "image/png",
+			"sizes": "180x180",
+			"purpose": "any"
+		},
+		{
+			"src": "icon-maskable-192.png",
+			"type": "image/png",
+			"sizes": "192x192",
+			"purpose": "maskable"
+		},
+		{
+			"src": "icon-maskable-512.png",
+			"type": "image/png",
+			"sizes": "512x512",
+			"purpose": "maskable"
+		}
+	]
+}

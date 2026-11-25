@@ -1,0 +1,100 @@
+#include <tunables/global>
+
+# AppArmor profile of the Halumar Hub app (Supervisor loads it instead of
+# Docker's default profile; the profile name is replaced by the app id).
+#
+# Top level: S6 overlay and Bashio (template of the app developer docs).
+# The Hub server (Python) and the backup hook run in the stricter child
+# profile "hub": read-only code, writes only to /data and /tmp, network for
+# HTTP/WebSocket, the Supervisor API and mDNS, no other programs.
+profile halumar flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  # Capabilities. File access without exec: the template's "file," also
+  # allows ix everywhere, which conflicts with the cx rule for python3.
+  /{,**} mrwlk,
+  signal (send) set=(kill,term,int,hup,cont),
+  network,
+
+  # S6 overlay
+  /init ix,
+  /bin/** ix,
+  # Every program in /usr/bin except python3, which runs in the child profile
+  # (an ix glob over it would conflict with the cx rule below).
+  /usr/bin/[^p]* ix,
+  /usr/bin/p[^y]* ix,
+  /usr/bin/py[^t]* ix,
+  /usr/bin/pyt[^h]* ix,
+  /run/{s6,s6-rc*,service}/** ix,
+  /package/** ix,
+  /command/** ix,
+  /etc/services.d/** rwix,
+  /etc/cont-init.d/** rwix,
+  /etc/cont-finish.d/** rwix,
+  /etc/s6-overlay/** rwix,
+  /run/{,**} rwk,
+  /dev/tty rw,
+
+  # Bashio
+  /usr/lib/bashio/** ix,
+  /tmp/** rwk,
+
+  # Options and data of the app
+  /data/** rw,
+
+  # The Hub server and the backup hook (python3 /opt/hub/…)
+  /usr/bin/python3{,.[0-9]*} cx -> hub,
+
+  profile hub flags=(attach_disconnected,mediate_deleted) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/ssl_certs>
+
+    # Stop and restart by S6 overlay and the Supervisor
+    signal (receive) peer=*_halumar,
+    signal (receive) peer=unconfined,
+    signal (send, receive) peer=*_halumar//hub,
+
+    # REST/WebSocket server (8099, 8100), Supervisor and Home Assistant API,
+    # mDNS (UDP multicast), interface lookup (netlink)
+    network inet stream,
+    network inet6 stream,
+    network inet dgram,
+    network inet6 dgram,
+    network netlink raw,
+    network unix,
+
+    # Interpreter, standard library and installed packages
+    /usr/bin/python3{,.[0-9]*} rm,
+    /{usr/,usr/local/,}lib/ r,
+    /usr/lib/python3*/** rm,
+    /usr/local/lib/python3*/** rm,
+    /usr/lib/** rm,
+    /lib/** rm,
+    /usr/share/zoneinfo/** r,
+    /etc/** r,
+
+    # Code, admin UI and API docs (read only)
+    /opt/hub/ r,
+    /opt/hub/** r,
+
+    # Database, keys, TLS certificate, images, options, instance id
+    /data/ r,
+    /data/** rwk,
+    /tmp/ r,
+    /tmp/** rwk,
+    /run/** r,
+
+    # Runtime information (CPU count, own process, network interfaces)
+    @{PROC}/** r,
+    /sys/** r,
+    /dev/null rw,
+    /dev/urandom r,
+    /dev/random r,
+    /dev/tty rw,
+    /dev/shm/** rwk,
+
+    # Output to the S6 log pipe
+    /proc/*/fd/* w,
+  }
+}

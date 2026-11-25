@@ -1,0 +1,31 @@
+{
+  "description": "Profile PIN fixed: it applies, the device PIN is ignored (setting one answers 422 remote_pin.fixed).",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "wall_panel",
+      "has_remote_pin": true,
+      "remote_pin_fixed": true
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "app_settings": {
+      "value": "pin",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  },
+  "expected_remote_pin_source": "profile"
+}

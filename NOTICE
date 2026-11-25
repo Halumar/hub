@@ -1,0 +1,27 @@
+Halumar Hub
+Copyright 2026 xonatec
+
+Licensed under the GNU Affero General Public License, version 3 only
+(SPDX: AGPL-3.0-only); see LICENSE. This program comes with ABSOLUTELY NO
+WARRANTY, to the extent permitted by applicable law.
+
+Files generated from or copied from the Halumar contract
+(https://github.com/Halumar/contracts) are licensed under the Apache License,
+Version 2.0. Paths are relative to the repository; the image contains the
+files under halumar/rootfs/ at the same place below /:
+- generated: halumar/rootfs/opt/hub/brand.py, frontend/src/lib/brand.ts
+- data, in halumar/rootfs/opt/hub/data/: access_requests.json,
+  control_allowlist.json, events.json, family.json, profile_rules.json,
+  profile_suggestions.json, quick_access.json, room_climate.json,
+  tile_capabilities.json, tile_icons.json
+- value schemas, in halumar/rootfs/opt/hub/data/schemas/: defs.json,
+  kids-rules.json, profile-rule-values.json
+- test vectors: halumar/tests/fixtures/profiles/, halumar/tests/fixtures/climate/
+- test data: frontend/e2e/fixtures/profiles/
+
+Third-party components and their licenses: see THIRD_PARTY_NOTICES.md.
+
+"Halumar" and the Halumar logo are trademarks of xonatec. The licenses do not
+grant trademark rights; see TRADEMARKS.md. The logo in docs/images/brand/ is
+such a trademark; its wordmark contains glyphs of the Fredoka typeface (SIL Open
+Font License 1.1), converted to outlines. No font files are included.

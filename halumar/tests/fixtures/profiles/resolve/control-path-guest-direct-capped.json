@@ -1,0 +1,44 @@
+{
+  "description": "A profile with direct on a guest device: the guest boundary caps Home Assistant access at checked (a read-only key, switching through the checked action), never direct.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-27T18:00:00Z"
+    },
+    "profile": {
+      "rules": {
+        "control_path": "direct"
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "default",
+      "reason": "catalog_default",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

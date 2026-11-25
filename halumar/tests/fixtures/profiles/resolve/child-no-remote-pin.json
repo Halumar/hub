@@ -1,0 +1,45 @@
+{
+  "description": "Kind on an iPad without remote PIN: settings with remote PIN are hidden until a PIN exists (prerequisite_missing).",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "app_settings": {
+      "value": "hidden",
+      "source": "prerequisite",
+      "reason": "prerequisite_missing",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "kiosk": {
+      "value": false,
+      "source": "profile",
+      "reason": "user_choice",
+      "locked": false,
+      "fixed": false,
+      "user_choice": true,
+      "enforcement": "app"
+    },
+    "remote_access": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    }
+  }
+}

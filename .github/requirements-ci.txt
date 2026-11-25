@@ -1,0 +1,5 @@
+# Tools the CI installs next to the hub requirements. Pinned so a gate does not
+# change meaning with an upstream release; Dependabot proposes updates.
+ruff==0.15.9
+pytest-cov==7.1.0
+pip-audit==2.10.1

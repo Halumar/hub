@@ -1,0 +1,70 @@
+{
+  "description": "Same profile on a device without own area: the own-area exception and the own area are dropped (fail closed).",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "child_6_9",
+      "rules": {
+        "kids_exceptions": [
+          {
+            "target": {
+              "own_area": true
+            },
+            "rules": {
+              "quiet_hours": []
+            }
+          },
+          {
+            "target": {
+              "entity_id": "light.night_light"
+            },
+            "rules": {
+              "quiet_hours": []
+            }
+          }
+        ]
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "kids_exceptions": {
+      "value": [
+        {
+          "target": {
+            "entity_id": "light.night_light"
+          },
+          "rules": {
+            "quiet_hours": []
+          }
+        }
+      ],
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "areas": {
+      "value": {
+        "mode": "selected",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  }
+}

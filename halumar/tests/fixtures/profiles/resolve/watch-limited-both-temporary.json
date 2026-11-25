@@ -1,0 +1,64 @@
+{
+  "description": "Both sides temporary: the watch's own remote access is on until 19:00 then off, the phone's is off until 20:00 then on. The watch has none at any moment (off, then off).",
+  "input": {
+    "platform": "watchos",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "remote_access": false
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "overrides": [
+      {
+        "rule": "remote_access",
+        "value": true,
+        "expires_at": "2026-11-20T19:00:00Z"
+      }
+    ],
+    "limit": {
+      "platform": "ios",
+      "access": {
+        "kind": "member",
+        "expires_at": null
+      },
+      "profile": {
+        "from_suggestion": "adult",
+        "rules": {
+          "remote_access": true
+        }
+      },
+      "device": {
+        "own_area_id": null,
+        "has_remote_pin": false
+      },
+      "overrides": [
+        {
+          "rule": "remote_access",
+          "value": false,
+          "expires_at": "2026-11-20T20:00:00Z"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "remote_access": {
+      "value": false,
+      "source": "boundary",
+      "reason": "limited_by_phone",
+      "locked": true,
+      "fixed": true,
+      "expires_at": "2026-11-20T19:00:00Z",
+      "then": false,
+      "enforcement": "ha"
+    }
+  }
+}

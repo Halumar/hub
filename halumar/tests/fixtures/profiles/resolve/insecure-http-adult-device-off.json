@@ -1,0 +1,34 @@
+{
+  "description": "The admin turns the switch off for one adult device (device adjustment).",
+  "input": {
+    "platform": "android_tablet",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "overrides": [
+      {
+        "rule": "connection_insecure_http",
+        "value": false
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "connection_insecure_http": {
+      "value": false,
+      "source": "device",
+      "reason": "device",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "app"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "description": "Gast with own area (guest room): visible areas = exactly the own area.",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-23T18:00:00Z"
+    },
+    "profile": {
+      "from_suggestion": "guest"
+    },
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "areas": {
+      "value": {
+        "mode": "selected",
+        "area_ids": [
+          "a1b2c3d4-0000-4000-8000-00000000000a"
+        ],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "kiosk": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "app_settings": {
+      "value": "hidden",
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  }
+}

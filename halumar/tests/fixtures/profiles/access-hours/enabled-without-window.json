@@ -1,0 +1,22 @@
+{
+  "description": "Access hours enabled without any window: never open, no next start.",
+  "time_zone": "UTC",
+  "access_hours": {
+    "enabled": true,
+    "windows": []
+  },
+  "cases": [
+    {
+      "now": "2026-11-20T10:00:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": null,
+        "schedule": true,
+        "switch": true
+      }
+    }
+  ]
+}

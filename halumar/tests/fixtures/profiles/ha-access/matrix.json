@@ -1,0 +1,2934 @@
+{
+  "description": "Every combination of control path, remote access, open or closed access and platform (children on the phones and a child's watch): who holds a Home Assistant key and which fields client_config carries. Hub only gives a key only with remote access; tvos, android_tv, watchos and wearos never run without a key (hub is checked there); a watch holds its key only while its phone's rule watch is on and gets its token only sealed; a closed access sends no token.",
+  "now": "2026-11-20T18:00:00Z",
+  "cases": [
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ios",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "ipados",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": false,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "hub",
+        "holds_key": true,
+        "hub_path": true,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tablet",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "tvos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "clear",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "android_tv",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "ha"
+      }
+    },
+    {
+      "platform": "watchos",
+      "child_protection": true,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": false,
+        "kids_away": "none"
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "hub",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "checked",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "checked",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "checked",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "direct",
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": false,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": "sealed",
+        "ha_enforcement": "direct",
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": true,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": true,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": true,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": true,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    },
+    {
+      "platform": "wearos",
+      "child_protection": false,
+      "control_path": "direct",
+      "remote_access": true,
+      "access_open": false,
+      "phone_watch": false,
+      "expected": {
+        "control_path": "direct",
+        "holds_key": false,
+        "hub_path": false,
+        "token": null,
+        "ha_enforcement": null,
+        "ha_url": false,
+        "ha_instance_id": true,
+        "kids_away": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "name": "median-of-sensors",
+  "description": "Several room sensors: the median (odd count).",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "sensor.a_temperature",
+      "state": {
+        "state": "20.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "A"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.b_temperature",
+      "state": {
+        "state": "25.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "B"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.c_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "C"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.a_temperature",
+          "sensor.b_temperature",
+          "sensor.c_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.c_temperature",
+      "humidity": null
+    }
+  }
+}

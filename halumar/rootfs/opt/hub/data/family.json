@@ -1,0 +1,384 @@
+{
+  "version": 2,
+  "manageable_rules": [
+    {
+      "rule": "kids_quiet_hours",
+      "label": {
+        "de": "Schlafenszeit",
+        "en": "Bedtime"
+      }
+    },
+    {
+      "rule": "kids_rate_limit",
+      "label": {
+        "de": "Pausen",
+        "en": "Breaks"
+      }
+    },
+    {
+      "rule": "kids_rate_limit_all",
+      "label": {
+        "de": "Pause für alles",
+        "en": "Pause everything"
+      }
+    },
+    {
+      "rule": "kids_volume_max",
+      "label": {
+        "de": "Lautstärke höchstens",
+        "en": "Volume up to"
+      }
+    },
+    {
+      "rule": "kids_color_lock",
+      "label": {
+        "de": "Farben sperren",
+        "en": "Lock colors"
+      }
+    },
+    {
+      "rule": "kids_requests",
+      "label": {
+        "de": "„Darf ich noch?“",
+        "en": "“Can I have more time?”"
+      }
+    },
+    {
+      "rule": "kids_blocked_types",
+      "label": {
+        "de": "Gesperrte Gerätetypen",
+        "en": "Blocked device types"
+      }
+    },
+    {
+      "rule": "areas",
+      "label": {
+        "de": "Bereiche",
+        "en": "Areas"
+      }
+    }
+  ],
+  "never_release_domains": [
+    "lock",
+    "alarm_control_panel"
+  ],
+  "request_categories": [
+    {
+      "id": "stay_up",
+      "release_kind": "bedtime",
+      "requires_unfixed": [
+        "kids_quiet_hours"
+      ],
+      "child_label": {
+        "de": "Länger wach bleiben",
+        "en": "Stay up longer"
+      },
+      "manager_label": {
+        "de": "möchte länger wach bleiben",
+        "en": "would like to stay up longer"
+      },
+      "presets": [
+        "15m",
+        "30m",
+        "1h",
+        "bedtime_end"
+      ],
+      "default_preset": "30m"
+    },
+    {
+      "id": "unlock_device",
+      "release_kind": "entity",
+      "requires_unfixed": [],
+      "child_label": {
+        "de": "Ein Gerät benutzen",
+        "en": "Use a device"
+      },
+      "manager_label": {
+        "de": "möchte {entity} benutzen",
+        "en": "would like to use {entity}"
+      },
+      "presets": [
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "bedtime_end"
+      ],
+      "default_preset": "30m"
+    },
+    {
+      "id": "end_pause",
+      "release_kind": "pause",
+      "requires_unfixed": [
+        "kids_rate_limit"
+      ],
+      "child_label": {
+        "de": "Pause beenden",
+        "en": "End the break"
+      },
+      "manager_label": {
+        "de": "möchte die Pause beenden",
+        "en": "would like to end the break"
+      },
+      "presets": [
+        "15m",
+        "30m",
+        "1h"
+      ],
+      "default_preset": "15m"
+    }
+  ],
+  "release_presets": [
+    {
+      "id": "15m",
+      "minutes": 15,
+      "label": {
+        "de": "15 Min.",
+        "en": "15 min"
+      }
+    },
+    {
+      "id": "30m",
+      "minutes": 30,
+      "label": {
+        "de": "30 Min.",
+        "en": "30 min"
+      }
+    },
+    {
+      "id": "1h",
+      "minutes": 60,
+      "label": {
+        "de": "1 Std.",
+        "en": "1 hour"
+      }
+    },
+    {
+      "id": "2h",
+      "minutes": 120,
+      "label": {
+        "de": "2 Std.",
+        "en": "2 hours"
+      }
+    },
+    {
+      "id": "bedtime_end",
+      "minutes": null,
+      "label": {
+        "de": "Bis morgen früh",
+        "en": "Until tomorrow morning"
+      },
+      "rule": "end of the running bedtime window; outside bedtime the end of the next window that starts today (hub time zone); for entity releases outside any window 07:00 next morning like tomorrow_morning"
+    },
+    {
+      "id": "access_end",
+      "minutes": null,
+      "label": {
+        "de": "Bis Ende Babysitting",
+        "en": "Until the end of babysitting"
+      },
+      "rule": "only babysitters: end of the babysitter's running access window (access_now.until); not offered while it has no known end"
+    }
+  ],
+  "decline_messages": [
+    {
+      "id": "not_now",
+      "manager_label": {
+        "de": "Jetzt nicht",
+        "en": "Not now"
+      },
+      "child_text": {
+        "de": "Jetzt gerade nicht.",
+        "en": "Not right now."
+      }
+    },
+    {
+      "id": "come_to_me",
+      "manager_label": {
+        "de": "Komm kurz zu mir",
+        "en": "Come and see me"
+      },
+      "child_text": {
+        "de": "Komm kurz vorbei, dann reden wir.",
+        "en": "Come and see me, then we’ll talk."
+      }
+    },
+    {
+      "id": "tomorrow",
+      "manager_label": {
+        "de": "Vielleicht morgen",
+        "en": "Maybe tomorrow"
+      },
+      "child_text": {
+        "de": "Vielleicht morgen.",
+        "en": "Maybe tomorrow."
+      }
+    }
+  ],
+  "child_texts": {
+    "sent": {
+      "de": "Gefragt! Du bekommst gleich Bescheid.",
+      "en": "Asked! You’ll hear back soon."
+    },
+    "approved": {
+      "de": "Ja! Bis {until}.",
+      "en": "Yes! Until {until}."
+    },
+    "declined": {
+      "de": "Diesmal nicht.",
+      "en": "Not this time."
+    },
+    "expired": {
+      "de": "Gerade hat niemand geantwortet. Frag später nochmal oder geh kurz fragen.",
+      "en": "Nobody answered just now. Ask again later or go and ask."
+    },
+    "cooldown": {
+      "de": "Du kannst in {minutes} Min. wieder fragen.",
+      "en": "You can ask again in {minutes} min."
+    },
+    "unavailable": {
+      "de": "Fragen geht gerade nicht – geh kurz zu einem Erwachsenen.",
+      "en": "Asking doesn’t work right now – go and find a grown-up."
+    }
+  },
+  "notify_defaults": [
+    {
+      "kind": "kids_release_requested",
+      "enabled": true,
+      "can_disable": false,
+      "bundle": false
+    },
+    {
+      "kind": "kids_request_answered",
+      "enabled": true,
+      "can_disable": true,
+      "bundle": false
+    },
+    {
+      "kind": "kids_bedtime_attempt",
+      "enabled": true,
+      "can_disable": true,
+      "bundle": true
+    },
+    {
+      "kind": "kids_pause",
+      "enabled": true,
+      "can_disable": true,
+      "bundle": true
+    },
+    {
+      "kind": "kids_control",
+      "enabled": false,
+      "can_disable": true,
+      "bundle": true
+    },
+    {
+      "kind": "family_change",
+      "enabled": true,
+      "can_disable": true,
+      "bundle": false
+    }
+  ],
+  "notify_actions": [
+    {
+      "id": "yes_30m",
+      "answer": "yes",
+      "preset": "30m",
+      "label": {
+        "de": "Ja, 30 Min.",
+        "en": "Yes, 30 min"
+      }
+    },
+    {
+      "id": "yes_1h",
+      "answer": "yes",
+      "preset": "1h",
+      "label": {
+        "de": "Ja, 1 Std.",
+        "en": "Yes, 1 hour"
+      }
+    },
+    {
+      "id": "no",
+      "answer": "no",
+      "preset": null,
+      "label": {
+        "de": "Nein",
+        "en": "No"
+      }
+    }
+  ],
+  "babysitter": {
+    "presets": [
+      "15m",
+      "30m",
+      "access_end"
+    ],
+    "categories": [
+      "stay_up",
+      "unlock_device",
+      "end_pause"
+    ],
+    "answer_labels": {
+      "15m": {
+        "de": "Ja, 15 Min.",
+        "en": "Yes, 15 min"
+      },
+      "30m": {
+        "de": "Ja, 30 Min.",
+        "en": "Yes, 30 min"
+      },
+      "access_end": {
+        "de": "Bis Ende Babysitting",
+        "en": "Until the end of babysitting"
+      },
+      "no": {
+        "de": "Nein",
+        "en": "No"
+      }
+    },
+    "answered_by": {
+      "de": "Beantwortet von {name} (Babysitter)",
+      "en": "Answered by {name} (babysitter)"
+    }
+  },
+  "settings_defaults": {
+    "requests_enabled": true,
+    "categories": [
+      "stay_up",
+      "unlock_device",
+      "end_pause"
+    ],
+    "request_timeout_minutes": 10,
+    "child_requests_per_hour": 6,
+    "decline_cooldown_minutes": 15,
+    "activity_days": 7
+  },
+  "limits": {
+    "request_timeout_minutes": {
+      "min": 2,
+      "max": 30
+    },
+    "child_requests_per_hour": {
+      "min": 1,
+      "max": 20
+    },
+    "decline_cooldown_minutes": {
+      "min": 0,
+      "max": 120
+    },
+    "activity_days": {
+      "min": 1,
+      "max": 30
+    },
+    "open_requests_per_child_device": 1,
+    "family_writes_per_manager": 30,
+    "family_writes_window_seconds": 600,
+    "family_reads_per_manager_per_minute": 60,
+    "answers_per_manager_per_hour": 60,
+    "release_max_minutes": 720,
+    "request_note_max_length": 80,
+    "answer_token_bytes": 16,
+    "activity_page_max": 200
+  }
+}

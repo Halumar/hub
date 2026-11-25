@@ -1,0 +1,41 @@
+{
+  "name": "nothing",
+  "description": "No thermostat and no sensor: no room values.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "light.kitchen_lights",
+      "state": {
+        "state": "on",
+        "attributes": {
+          "friendly_name": "Küchenlicht",
+          "brightness": 200
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": []
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": null,
+      "humidity": null
+    },
+    "local": {
+      "temperature": null,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": null,
+      "humidity": null
+    }
+  }
+}

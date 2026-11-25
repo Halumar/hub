@@ -1,0 +1,53 @@
+{
+  "description": "Expired guest access: Home Assistant access falls to its strictest value hub, so the device holds no key; widgets and the watch fall to off.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-20T12:00:00Z"
+    },
+    "profile": {
+      "from_suggestion": "guest"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "hub",
+      "source": "access_expired",
+      "reason": "access_expired",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "remote_access": {
+      "value": false,
+      "source": "access_expired",
+      "reason": "access_expired",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "access_expired",
+      "reason": "access_expired",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": false,
+      "source": "access_expired",
+      "reason": "access_expired",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

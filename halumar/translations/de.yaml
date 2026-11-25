@@ -1,0 +1,25 @@
+configuration:
+  log_level:
+    name: Protokollstufe
+    description: Wie ausführlich der Halumar Hub protokolliert. „info“ passt für den Alltag; „debug“ hilft, wenn du ein Problem meldest.
+  mdns_enabled:
+    name: Hub automatisch finden (Bonjour)
+    description: Kündigt den Hub im Heimnetz an, damit die Halumar-Apps auf Telefonen, Tablets und Fernsehern ihn ohne Eingabe einer Adresse finden. Nur ausschalten, wenn du die Ankündigung nicht willst; die Apps brauchen dann die Adresse.
+  tls_enabled:
+    name: Verschlüsselte Verbindung für die Apps (TLS)
+    description: Port 8100 mit HTTPS/WSS anbieten. Die Apps prüfen den Zertifikats-Fingerabdruck, den sie beim Koppeln gespeichert haben. Eingeschaltet lassen.
+  reset_corrupt_database:
+    name: Beschädigte Datenbank zurücksetzen
+    description: Nur wenn der Hub eine beschädigte Datenbank ohne brauchbaren Schnappschuss oder eine Datenbank eines anderen Builds meldet. Der Hub startet dann mit einer LEEREN Datenbank; die alte Datei bleibt erhalten. Danach wieder ausschalten.
+  reset_encryption_key:
+    name: Verschlüsselungsschlüssel zurücksetzen
+    description: Nur wenn der Hub eine beschädigte oder fehlende Schlüsseldatei meldet. Der Hub erzeugt einen neuen Schlüssel. Die gespeicherten Geräte-Token sind dann nicht mehr lesbar; ein Gerät, das Home Assistant danach nicht erreicht, muss neu gekoppelt werden. Danach wieder ausschalten.
+  api_docs:
+    name: API-Dokumentation
+    description: Die API-Dokumentation anbieten (/api/docs, /api/redoc, /api/openapi.json). Nur Home-Assistant-Administratoren können sie öffnen. Ausschalten, wenn du sie nicht brauchst.
+  pairing_qr_camera:
+    name: Kopplungs-QR-Code in Home Assistant
+    description: 'Den Kopplungs-QR-Code in der Kamera „Kopplungsstatus“ der Integration zeigen (für ein Dashboard). „off“ (Standard): nie. „guests“: nur bei einer Gast-Kopplung. „all“: bei jeder Kopplung. Solange er gezeigt wird, können ihn alle lesen, die sich bei diesem Home Assistant anmelden können, auch jedes gekoppelte Gerät mit Schlüssel, Gast- und Kindergeräte eingeschlossen, und 5 bis 10 Minuten lang alle mit der Bildadresse der Kamera; so jemand kann den einmaligen Code zuerst nutzen. Ein Kindergerät könnte damit ein Gastgerät hinzufügen; Gastgeräte haben keine Kindersicherung. Besser „guests“ wählen; mit Kindern im Haus aus lassen. Details in der Dokumentation.'
+network:
+  8099/tcp: Hub-API für die Halumar-Integration und die Admin-Seite (HTTP). Die Apps nutzen Port 8100.
+  8100/tcp: Hub-API für die Halumar-Apps (HTTPS/WSS mit Zertifikats-Pinning).

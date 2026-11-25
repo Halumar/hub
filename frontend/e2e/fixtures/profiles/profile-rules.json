@@ -1,0 +1,2897 @@
+{
+  "catalog_version": 10,
+  "groups": [
+    {
+      "id": "access",
+      "label": {
+        "de": "Zugriff",
+        "en": "Access"
+      }
+    },
+    {
+      "id": "remote",
+      "label": {
+        "de": "Von unterwegs",
+        "en": "When away"
+      }
+    },
+    {
+      "id": "areas",
+      "label": {
+        "de": "Bereiche & Bedienung",
+        "en": "Areas & controls"
+      }
+    },
+    {
+      "id": "kids",
+      "label": {
+        "de": "Kinderregeln",
+        "en": "Kids rules"
+      }
+    },
+    {
+      "id": "features",
+      "label": {
+        "de": "Funktionen",
+        "en": "Features"
+      }
+    },
+    {
+      "id": "home",
+      "label": {
+        "de": "Startseite",
+        "en": "Home screen"
+      }
+    },
+    {
+      "id": "display",
+      "label": {
+        "de": "Darstellung",
+        "en": "Display"
+      }
+    },
+    {
+      "id": "panel",
+      "label": {
+        "de": "Wandpanel",
+        "en": "Wall panel"
+      }
+    },
+    {
+      "id": "location",
+      "label": {
+        "de": "Standort",
+        "en": "Location"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "key": "remote_access",
+      "group": "access",
+      "label": {
+        "de": "Von unterwegs steuern",
+        "en": "Remote access"
+      },
+      "help": {
+        "de": "Steuert Home Assistant auch ausserhalb des Heimnetzes. Mit Kindersicherung gelten die Kinderregeln auch unterwegs. Mit „Nur über den Hub“ bekommt das Gerät dafür einen Home-Assistant-Schlüssel, der nur lesen darf.",
+        "en": "Controls Home Assistant also outside the home network. With parental controls the kids rules apply away from home too. With “Hub only” the device then gets a read-only Home Assistant key."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "critical",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Wer das Gerät in der Hand hat, kann dann von überall dein Zuhause steuern.",
+        "en": "Whoever holds the device can then control your home from anywhere."
+      },
+      "replaces": [
+        "remote_allowed"
+      ],
+      "enforcement": "ha",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "connection_insecure_http",
+      "group": "access",
+      "label": {
+        "de": "Darf Unverschlüsselt immer erlauben",
+        "en": "May always allow unencrypted"
+      },
+      "help": {
+        "de": "Zeigt am Gerät den Schalter „Unverschlüsselt immer erlauben (weniger sicher)“. Er ist dort anfangs aus.",
+        "en": "Shows the switch “Always allow unencrypted (less secure)” on the device. It starts off there."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "android",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "critical",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "child_protection",
+          "cap": false,
+          "reason": "boundary_child_protection"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Das Gerät schickt seinen Zugang zu Home Assistant dann auch unverschlüsselt in Netze, die nicht als Heimnetz bestätigt sind. Ein anderes WLAN mit derselben Adresse kann ihn mitlesen.",
+        "en": "The device then also sends its Home Assistant access unencrypted into networks not confirmed as the home network. Another Wi-Fi network that uses the same address can read it."
+      },
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "control_path",
+      "group": "access",
+      "label": {
+        "de": "Zugang zu Home Assistant",
+        "en": "Home Assistant access"
+      },
+      "help": {
+        "de": "Nur über den Hub: Das Gerät bekommt keinen Home-Assistant-Schlüssel. Es liest und schaltet nur über den Hub und sieht nur, was dieses Profil erlaubt; es funktioniert dort, wo der Hub erreichbar ist (zu Hause). Mit Fernzugriff bekommt es einen Schlüssel, der nur lesen darf (siehe dort). Geprüft: ein Schlüssel, der nur lesen darf; geschaltet wird nur über die geprüfte Aktion von {brand}, lesen kann das Gerät aber jeden Zustand in Home Assistant. Direkt: volle Rechte in Home Assistant; die Regeln gelten nur in {brand}.",
+        "en": "Hub only: the device gets no Home Assistant key. It reads and switches only through the hub and sees only what this profile allows; it works where the hub is reachable (at home). With remote access it gets a read-only key (see there). Checked: a read-only key; it switches only through the checked action of {brand}, but can read every state in Home Assistant. Direct: full rights in Home Assistant; the rules apply only in {brand}."
+      },
+      "type": "enum",
+      "default": "checked",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "critical",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        "hub",
+        "checked",
+        "direct"
+      ],
+      "strictest": "hub",
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": "checked",
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "child_protection",
+          "cap": "checked",
+          "reason": "boundary_child_protection"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Geprüft: Das Gerät bekommt einen Home-Assistant-Schlüssel, der nur lesen darf, und kann jeden Zustand in Home Assistant lesen, auch was dieses Profil ausblendet. Direkt: Wer seinen Schlüssel hat, kann an {brand} vorbei alles schalten.",
+        "en": "Checked: the device gets a read-only Home Assistant key and can read every state in Home Assistant, also what this profile hides. Direct: whoever holds its key can switch everything past {brand}."
+      },
+      "replaces": [],
+      "enforcement": "ha",
+      "enforcement_with_hub_path": "hub",
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "access_hours",
+      "group": "access",
+      "label": {
+        "de": "Zugangszeiten",
+        "en": "Access hours"
+      },
+      "help": {
+        "de": "Das Gerät hat nur in diesen Zeiten Zugang. Ausserhalb bleibt es gekoppelt, sieht aber nichts. Zusätzlich gibt es in Home Assistant einen Schalter „Zugang“ für eigene Zeitpläne.",
+        "en": "The device has access only at these times. Outside them it stays paired but sees nothing. Home Assistant also gets an “Access” switch for your own schedules."
+      },
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "windows": []
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "sensitive",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": {
+        "enabled": true,
+        "windows": []
+      },
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Das Gerät hat dann zu mehr Zeiten Zugang zu deinem Zuhause.",
+        "en": "The device then has access to your home at more times."
+      },
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": "hub",
+      "enforcement_with_checked_path": "ha_control",
+      "watch_limit": "schedule"
+    },
+    {
+      "key": "setup_devices",
+      "group": "access",
+      "label": {
+        "de": "Neue Geräte einrichten",
+        "en": "Set up new devices"
+      },
+      "help": {
+        "de": "Richtet neue Geräte per QR-Code oder Code ein und lädt Gäste ein, für die gewählten Arten. Höchstens mit den eigenen Rechten. Nur für Profile der Art Person.",
+        "en": "Sets up new devices by QR code or code and invites guests, for the chosen kinds. Never with more rights than its own. Only for profiles of kind person."
+      },
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "kinds": []
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "security": "sensitive",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": [
+        "person"
+      ],
+      "order": null,
+      "strictest": {
+        "enabled": false,
+        "kinds": []
+      },
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": {
+            "enabled": false,
+            "kinds": []
+          },
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "child_protection",
+          "cap": {
+            "enabled": false,
+            "kinds": []
+          },
+          "reason": "boundary_child_protection"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Wer dieses Gerät benutzt, kann dann neue Geräte und Gäste der gewählten Arten zu deinem Zuhause hinzufügen.",
+        "en": "Whoever uses this device can then add new devices and guests of the chosen kinds to your home."
+      },
+      "replaces": [
+        "add_devices",
+        "invite_guests"
+      ],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "kinds"
+    },
+    {
+      "key": "family_manager",
+      "group": "access",
+      "label": {
+        "de": "Familienverwaltung",
+        "en": "Family manager"
+      },
+      "help": {
+        "de": "Bestimmt in der App die Kinderregeln der ausgewählten Kinder (nur, was im Profil nicht fest ist), beantwortet ihre Anfragen und sieht ihre Aktivität. Welche Kinder, legst du am Gerät fest. Die App braucht dafür Pro auf diesem Gerät.",
+        "en": "Sets the kids rules of the chosen children in the app (only what the profile does not fix), answers their requests and sees their activity. You choose the children on the device. The app needs Pro on this device for it."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "child_protection",
+          "cap": false,
+          "reason": "boundary_child_protection"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Wer dieses Gerät benutzt, kann dann Schlafenszeit, Pausen und Grenzen der ausgewählten Kinder ändern, soweit das Kinderprofil sie nicht fest vorgibt, und ihre Anfragen beantworten.",
+        "en": "Whoever uses this device can then change bedtime, pauses and limits of the chosen children, as far as the child's profile does not fix them, and answer their requests."
+      },
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "babysitter_requests",
+      "group": "access",
+      "label": {
+        "de": "Anfragen der Kinder beantworten",
+        "en": "Answer children's requests"
+      },
+      "help": {
+        "de": "Bekommt die Anfragen der Kinder, solange Zugang besteht und das Gerät zu Hause ist. Darf nur „Ja, 15 Min.“, „Ja, 30 Min.“, „Bis Ende Babysitting“ oder „Nein“ antworten. Nur für Profile der Art Babysitter.",
+        "en": "Gets the children's requests while it has access and is at home. May only answer “Yes, 15 min”, “Yes, 30 min”, “Until the end of babysitting” or “No”. Only for profiles of kind babysitter."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "security": "sensitive",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": [
+        "babysitter"
+      ],
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [
+        {
+          "boundary": "child_protection",
+          "cap": false,
+          "reason": "boundary_child_protection"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Wer dieses Gerät benutzt, kann den Kindern dann kurze Freigaben geben – höchstens bis zum Ende des Babysittings.",
+        "en": "Whoever uses this device can then briefly allow the children more – at most until the end of babysitting."
+      },
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "access_requests",
+      "group": "access",
+      "label": {
+        "de": "Früher Zugang anfragen",
+        "en": "Ask for early access"
+      },
+      "help": {
+        "de": "Ausserhalb der Zugangszeiten kann das Gerät um Zugang bitten. Wer es eingerichtet hat oder diese Art einrichten darf, antwortet mit Ja und Dauer oder Nein. Wirkt nur mit Zugangszeiten.",
+        "en": "Outside its access hours the device can ask for access. Whoever set it up or may set up this kind answers yes with a duration or no. Only works with access hours."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "android",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Das Gerät kann dann ausserhalb seiner Zugangszeiten um Zugang bitten.",
+        "en": "The device can then ask for access outside its access hours."
+      },
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "app_settings",
+      "group": "access",
+      "label": {
+        "de": "Einstellungen in der App",
+        "en": "Settings in the app"
+      },
+      "help": {
+        "de": "Offen, nur mit der Fern-PIN dieses Geräts oder ausgeblendet.",
+        "en": "Open, only with this device's remote PIN, or hidden."
+      },
+      "type": "enum",
+      "default": "open",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "android",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "critical",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        "hidden",
+        "pin",
+        "open"
+      ],
+      "strictest": "hidden",
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": "hidden",
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "child_protection",
+          "cap": "pin",
+          "reason": "boundary_child_protection"
+        }
+      ],
+      "prerequisite": {
+        "when": "pin",
+        "requires": "remote_pin",
+        "otherwise": "hidden"
+      },
+      "loosening_warning": {
+        "de": "Die Einstellungen der App sind dann leichter zugänglich.",
+        "en": "The app settings will then be easier to open."
+      },
+      "replaces": [
+        "settings_hidden",
+        "settings_lock_enabled"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "app_settings_biometrics",
+      "group": "access",
+      "label": {
+        "de": "Biometrie statt Fern-PIN",
+        "en": "Biometrics instead of remote PIN"
+      },
+      "help": {
+        "de": "Face ID, Touch ID oder Fingerabdruck öffnet die Einstellungen statt der Fern-PIN.",
+        "en": "Face ID, Touch ID or fingerprint opens the settings instead of the remote PIN."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "security": "sensitive",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "child_protection",
+          "cap": false,
+          "reason": "boundary_child_protection"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Wer das Gerät mit Gesicht oder Fingerabdruck entsperren kann, öffnet dann auch die Einstellungen.",
+        "en": "Whoever can unlock the device with a face or fingerprint can then also open the settings."
+      },
+      "replaces": [
+        "settings_require_biometrics"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "remote_control",
+      "group": "remote",
+      "label": {
+        "de": "Von unterwegs bedienen",
+        "en": "Control when away"
+      },
+      "help": {
+        "de": "Gilt nur, wenn das Gerät von unterwegs verbunden ist: pro Gerätetyp oder Gerät Bedienen, Nur anzeigen oder Ausblenden.",
+        "en": "Applies only while the device is connected from away: per device type or device operate, show only or hide."
+      },
+      "type": "object",
+      "default": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view"
+        },
+        "entities": {}
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "critical",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": {
+        "default": "hidden",
+        "domains": {},
+        "entities": {}
+      },
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Wer das Gerät in der Hand hat, kann dann von überall mehr bedienen.",
+        "en": "Whoever holds the device can then operate more from anywhere."
+      },
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": "ha_control",
+      "watch_limit": "remote_levels"
+    },
+    {
+      "key": "areas",
+      "group": "areas",
+      "label": {
+        "de": "Sichtbare Bereiche",
+        "en": "Visible areas"
+      },
+      "help": {
+        "de": "Mit „Nur über den Hub“ zeigt und schaltet der Hub nur diese Bereiche. Mit einem Home-Assistant-Schlüssel kann das Gerät trotzdem alles in Home Assistant lesen; mit „Geprüft“ schaltet es nur in diesen Bereichen, mit „Direkt“ kann es an {brand} vorbei schalten.",
+        "en": "With “Hub only” the hub shows and switches only these areas. With a Home Assistant key the device can still read everything in Home Assistant; with “Checked” it switches only in these areas, with “Direct” it can switch around {brand}."
+      },
+      "type": "object",
+      "default": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "sensitive",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": {
+        "mode": "selected",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Das Gerät sieht dann mehr Bereiche.",
+        "en": "The device will then see more areas."
+      },
+      "replaces": [
+        "tags",
+        "guest_invite_defaults.tags",
+        "guest_invite_defaults.area_ids"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": "hub",
+      "enforcement_with_checked_path": "ha_control",
+      "watch_limit": "areas"
+    },
+    {
+      "key": "control_mode_max",
+      "group": "areas",
+      "label": {
+        "de": "Bedienung höchstens",
+        "en": "Controls up to"
+      },
+      "help": {
+        "de": "Begrenzt den Steuermodus aller Bereiche und Geräte.",
+        "en": "Limits the control mode of all areas and devices."
+      },
+      "type": "enum",
+      "default": "full",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        "basic",
+        "advanced",
+        "full"
+      ],
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "default_control_mode (per device)"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "camera_live",
+      "group": "areas",
+      "label": {
+        "de": "Kamera-Livebild",
+        "en": "Live camera image"
+      },
+      "help": {
+        "de": "Zeigt Kameras live statt als Standbild, auch auf dem Fernseher (mit Bild-im-Bild, wo möglich).",
+        "en": "Shows cameras live instead of still images, also on the TV (with picture-in-picture where possible)."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "android",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "sensitive",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Das Gerät zeigt dann Kamera-Livebilder.",
+        "en": "The device will then show live camera images."
+      },
+      "replaces": [
+        "camera_live_preview"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "kids_blocked_types",
+      "group": "kids",
+      "label": {
+        "de": "Gesperrte Gerätetypen",
+        "en": "Blocked device types"
+      },
+      "help": {
+        "de": "Diese Geräte kann das Kind nicht steuern.",
+        "en": "The child cannot control these devices."
+      },
+      "type": "list",
+      "default": [
+        "lock",
+        "alarm_control_panel",
+        "cover:garage",
+        "cover:gate",
+        "camera"
+      ],
+      "default_fixed": true,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "critical",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "kids_profiles.rules.blocked_types"
+      ],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_quiet_hours",
+      "group": "kids",
+      "label": {
+        "de": "Schlafenszeit",
+        "en": "Bedtime"
+      },
+      "help": {
+        "de": "In der Schlafenszeit geht nur noch Ausschalten und Leiser.",
+        "en": "During bedtime only switching off and turning down works."
+      },
+      "type": "list",
+      "default": [
+        {
+          "days": [
+            "mon",
+            "tue",
+            "wed",
+            "thu",
+            "fri"
+          ],
+          "start": "20:00",
+          "end": "06:30"
+        },
+        {
+          "days": [
+            "sat",
+            "sun"
+          ],
+          "start": "21:00",
+          "end": "07:00"
+        }
+      ],
+      "default_fixed": true,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "kids_profiles.rules.quiet_hours"
+      ],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_rate_limit",
+      "group": "kids",
+      "label": {
+        "de": "Tempo-Limit",
+        "en": "Rate limit"
+      },
+      "help": {
+        "de": "Zu viele Aktionen hintereinander führen zu einer Pause.",
+        "en": "Too many actions in a row start a pause."
+      },
+      "type": "object",
+      "default": {
+        "max_actions": 6,
+        "window_seconds": 60,
+        "cooldown_seconds": 300
+      },
+      "default_fixed": true,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "kids_profiles.rules.rate_limit"
+      ],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_rate_limit_all",
+      "group": "kids",
+      "label": {
+        "de": "Pause für alles",
+        "en": "Pause everything"
+      },
+      "help": {
+        "de": "Schaltet das Kind in kurzer Zeit zu viele verschiedene Geräte oder zu oft, pausiert alles.",
+        "en": "If the child switches too many different devices or too often in a short time, everything pauses."
+      },
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "max_actions": 12,
+        "max_entities": 4,
+        "window_seconds": 60,
+        "cooldown_seconds": 300
+      },
+      "default_fixed": true,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_volume_max",
+      "group": "kids",
+      "label": {
+        "de": "Lautstärke höchstens",
+        "en": "Volume up to"
+      },
+      "help": {
+        "de": "Lautsprecher werden höchstens so laut.",
+        "en": "Speakers get at most this loud."
+      },
+      "type": "integer",
+      "default": 40,
+      "default_fixed": true,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "kids_profiles.rules.volume_max"
+      ],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_color_lock",
+      "group": "kids",
+      "label": {
+        "de": "Farben sperren",
+        "en": "Lock colors"
+      },
+      "help": {
+        "de": "Lampen behalten ihre Farbe; Ein/Aus und Helligkeit gehen.",
+        "en": "Lights keep their color; on/off and brightness still work."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": true,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "kids_profiles.rules.color_lock"
+      ],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_requests",
+      "group": "kids",
+      "label": {
+        "de": "„Darf ich noch?“",
+        "en": "“Can I have more time?”"
+      },
+      "help": {
+        "de": "Das Kind kann Familienverwalter um eine Freigabe bitten: länger wach bleiben, ein Gerät benutzen, Pause beenden. Aus = kein Anfrage-Knopf.",
+        "en": "The child can ask a family manager for permission: stay up longer, use a device, end the break. Off = no request button."
+      },
+      "type": "object",
+      "default": {
+        "enabled": true,
+        "categories": [
+          "stay_up",
+          "unlock_device",
+          "end_pause"
+        ]
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_exceptions",
+      "group": "kids",
+      "label": {
+        "de": "Ausnahmen für Bereiche und Geräte",
+        "en": "Exceptions for areas and devices"
+      },
+      "help": {
+        "de": "Andere Regeln für einen Bereich, ein Gerät oder den eigenen Bereich. Gilt für alle Geräte mit diesem Profil.",
+        "en": "Different rules for an area, a device or the own area. Applies to all devices with this profile."
+      },
+      "type": "list",
+      "default": [],
+      "default_fixed": true,
+      "fixed_checkbox": false,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "watchos",
+        "android",
+        "android_tablet",
+        "android_tv",
+        "wearos"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "kids_profile_rules"
+      ],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kids_watch",
+      "group": "kids",
+      "label": {
+        "de": "Uhr erlauben",
+        "en": "Allow a watch"
+      },
+      "help": {
+        "de": "Das Kind darf mit diesem iPhone eine Apple Watch hinzufügen; eine erwachsene Person bestätigt das Koppeln mit dem Code. Die Uhr bekommt dieselben Kinderregeln wie das iPhone und schaltet nur über {brand} in Home Assistant, darum braucht sie Fernzugriff im Profil.",
+        "en": "The child may add an Apple Watch with this iPhone; an adult confirms the pairing with the code. The watch gets the same kids rules as the iPhone and switches only through {brand} in Home Assistant, so it needs remote access in the profile."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": true,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Das Kind kann dann mit einer Apple Watch schalten, die dieselben Kinderregeln hat wie das iPhone.",
+        "en": "The child can then switch with an Apple Watch that has the same kids rules as the iPhone."
+      },
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "quick_access",
+      "group": "features",
+      "label": {
+        "de": "Widgets, Steuerelemente & Siri",
+        "en": "Widgets, controls & Siri"
+      },
+      "help": {
+        "de": "Aus, nur Zustände anzeigen oder auch schalten. Auf Android: Widgets, Schnelleinstellungen und Gerätesteuerung. Mit „Nur über den Hub“ nur mit Fernzugriff, weil diese Funktionen einen eigenen Home-Assistant-Schlüssel des Geräts brauchen.",
+        "en": "Off, only show states, or also switch. On Android: widgets, quick settings tiles and device controls. With “Hub only” only with remote access, because these features need the device's own Home Assistant key."
+      },
+      "type": "enum",
+      "default": "status",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "watchos",
+        "android",
+        "android_tablet",
+        "wearos"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        "off",
+        "status",
+        "control"
+      ],
+      "strictest": "off",
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": "off",
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "hub_only",
+          "cap": "off",
+          "reason": "boundary_hub_only",
+          "lifted_by": "remote_access"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Widgets und Siri können dann mehr steuern, auch auf dem Sperrbildschirm.",
+        "en": "Widgets and Siri can then control more, also on the lock screen."
+      },
+      "replaces": [
+        "quick_access_enabled",
+        "quick_access_max"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "watch",
+      "group": "features",
+      "label": {
+        "de": "Uhr",
+        "en": "Watch"
+      },
+      "help": {
+        "de": "Mit diesem Telefon darf eine Uhr hinzugefügt werden (Apple Watch am iPhone). Mit Kindersicherung nur, wenn „Uhr erlauben“ an ist; mit „Nur über den Hub“ nur mit Fernzugriff, weil eine Uhr einen eigenen Home-Assistant-Schlüssel braucht.",
+        "en": "A watch may be added with this phone (Apple Watch with an iPhone). With parental controls only when “Allow a watch” is on; with “Hub only” only with remote access, because a watch needs its own Home Assistant key."
+      },
+      "type": "boolean",
+      "default": true,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "security": "sensitive",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": false,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        },
+        {
+          "boundary": "child_protection",
+          "cap": false,
+          "reason": "boundary_kids_watch",
+          "lifted_by": "kids_watch"
+        },
+        {
+          "boundary": "hub_only",
+          "cap": false,
+          "reason": "boundary_hub_only",
+          "lifted_by": "remote_access"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Mit diesem Telefon kann dann eine Uhr hinzugefügt werden, die dein Zuhause steuert.",
+        "en": "A watch that controls your home can then be added with this phone."
+      },
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "ordered"
+    },
+    {
+      "key": "scan_tags",
+      "group": "features",
+      "label": {
+        "de": "NFC- und QR-Tags",
+        "en": "NFC and QR tags"
+      },
+      "help": {
+        "de": "Tags, die im Hub eingerichtet sind, öffnen Geräte und Bereiche oder schalten wie ein Widget. Was ein Tag tut, steht im Hub, nicht auf dem Tag.",
+        "en": "Tags set up in the hub open devices and areas or switch like a widget. What a tag does is stored in the hub, not on the tag."
+      },
+      "type": "boolean",
+      "default": true,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": null,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "card_style",
+      "group": "display",
+      "label": {
+        "de": "Kartenstil",
+        "en": "Card style"
+      },
+      "help": {
+        "de": "Ruhig oder Farbflächen.",
+        "en": "Calm or color areas."
+      },
+      "type": "enum",
+      "default": "calm",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "card_style",
+        "card_style_locked"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "appearance",
+      "group": "display",
+      "label": {
+        "de": "Erscheinungsbild",
+        "en": "Appearance"
+      },
+      "help": {
+        "de": "System, hell oder dunkel.",
+        "en": "System, light or dark."
+      },
+      "type": "enum",
+      "default": "system",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "android",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "display.appearance (app)"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "header",
+      "group": "home",
+      "label": {
+        "de": "Kopfbereich mit Uhr & Wetter",
+        "en": "Header with clock & weather"
+      },
+      "help": {
+        "de": "Wichtige Hinweise bleiben auch ohne Kopfbereich sichtbar.",
+        "en": "Important notices stay visible without the header."
+      },
+      "type": "boolean",
+      "default": true,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "android",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "show_header"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "home_header",
+      "group": "home",
+      "label": {
+        "de": "Kopf der Startseite",
+        "en": "Home screen head"
+      },
+      "help": {
+        "de": "Wetter-Stimmung: Himmel im Farbton des Wetters, grosse Temperatur, Stundenreihe. Kompakt: eine Zeile mit Begrüssung und Wetter, die Bereiche beginnen weiter oben. Dazu Status-Kapseln, Begrüssung und Wetter einzeln. Gilt auf Telefonen und Tablets ausser im Wandpanel-Modus.",
+        "en": "Weather mood: sky in the tone of the weather, large temperature, hourly row. Compact: one line with greeting and weather, the areas start higher up. Plus status capsules, greeting and weather one by one. Applies on phones and tablets except in wall panel mode."
+      },
+      "type": "object",
+      "default": {
+        "style": "weather_mood",
+        "status_chips": true,
+        "greeting": true,
+        "weather": true
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "search_filter",
+      "group": "display",
+      "label": {
+        "de": "Suche und Filter",
+        "en": "Search & filter"
+      },
+      "help": {
+        "de": "Suchfeld und Filter-Knopf.",
+        "en": "Search field and filter button."
+      },
+      "type": "boolean",
+      "default": true,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "show_search_bar",
+        "show_filter_button"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "columns",
+      "group": "display",
+      "label": {
+        "de": "Spalten pro Bereich",
+        "en": "Columns per area"
+      },
+      "help": {
+        "de": "Auf dem Telefon höchstens 2.",
+        "en": "At most 2 on a phone."
+      },
+      "type": "integer",
+      "default": 2,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados",
+        "android"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "area_card_columns"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "power_button",
+      "group": "display",
+      "label": {
+        "de": "Power-Knopf",
+        "en": "Power button"
+      },
+      "help": {
+        "de": "Schaltet alle gewählten Gerätearten eines Bereichs aus.",
+        "en": "Switches off all chosen device kinds of an area."
+      },
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "domains": [
+          "light"
+        ]
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "power_button_enabled",
+        "power_button_domains"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "notification_level",
+      "group": "display",
+      "label": {
+        "de": "Mitteilungen",
+        "en": "Notifications"
+      },
+      "help": {
+        "de": "Alle, nur wichtige oder keine. Wichtige Meldungen (Alarm, Rauch, Wasser) blendet kein Profil aus; sie erscheinen, solange die App offen ist.",
+        "en": "All, only important ones or none. Important notifications (alarm, smoke, water) are never hidden by a profile; they appear while the app is open."
+      },
+      "type": "enum",
+      "default": "all",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        "none",
+        "important",
+        "all"
+      ],
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "notification_stack",
+      "group": "display",
+      "label": {
+        "de": "Gestapelte Meldungen",
+        "en": "Stacked notifications"
+      },
+      "help": {
+        "de": "Mehrere offene Meldungen einzeln, als Banner oder als Karussell.",
+        "en": "Several open notifications one at a time, as a banner or as a carousel."
+      },
+      "type": "enum",
+      "default": "banner",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "notification_stacking",
+        "notification_stacked_style"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "kiosk",
+      "group": "panel",
+      "label": {
+        "de": "Wandpanel-Modus",
+        "en": "Wall panel mode"
+      },
+      "help": {
+        "de": "Vollbild, Bildschirm bleibt wach.",
+        "en": "Full screen, the screen stays awake."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ipados",
+        "tvos",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": null,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "kiosk_mode",
+        "keep_awake (app)"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_start",
+      "group": "panel",
+      "label": {
+        "de": "Startbereich",
+        "en": "Start area"
+      },
+      "help": {
+        "de": "Übersicht, eigener Bereich oder ein bestimmter Bereich.",
+        "en": "Overview, own area or a specific area."
+      },
+      "type": "object",
+      "default": {
+        "mode": "overview",
+        "area_id": null
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ipados",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "panel_home_area"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_auto_home",
+      "group": "panel",
+      "label": {
+        "de": "Zurück zum Start nach",
+        "en": "Back to start after"
+      },
+      "help": {
+        "de": "Minuten ohne Berührung; 0 = nie.",
+        "en": "Minutes without touch; 0 = never."
+      },
+      "type": "integer",
+      "default": 0,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ipados",
+        "tvos",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "panel_auto_home_after"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_dim",
+      "group": "panel",
+      "label": {
+        "de": "Dimmen nach",
+        "en": "Dim after"
+      },
+      "help": {
+        "de": "Minuten; 0 = nie.",
+        "en": "Minutes; 0 = never."
+      },
+      "type": "integer",
+      "default": 0,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ipados",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "panel_dim_after"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_screensaver",
+      "group": "panel",
+      "label": {
+        "de": "Bildschirmschoner nach",
+        "en": "Screensaver after"
+      },
+      "help": {
+        "de": "Minuten; 0 = nie.",
+        "en": "Minutes; 0 = never."
+      },
+      "type": "integer",
+      "default": 0,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ipados",
+        "tvos",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "panel_screensaver_after"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_night",
+      "group": "panel",
+      "label": {
+        "de": "Nachtmodus",
+        "en": "Night mode"
+      },
+      "help": {
+        "de": "Aus, nach Zeitplan oder nach Sonnenstand; Helligkeit in der Nacht.",
+        "en": "Off, by schedule or by the sun; brightness at night."
+      },
+      "type": "object",
+      "default": {
+        "mode": "off",
+        "start": "22:00",
+        "end": "06:00",
+        "brightness": 20
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": true,
+      "platforms": [
+        "ipados",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [
+        "panel_night_mode",
+        "panel_night_start",
+        "panel_night_end",
+        "panel_night_brightness"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_remote",
+      "group": "panel",
+      "label": {
+        "de": "Steuerung aus Home Assistant",
+        "en": "Control from Home Assistant"
+      },
+      "help": {
+        "de": "Helligkeit, Aufwecken, Bildschirmschoner und Startbereich des Wandpanels als Entitäten am Gerät in Home Assistant. Bedienen dürfen nur Home-Assistant-Admins und Automationen, nie andere Geräte. An in den Vorschlägen Wandpanel, Fernseher und Wandpanel Kinderzimmer, aus in allen anderen Vorschlägen.",
+        "en": "Brightness, wake, screensaver and start area of the wall panel as entities of the device in Home Assistant. Only Home Assistant admins and automations may operate them, never other devices. On in the suggestions Wall panel, TV and Kids' room panel, off in every other suggestion."
+      },
+      "type": "boolean",
+      "default": true,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ipados",
+        "tvos",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": [
+        false,
+        true
+      ],
+      "strictest": null,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_sensors",
+      "group": "features",
+      "label": {
+        "de": "Werte in Home Assistant",
+        "en": "Values in Home Assistant"
+      },
+      "help": {
+        "de": "Welche Werte des Geräts als Sensoren in Home Assistant erscheinen: Akku, Laden, Bildschirm (auf Telefonen und Tablets ohne Wandpanel „App aktiv“), Helligkeit (nur solange die App im Vordergrund ist), Umgebungslicht und Akkutemperatur (nur Android). Gilt für alle Geräte ausser Uhren; Gäste nie.",
+        "en": "Which values of the device appear as sensors in Home Assistant: battery, charging, screen (on phones and tablets without wall panel “app active”), brightness (only while the app is in front), ambient light and battery temperature (Android only). Applies to every device except watches; never for guests."
+      },
+      "type": "list",
+      "default": [
+        "battery",
+        "charging",
+        "screen",
+        "brightness"
+      ],
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "ipados",
+        "tvos",
+        "android",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_wake",
+      "group": "panel",
+      "label": {
+        "de": "Aufwecken durch Melder",
+        "en": "Wake from sensors"
+      },
+      "help": {
+        "de": "Bewegungs-, Präsenz-, Tür- oder Klingel-Entitäten aus Home Assistant wecken das Panel wie eine Berührung – ohne Automation. Auf Android auch der Näherungssensor (nie als Sensor in Home Assistant). Keine Kamera.",
+        "en": "Motion, presence, door or doorbell entities from Home Assistant wake the panel like a touch – without an automation. On Android also the proximity sensor (never a sensor in Home Assistant). No camera."
+      },
+      "type": "object",
+      "default": {
+        "entities": [],
+        "proximity": false
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ipados",
+        "tvos",
+        "android_tablet",
+        "android_tv"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_brightness",
+      "group": "panel",
+      "label": {
+        "de": "Helligkeit",
+        "en": "Brightness"
+      },
+      "help": {
+        "de": "System, fest, nach einem Helligkeitssensor aus Home Assistant (Kurve) oder nach Zeitplan. Gedimmt senkt die echte Hintergrundbeleuchtung; der Nachtmodus bleibt die Obergrenze.",
+        "en": "System, fixed, by an illuminance sensor from Home Assistant (curve) or by schedule. Dimmed lowers the real backlight; night mode stays the upper limit."
+      },
+      "type": "object",
+      "default": {
+        "mode": "system"
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": true,
+      "default_user_choice": false,
+      "platforms": [
+        "ipados",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_announce",
+      "group": "panel",
+      "label": {
+        "de": "Durchsagen und Gong",
+        "en": "Announcements and chime"
+      },
+      "help": {
+        "de": "Home Assistant kann auf dem Wandpanel Text ansagen und einen Gong spielen. Höchstlautstärke in Prozent; im Nachtmodus nur als Text.",
+        "en": "Home Assistant can announce text and play a chime on the wall panel. Maximum volume in percent; during night mode text only."
+      },
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "volume_max": 80,
+        "respect_night": true
+      },
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ipados",
+        "android_tablet"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "hub",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "panel_off_mode",
+      "group": "panel",
+      "label": {
+        "de": "Bildschirm aus",
+        "en": "Screen off"
+      },
+      "help": {
+        "de": "Das iPad zeigt immer ein Schwarzbild, auch mit dem Wert off.",
+        "en": "The iPad always shows a black screen, also with the value off."
+      },
+      "type": "enum",
+      "default": "black",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ipados"
+      ],
+      "security": "normal",
+      "pro": true,
+      "requires_child_protection": false,
+      "profile_kinds": null,
+      "order": null,
+      "strictest": null,
+      "boundaries": [],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    },
+    {
+      "key": "location",
+      "group": "location",
+      "label": {
+        "de": "Standort mit dem Hub teilen",
+        "en": "Share location with the hub"
+      },
+      "help": {
+        "de": "Höchstens so viel darf die Person teilen. {brand} fragt nach dem Koppeln danach und später bei Bedarf. Der Standort geht über den Hub an Home Assistant.",
+        "en": "The most the person may share. {brand} asks for it after pairing and later when needed. The location goes through the hub to Home Assistant."
+      },
+      "type": "enum",
+      "default": "off",
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "security": "sensitive",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": [
+        "person",
+        "child"
+      ],
+      "order": [
+        "off",
+        "foreground",
+        "background"
+      ],
+      "strictest": "off",
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": "off",
+          "reason": "boundary_guest"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": {
+        "de": "Das Gerät darf dann seinen Standort mit deinem Zuhause teilen.",
+        "en": "The device may then share its location with your home."
+      },
+      "replaces": [
+        "location_tracking_enabled",
+        "location_background_enabled"
+      ],
+      "enforcement": "app",
+      "enforcement_with_hub_path": "hub",
+      "enforcement_with_checked_path": "ha",
+      "watch_limit": "none"
+    },
+    {
+      "key": "location_required",
+      "group": "location",
+      "label": {
+        "de": "Standort erforderlich",
+        "en": "Location required"
+      },
+      "help": {
+        "de": "Solange der Standort nicht geteilt wird, zeigt {brand} auf der Startseite einen Hinweis.",
+        "en": "As long as the location is not shared, {brand} shows a notice on the home screen."
+      },
+      "type": "boolean",
+      "default": false,
+      "default_fixed": false,
+      "fixed_checkbox": true,
+      "user_choice_allowed": false,
+      "default_user_choice": false,
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "security": "normal",
+      "pro": false,
+      "requires_child_protection": false,
+      "profile_kinds": [
+        "person",
+        "child"
+      ],
+      "order": [
+        false,
+        true
+      ],
+      "strictest": null,
+      "boundaries": [
+        {
+          "boundary": "guest",
+          "cap": false,
+          "reason": "boundary_guest"
+        }
+      ],
+      "prerequisite": null,
+      "loosening_warning": null,
+      "replaces": [],
+      "enforcement": "app",
+      "enforcement_with_hub_path": null,
+      "enforcement_with_checked_path": null,
+      "watch_limit": "none"
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "guest",
+      "label": {
+        "de": "Gastzugang",
+        "en": "Guest access"
+      },
+      "effects": {
+        "de": "Wird beim Koppeln festgelegt und läuft ab. Gäste, Haushüter und Babysitter laden niemanden ein, fügen keine Geräte hinzu, sehen keine Einstellungen und bekommen keine Pro-Funktionen (Widgets, Uhr, Wandpanel). Ihr „Zugang zu Home Assistant“ ist höchstens „Geprüft“. Fernzugriff ist eine normale Profilregel.",
+        "en": "Set when pairing and expires. Guests, house sitters and babysitters invite nobody, add no devices, see no settings and get no Pro features (widgets, watch, wall panel). Their “Home Assistant access” is at most “Checked”. Remote access is a normal profile rule."
+      }
+    },
+    {
+      "id": "child_protection",
+      "label": {
+        "de": "Kindersicherung",
+        "en": "Parental controls"
+      },
+      "effects": {
+        "de": "Jede Aktion wird geprüft: vom Hub, wo er erreichbar ist, sonst von der {brand}-Integration in Home Assistant (nur wenn das Gerät einen Schlüssel hat: „Geprüft“, oder „Nur über den Hub“ mit Fernzugriff). „Zugang zu Home Assistant“ höchstens „Geprüft“; eine Uhr nur mit „Uhr erlauben“ und Bestätigung durch eine erwachsene Person, mit denselben Kinderregeln; keine Rechte; Einstellungen höchstens mit Fern-PIN; Kinderregeln werden durchgesetzt. Die App auf dem Gerät des Kindes braucht {brand} Pro; ohne Pro steuert sie nichts.",
+        "en": "Every action is checked: by the hub where it is reachable, otherwise by the {brand} integration in Home Assistant (only when the device holds a key: “Checked”, or “Hub only” with remote access). “Home Assistant access” at most “Checked”; a watch only with “Allow a watch” and an adult's confirmation, with the same kids rules; no rights; settings at most with remote PIN; kids rules are enforced. The app on the child's device needs {brand} Pro; without Pro it controls nothing."
+      }
+    },
+    {
+      "id": "hub_only",
+      "label": {
+        "de": "Nur über den Hub",
+        "en": "Hub only"
+      },
+      "effects": {
+        "de": "Das Gerät hat keinen Home-Assistant-Schlüssel, ausser das Profil erlaubt Fernzugriff. Funktionen, die ohne die App im Hintergrund arbeiten (Widgets, Siri und Kurzbefehle, Steuerelemente, Komplikationen, eine Uhr), brauchen einen solchen Schlüssel.",
+        "en": "The device holds no Home Assistant key unless the profile allows remote access. Features that work in the background without the app (widgets, Siri and shortcuts, controls, complications, a watch) need such a key."
+      }
+    }
+  ],
+  "profile_kinds": [
+    {
+      "id": "guest",
+      "label": {
+        "de": "Gast",
+        "en": "Guest"
+      },
+      "plural": {
+        "de": "Gäste",
+        "en": "Guests"
+      },
+      "icon": "mdi:account-clock",
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "guest_access": true
+    },
+    {
+      "id": "child",
+      "label": {
+        "de": "Kind",
+        "en": "Child"
+      },
+      "plural": {
+        "de": "Kinder",
+        "en": "Children"
+      },
+      "icon": "mdi:human-child",
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "guest_access": false
+    },
+    {
+      "id": "panel",
+      "label": {
+        "de": "Wandpanel",
+        "en": "Wall panel"
+      },
+      "plural": {
+        "de": "Wandpanels",
+        "en": "Wall panels"
+      },
+      "icon": "mdi:tablet-dashboard",
+      "platforms": [
+        "ipados",
+        "android_tablet"
+      ],
+      "guest_access": false
+    },
+    {
+      "id": "tv",
+      "label": {
+        "de": "Fernseher",
+        "en": "TV"
+      },
+      "plural": {
+        "de": "Fernseher",
+        "en": "TVs"
+      },
+      "icon": "mdi:television",
+      "platforms": [
+        "tvos",
+        "android_tv"
+      ],
+      "guest_access": false
+    },
+    {
+      "id": "house_sitter",
+      "label": {
+        "de": "Haushüter",
+        "en": "House sitter"
+      },
+      "plural": {
+        "de": "Haushüter",
+        "en": "House sitters"
+      },
+      "icon": "mdi:key-variant",
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "guest_access": true
+    },
+    {
+      "id": "babysitter",
+      "label": {
+        "de": "Babysitter",
+        "en": "Babysitter"
+      },
+      "plural": {
+        "de": "Babysitter",
+        "en": "Babysitters"
+      },
+      "icon": "mdi:baby-carriage",
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "guest_access": true
+    },
+    {
+      "id": "person",
+      "label": {
+        "de": "Person",
+        "en": "Person"
+      },
+      "plural": {
+        "de": "Personen",
+        "en": "People"
+      },
+      "icon": "mdi:account",
+      "platforms": [
+        "ios",
+        "ipados",
+        "android",
+        "android_tablet"
+      ],
+      "guest_access": false
+    }
+  ],
+  "reasons": [
+    {
+      "code": "catalog_default",
+      "source": "default",
+      "admin": {
+        "de": "Standard von {brand}",
+        "en": "{brand} default"
+      },
+      "device": null
+    },
+    {
+      "code": "profile",
+      "source": "profile",
+      "admin": {
+        "de": "Vom Profil ‹{profile}›",
+        "en": "From profile ‹{profile}›"
+      },
+      "device": {
+        "de": "Von {admin} festgelegt",
+        "en": "Set by {admin}"
+      }
+    },
+    {
+      "code": "user_choice",
+      "source": null,
+      "admin": {
+        "de": "Am Gerät wählbar · Start: {value}",
+        "en": "User's choice · starts with {value}"
+      },
+      "device": {
+        "de": "Deine Einstellung · Vorschlag: {value}",
+        "en": "Your setting · suggested: {value}"
+      }
+    },
+    {
+      "code": "device",
+      "source": "device",
+      "admin": {
+        "de": "Für dieses Gerät angepasst · Profil: {profile_value}",
+        "en": "Adjusted for this device · profile: {profile_value}"
+      },
+      "device": {
+        "de": "Von {admin} für dieses Gerät festgelegt",
+        "en": "Set by {admin} for this device"
+      }
+    },
+    {
+      "code": "device_temporary",
+      "source": "device",
+      "admin": {
+        "de": "Angepasst bis {until} · danach: {then}",
+        "en": "Adjusted until {until} · then: {then}"
+      },
+      "device": {
+        "de": "Gilt bis {until}",
+        "en": "Until {until}"
+      }
+    },
+    {
+      "code": "boundary_guest",
+      "source": "boundary",
+      "admin": {
+        "de": "Bei Gastzugängen nicht möglich",
+        "en": "Not available for guest access"
+      },
+      "device": {
+        "de": "Auf diesem Gerät nicht vorgesehen",
+        "en": "Not available on this device"
+      }
+    },
+    {
+      "code": "boundary_child_protection",
+      "source": "boundary",
+      "admin": {
+        "de": "Wegen Kindersicherung",
+        "en": "Because of parental controls"
+      },
+      "device": {
+        "de": "Auf diesem Gerät nicht vorgesehen",
+        "en": "Not available on this device"
+      }
+    },
+    {
+      "code": "boundary_kids_watch",
+      "source": "boundary",
+      "admin": {
+        "de": "Mit Kindersicherung nur mit „Uhr erlauben“ (Kinderregeln)",
+        "en": "With parental controls only with “Allow a watch” (kids rules)"
+      },
+      "device": {
+        "de": "Auf diesem Gerät nicht vorgesehen",
+        "en": "Not available on this device"
+      }
+    },
+    {
+      "code": "boundary_hub_only",
+      "source": "boundary",
+      "admin": {
+        "de": "Braucht einen eigenen Home-Assistant-Schlüssel: mit „Nur über den Hub“ ohne Fernzugriff nicht möglich",
+        "en": "Needs the device's own Home Assistant key: not possible with “Hub only” without remote access"
+      },
+      "device": {
+        "de": "Auf diesem Gerät nicht vorgesehen",
+        "en": "Not available on this device"
+      }
+    },
+    {
+      "code": "platform_needs_key",
+      "source": "boundary",
+      "admin": {
+        "de": "Auf {platform} hat das Gerät immer einen eigenen Schlüssel, der nur lesen darf („Geprüft“)",
+        "en": "On {platform} the device always has its own read-only key (“Checked”)"
+      },
+      "device": {
+        "de": "Auf diesem Gerätetyp immer so",
+        "en": "Always so on this device type"
+      }
+    },
+    {
+      "code": "limited_by_phone",
+      "source": "boundary",
+      "admin": {
+        "de": "Begrenzt durch das Telefon ‹{device}›",
+        "en": "Limited by its phone ‹{device}›"
+      },
+      "device": {
+        "de": "Durch dein Telefon begrenzt",
+        "en": "Limited by your phone"
+      }
+    },
+    {
+      "code": "prerequisite_missing",
+      "source": "prerequisite",
+      "admin": {
+        "de": "Braucht eine Fern-PIN auf diesem Gerät · bis dahin ausgeblendet",
+        "en": "Needs a remote PIN on this device · hidden until then"
+      },
+      "device": null
+    },
+    {
+      "code": "not_applicable",
+      "source": "not_applicable",
+      "admin": {
+        "de": "Gilt nicht für {platform}",
+        "en": "Does not apply to {platform}"
+      },
+      "device": null
+    },
+    {
+      "code": "requires_remote_access",
+      "source": "not_applicable",
+      "admin": {
+        "de": "Gilt nur mit Fernzugriff",
+        "en": "Only with remote access"
+      },
+      "device": null
+    },
+    {
+      "code": "requires_child_protection",
+      "source": "not_applicable",
+      "admin": {
+        "de": "Gilt nur mit Kindersicherung",
+        "en": "Only with parental controls"
+      },
+      "device": null
+    },
+    {
+      "code": "requires_profile_kind",
+      "source": "not_applicable",
+      "admin": {
+        "de": "Gilt nur für Profile der Art {kinds}",
+        "en": "Only for profiles of kind {kinds}"
+      },
+      "device": null
+    },
+    {
+      "code": "requires_location",
+      "source": "not_applicable",
+      "admin": {
+        "de": "Gilt nur, wenn der Standort geteilt werden darf",
+        "en": "Only when the location may be shared"
+      },
+      "device": null
+    },
+    {
+      "code": "access_expired",
+      "source": "access_expired",
+      "admin": {
+        "de": "Gastzugang abgelaufen – alles gesperrt",
+        "en": "Guest access expired – everything blocked"
+      },
+      "device": {
+        "de": "Dein Gastzugang ist abgelaufen",
+        "en": "Your guest access has expired"
+      }
+    }
+  ],
+  "expiry_presets": [
+    {
+      "id": "1h",
+      "label": {
+        "de": "1 Std.",
+        "en": "1 hour"
+      },
+      "rule": "now + 1 hour"
+    },
+    {
+      "id": "today",
+      "label": {
+        "de": "Heute",
+        "en": "Today"
+      },
+      "rule": "next local midnight (hub time zone)"
+    },
+    {
+      "id": "tomorrow_morning",
+      "label": {
+        "de": "Bis morgen früh",
+        "en": "Until tomorrow morning"
+      },
+      "rule": "07:00 local of the next calendar day; from 00:00 to 04:59 local 07:00 of the same day"
+    },
+    {
+      "id": "7d",
+      "label": {
+        "de": "7 Tage",
+        "en": "7 days"
+      },
+      "rule": "now + 7 x 24 hours"
+    }
+  ],
+  "enforcement": [
+    {
+      "id": "ha",
+      "label": {
+        "de": "Durchgesetzt",
+        "en": "Enforced"
+      },
+      "help": {
+        "de": "Home Assistant setzt das für den Benutzer des Geräts durch; ändern kann es nur ein Home-Assistant-Administrator.",
+        "en": "Home Assistant enforces it for the device's user; only a Home Assistant administrator can change it."
+      }
+    },
+    {
+      "id": "hub",
+      "label": {
+        "de": "Durchgesetzt",
+        "en": "Enforced"
+      },
+      "help": {
+        "de": "Der {brand}-Hub prüft es bei jeder Anfrage.",
+        "en": "The {brand} hub checks it on every request."
+      }
+    },
+    {
+      "id": "app",
+      "label": {
+        "de": "Gilt in {brand}",
+        "en": "Applies in {brand}"
+      },
+      "help": {
+        "de": "Die {brand}-App hält sich daran. Wer einen eigenen Home-Assistant-Zugang hat, ist nicht daran gebunden; mit „Nur über den Hub“ ohne Fernzugriff gibt es diesen Zugang nicht.",
+        "en": "The {brand} app follows it. Someone with their own Home Assistant access is not bound by it; on “Hub only” without remote access there is no such access."
+      }
+    },
+    {
+      "id": "ha_control",
+      "label": {
+        "de": "Bedienen durchgesetzt",
+        "en": "Control enforced"
+      },
+      "help": {
+        "de": "Home Assistant lässt das Gerät nur über die geprüfte Aktion von {brand} schalten; was es nicht bedienen darf, wird abgelehnt. Ausblenden gilt weiterhin nur in {brand}.",
+        "en": "Home Assistant lets the device switch only through the checked action of {brand}; what it may not operate is rejected. Hiding still only applies in {brand}."
+      }
+    }
+  ],
+  "expiry_limits": {
+    "min_minutes": 5,
+    "max_days": 365
+  },
+  "notifications": {
+    "important_min_priority": 50,
+    "critical_min_priority": 80
+  },
+  "safety_entities": {
+    "domains": [
+      "alarm_control_panel"
+    ],
+    "binary_sensor_device_classes": [
+      "smoke",
+      "carbon_monoxide",
+      "moisture",
+      "gas"
+    ]
+  },
+  "guest_access": {
+    "default_hours": 24,
+    "max_hours": 2160,
+    "presets_hours": [
+      24,
+      72,
+      168,
+      336,
+      720
+    ]
+  },
+  "limits": {
+    "max_profiles": 50,
+    "profile_name_max_length": 40,
+    "note_max_length": 200
+  }
+}

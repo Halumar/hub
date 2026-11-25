@@ -1,0 +1,68 @@
+{
+  "description": "A person on Checked with a device adjustment to Hub only: the adjustment is stricter and applies; the device loses its key (no remote access) and the hub_only boundary caps quick access and the watch.",
+  "input": {
+    "platform": "android",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult",
+      "rules": {
+        "remote_access": false
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z",
+    "overrides": [
+      {
+        "rule": "control_path",
+        "value": "hub",
+        "expires_at": null
+      }
+    ]
+  },
+  "expected": {
+    "control_path": {
+      "value": "hub",
+      "source": "device",
+      "reason": "device",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "boundary",
+      "reason": "boundary_hub_only",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_hub_only",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "areas": {
+      "value": {
+        "mode": "all",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    }
+  },
+  "expected_ha_user_group": "read_only"
+}

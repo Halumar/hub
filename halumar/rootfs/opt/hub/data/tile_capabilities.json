@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "defaults": {"variant": "compact", "tap_action": "default", "hold_action": "default", "secondary": "state"},
+  "always": {
+    "tap_actions": ["default", "more_info", "none"],
+    "hold_actions": ["default", "more_info", "none"],
+    "secondary_sources": ["state", "last_changed", "none"]
+  },
+  "run_targets": [
+    {"domain": "scene", "service": "scene.turn_on"},
+    {"domain": "script", "service": "script.turn_on"},
+    {"domain": "button", "service": "button.press"},
+    {"domain": "input_button", "service": "input_button.press"}
+  ],
+  "secondary_entity_domains": ["sensor", "binary_sensor"],
+  "domains": [
+    {"domains": ["light"], "variants": ["compact", "large", "slider"], "attributes": ["brightness", "color_temp_kelvin"], "tap_actions": ["toggle", "run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["switch", "input_boolean"], "variants": ["compact", "large", "action"], "attributes": [], "tap_actions": ["toggle", "run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["fan"], "variants": ["compact", "large", "slider"], "attributes": ["percentage", "preset_mode"], "tap_actions": ["toggle", "run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["cover"], "variants": ["compact", "large", "slider"], "attributes": ["current_position", "current_tilt_position"], "tap_actions": ["toggle", "run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["valve"], "variants": ["compact", "large", "slider"], "attributes": ["current_position"], "tap_actions": ["toggle", "run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["climate", "water_heater"], "variants": ["compact", "large"], "attributes": ["current_temperature", "temperature", "current_humidity", "hvac_action"], "tap_actions": ["run"], "icon": true, "accent": false, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["humidifier"], "variants": ["compact", "large", "slider"], "attributes": ["humidity", "current_humidity"], "tap_actions": ["toggle", "run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["media_player"], "variants": ["compact", "large", "slider"], "attributes": ["volume_level", "media_title", "source"], "tap_actions": ["toggle", "run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["scene", "script", "button", "input_button"], "variants": ["compact", "action"], "attributes": [], "tap_actions": ["run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": true},
+    {"domains": ["lock"], "variants": ["compact", "large"], "attributes": [], "tap_actions": [], "icon": false, "accent": false, "secondary_entity": false, "confirm": false, "confirm_always": true, "run_self": false},
+    {"domains": ["alarm_control_panel"], "variants": ["compact", "large"], "attributes": [], "tap_actions": [], "icon": false, "accent": false, "secondary_entity": false, "confirm": false, "confirm_always": true, "run_self": false},
+    {"domains": ["camera"], "variants": ["compact", "large"], "attributes": [], "tap_actions": [], "icon": true, "accent": false, "secondary_entity": false, "confirm": false, "confirm_always": false, "run_self": false},
+    {"domains": ["sensor"], "variants": ["compact", "large"], "attributes": [], "tap_actions": ["run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["binary_sensor"], "variants": ["compact", "large"], "attributes": [], "tap_actions": ["run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["person", "device_tracker"], "variants": ["compact", "large"], "attributes": [], "tap_actions": [], "icon": true, "accent": false, "secondary_entity": true, "confirm": false, "confirm_always": false, "run_self": false},
+    {"domains": ["vacuum", "lawn_mower"], "variants": ["compact", "large"], "attributes": ["battery_level", "fan_speed"], "tap_actions": ["run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["input_number", "number"], "variants": ["compact", "large", "slider"], "attributes": [], "tap_actions": ["run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["input_select", "select"], "variants": ["compact", "large"], "attributes": [], "tap_actions": ["run"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["automation"], "variants": ["compact"], "attributes": ["last_triggered"], "tap_actions": ["toggle"], "icon": true, "accent": true, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["weather"], "variants": ["compact", "large"], "attributes": ["temperature", "humidity", "wind_speed"], "tap_actions": [], "icon": true, "accent": true, "secondary_entity": true, "confirm": false, "confirm_always": false, "run_self": false},
+    {"domains": ["siren"], "variants": ["compact"], "attributes": [], "tap_actions": ["toggle"], "icon": false, "accent": false, "secondary_entity": true, "confirm": true, "confirm_always": false, "run_self": false},
+    {"domains": ["_other"], "variants": ["compact"], "attributes": [], "tap_actions": [], "icon": true, "accent": true, "secondary_entity": true, "confirm": false, "confirm_always": false, "run_self": false}
+  ]
+}

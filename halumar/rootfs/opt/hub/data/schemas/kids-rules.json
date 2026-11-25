@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "kids_rules",
+  "description": "Rule object of the kids mode, the same on the levels profile, area and entity. A missing field is inherited from the more general level (entity -> area -> profile); null for rate_limit/volume_max switches the rule off on that level. Access: entity blocked, else area blocked, else effective blocked_types (area, else profile), else profile blocked. An entity placed in several visible areas is checked per area; any block wins. blocked_types is not allowed on the entity level (422 rules.blocked_types). Invalid objects: 422 with detail rules.<field>.",
+  "type": "object",
+  "properties": {
+    "blocked": {
+      "type": "boolean",
+      "description": "true = everything in this scope blocked; false = explicitly allowed (overrides blocked_types and blocked of the more general levels)."
+    },
+    "blocked_types": {
+      "type": "array",
+      "maxItems": 30,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "defs.json#/$defs/kids_rule_type"
+      },
+      "description": "Profile and area only; on the area level it replaces the profile's list."
+    },
+    "quiet_hours": {
+      "type": "array",
+      "maxItems": 14,
+      "items": {
+        "$ref": "defs.json#/$defs/quiet_hours_window"
+      },
+      "description": "Bedtime windows; [] = no bedtime on this level (exception, e.g. a night light)."
+    },
+    "rate_limit": {
+      "anyOf": [
+        {
+          "$ref": "defs.json#/$defs/kids_rate_limit"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "color_lock": {
+      "type": "boolean",
+      "description": "Lights: no rgb/rgbw/rgbww/hs/xy color, color_name, effect, flash. On/off, brightness and color_temp_kelvin stay allowed."
+    },
+    "volume_max": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Volume cap in percent for media_player: volume_set above it is set to the cap (answer adjusted), volume_up at the cap is rejected (volume_limit), just below it becomes volume_set(cap); unknown volume rejects volume_up."
+    }
+  },
+  "additionalProperties": false
+}

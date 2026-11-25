@@ -1,0 +1,19 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Start the hub server
+# ==============================================================================
+
+declare log_level
+
+log_level=$(bashio::config 'log_level')
+
+bashio::log.info "Starting hub server..."
+
+# SQLite spills large statement journals (e.g. a migration that rebuilds a
+# table, or deleting a profile with many revisions) to a temporary file. Its
+# first choice /var/tmp is not writable under the AppArmor profile, which only
+# allows /tmp ("unable to open database file").
+export SQLITE_TMPDIR=/tmp
+
+exec python3 /opt/hub/main.py --log-level "${log_level}"

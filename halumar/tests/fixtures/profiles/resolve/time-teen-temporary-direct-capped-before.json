@@ -1,0 +1,53 @@
+{
+  "description": "A teen on Hub only with a temporary Direct until 20:00, before the end: capped at checked by parental controls (a key at home, kids.away ha), quick access follows the profile until 20:00, then hub_only caps it.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "teen"
+    },
+    "overrides": [
+      {
+        "rule": "control_path",
+        "value": "direct",
+        "expires_at": "2026-11-20T20:00:00Z"
+      }
+    ],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "control_path": {
+      "value": "checked",
+      "source": "boundary",
+      "reason": "boundary_child_protection",
+      "locked": true,
+      "fixed": true,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": "hub"
+    },
+    "quick_access": {
+      "value": "status",
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "expires_at": "2026-11-20T20:00:00Z",
+      "then": "off"
+    }
+  },
+  "expected_ha_access": {
+    "child": true,
+    "access_open": true,
+    "expected": {
+      "holds_key": true,
+      "kids_away": "ha"
+    }
+  }
+}

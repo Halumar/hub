@@ -1,0 +1,110 @@
+{
+  "description": "Erwachsen on an iPhone: from away locks, garage/gate doors and the alarm are view only (locking/arming stays possible), everything else can be operated; at home everything; widgets get the strictest of quick access and the remote level.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "adult"
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_control": {
+      "value": {
+        "default": "control",
+        "domains": {
+          "lock": "view",
+          "alarm_control_panel": "view",
+          "cover:garage": "view",
+          "cover:gate": "view"
+        },
+        "entities": {}
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha_control"
+    },
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    }
+  },
+  "entity_checks": [
+    {
+      "entity_id": "lock.front_door",
+      "device_class": null,
+      "route": "external",
+      "quick_access": "control",
+      "expected_app": "view",
+      "expected_quick": "status",
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "lock.front_door",
+      "device_class": null,
+      "route": "local",
+      "quick_access": "control",
+      "expected_app": "control",
+      "expected_quick": "control",
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "cover.garage_door",
+      "device_class": "garage",
+      "route": "external",
+      "quick_access": "status",
+      "expected_app": "view",
+      "expected_quick": "status",
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "cover.garage_door",
+      "device_class": "shutter",
+      "route": "external",
+      "quick_access": "control",
+      "expected_app": "control",
+      "expected_quick": "control",
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "light.kitchen",
+      "device_class": null,
+      "route": "external",
+      "quick_access": "control",
+      "expected_app": "control",
+      "expected_quick": "control",
+      "expected_always_visible": false
+    },
+    {
+      "entity_id": "alarm_control_panel.home",
+      "device_class": null,
+      "route": "external",
+      "quick_access": null,
+      "expected_app": "view",
+      "expected_quick": null,
+      "expected_always_visible": true
+    },
+    {
+      "entity_id": "light.kitchen",
+      "device_class": null,
+      "route": "local",
+      "quick_access": "status",
+      "expected_app": "control",
+      "expected_quick": "status",
+      "expected_always_visible": false
+    }
+  ]
+}

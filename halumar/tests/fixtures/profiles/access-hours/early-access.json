@@ -1,0 +1,164 @@
+{
+  "description": "Babysitter 17:00-01:00 (Europe/Zurich). At 15:20 local a Yes opened it until 16:00 (1 hour short of the window): open until 16:00, then closed until 17:00. A Yes until the regular start (17:00) continues into the window until 01:00. The switch still closes it; after until the early access is gone.",
+  "time_zone": "Europe/Zurich",
+  "access_hours": {
+    "enabled": true,
+    "windows": [
+      {
+        "days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri",
+          "sat",
+          "sun"
+        ],
+        "start": "17:00",
+        "end": "01:00"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "now": "2026-11-21T14:30:00Z",
+      "switch": true,
+      "early": {
+        "until": "2026-11-21T15:00:00Z",
+        "by": {
+          "kind": "device",
+          "client_id": "3f2b8c1e-5d4a-4e6f-9a7b-1c2d3e4f5a6b",
+          "name": "Papa",
+          "owner_label": "Papa",
+          "via": "home"
+        },
+        "request_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+        "duration": "1h",
+        "at": "2026-11-21T14:00:00Z"
+      },
+      "expected": {
+        "open": true,
+        "reason": null,
+        "until": "2026-11-21T15:00:00Z",
+        "opens_at": null,
+        "schedule": true,
+        "switch": true,
+        "early": {
+          "until": "2026-11-21T15:00:00Z",
+          "by": {
+            "kind": "device",
+            "client_id": "3f2b8c1e-5d4a-4e6f-9a7b-1c2d3e4f5a6b",
+            "name": "Papa",
+            "owner_label": "Papa",
+            "via": "home"
+          },
+          "request_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+          "duration": "1h",
+          "at": "2026-11-21T14:00:00Z"
+        }
+      }
+    },
+    {
+      "now": "2026-11-21T15:10:00Z",
+      "switch": true,
+      "early": {
+        "until": "2026-11-21T15:00:00Z",
+        "by": {
+          "kind": "device",
+          "client_id": "3f2b8c1e-5d4a-4e6f-9a7b-1c2d3e4f5a6b",
+          "name": "Papa",
+          "owner_label": "Papa",
+          "via": "home"
+        },
+        "request_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+        "duration": "1h",
+        "at": "2026-11-21T14:00:00Z"
+      },
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2026-11-21T16:00:00Z",
+        "schedule": true,
+        "switch": true,
+        "early": null
+      }
+    },
+    {
+      "now": "2026-11-21T14:30:00Z",
+      "switch": true,
+      "early": {
+        "until": "2026-11-21T16:00:00Z",
+        "by": {
+          "kind": "device",
+          "client_id": "3f2b8c1e-5d4a-4e6f-9a7b-1c2d3e4f5a6b",
+          "name": "Papa",
+          "owner_label": "Papa",
+          "via": "home"
+        },
+        "request_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+        "duration": "until_window_start",
+        "at": "2026-11-21T15:22:00Z"
+      },
+      "expected": {
+        "open": true,
+        "reason": null,
+        "until": "2026-11-22T00:00:00Z",
+        "opens_at": null,
+        "schedule": true,
+        "switch": true,
+        "early": {
+          "until": "2026-11-21T16:00:00Z",
+          "by": {
+            "kind": "device",
+            "client_id": "3f2b8c1e-5d4a-4e6f-9a7b-1c2d3e4f5a6b",
+            "name": "Papa",
+            "owner_label": "Papa",
+            "via": "home"
+          },
+          "request_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+          "duration": "until_window_start",
+          "at": "2026-11-21T15:22:00Z"
+        }
+      }
+    },
+    {
+      "now": "2026-11-21T14:30:00Z",
+      "switch": false,
+      "early": {
+        "until": "2026-11-21T16:00:00Z",
+        "by": {
+          "kind": "device",
+          "client_id": "3f2b8c1e-5d4a-4e6f-9a7b-1c2d3e4f5a6b",
+          "name": "Papa",
+          "owner_label": "Papa",
+          "via": "home"
+        },
+        "request_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+        "duration": "until_window_start",
+        "at": "2026-11-21T15:22:00Z"
+      },
+      "expected": {
+        "open": false,
+        "reason": "switch",
+        "until": null,
+        "opens_at": null,
+        "schedule": true,
+        "switch": false,
+        "early": {
+          "until": "2026-11-21T16:00:00Z",
+          "by": {
+            "kind": "device",
+            "client_id": "3f2b8c1e-5d4a-4e6f-9a7b-1c2d3e4f5a6b",
+            "name": "Papa",
+            "owner_label": "Papa",
+            "via": "home"
+          },
+          "request_id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+          "duration": "until_window_start",
+          "at": "2026-11-21T15:22:00Z"
+        }
+      }
+    }
+  ]
+}

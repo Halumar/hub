@@ -1,0 +1,60 @@
+{
+  "description": "House sitter suggestion 07:00-21:00 across the start of summer time (2027-03-28 Europe/Zurich).",
+  "time_zone": "Europe/Zurich",
+  "access_hours": {
+    "enabled": true,
+    "windows": [
+      {
+        "days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri",
+          "sat",
+          "sun"
+        ],
+        "start": "07:00",
+        "end": "21:00"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "now": "2027-03-27T21:00:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2027-03-28T05:00:00Z",
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2027-03-28T05:30:00Z",
+      "switch": true,
+      "expected": {
+        "open": true,
+        "reason": null,
+        "until": "2027-03-28T19:00:00Z",
+        "opens_at": null,
+        "schedule": true,
+        "switch": true
+      }
+    },
+    {
+      "now": "2027-03-28T19:30:00Z",
+      "switch": true,
+      "expected": {
+        "open": false,
+        "reason": "schedule",
+        "until": null,
+        "opens_at": "2027-03-29T05:00:00Z",
+        "schedule": true,
+        "switch": true
+      }
+    }
+  ]
+}

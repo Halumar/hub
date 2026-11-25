@@ -1,0 +1,55 @@
+{
+  "name": "climate-unavailable-falls-back",
+  "description": "No thermostat value right now: the sensors give the room value.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "climate.office",
+      "state": {
+        "state": "unavailable",
+        "attributes": {
+          "current_temperature": 20.0,
+          "friendly_name": "Thermostat"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.office_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Temperatur"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "climate.office",
+          "sensor.office_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": []
+      }
+    },
+    "value": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "local": {
+      "temperature": 21.0,
+      "humidity": null
+    },
+    "primary_sensor": {
+      "temperature": "sensor.office_temperature",
+      "humidity": null
+    }
+  }
+}

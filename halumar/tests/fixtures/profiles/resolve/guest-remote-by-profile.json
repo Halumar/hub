@@ -1,0 +1,100 @@
+{
+  "description": "House sitter & helper on a guest iPhone with remote access switched on in the profile: guests may use remote access when the profile allows it; rights, settings, widgets and location stay capped by the guest boundary.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "guest",
+      "expires_at": "2026-11-23T18:00:00Z"
+    },
+    "profile": {
+      "from_suggestion": "house_sitter",
+      "rules": {
+        "remote_access": true
+      }
+    },
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_access": {
+      "value": true,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "ha"
+    },
+    "setup_devices": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_profile_kind",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "app_settings": {
+      "value": "hidden",
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "app_settings_biometrics": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "quick_access": {
+      "value": "off",
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    },
+    "watch": {
+      "value": false,
+      "source": "boundary",
+      "reason": "boundary_guest",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "areas": {
+      "value": {
+        "mode": "selected",
+        "area_ids": [],
+        "tags": [],
+        "own_area": false
+      },
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": false,
+      "enforcement": "hub"
+    },
+    "location": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_profile_kind",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "hub"
+    },
+    "location_required": {
+      "value": null,
+      "source": "not_applicable",
+      "reason": "requires_profile_kind",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "app"
+    }
+  }
+}

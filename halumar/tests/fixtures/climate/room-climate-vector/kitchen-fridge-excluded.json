@@ -1,0 +1,78 @@
+{
+  "name": "kitchen-fridge-excluded",
+  "description": "The fridge sensor is the first temperature sensor of the kitchen; the room sensor gives the room value, the fridge stays a tile.",
+  "ha_area_id": null,
+  "entities": [
+    {
+      "entity_id": "light.kitchen_lights",
+      "state": {
+        "state": "on",
+        "attributes": {
+          "friendly_name": "Küchenlicht",
+          "brightness": 200
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.fridge",
+      "state": {
+        "state": "4",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Kühlschrank"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.kitchen_temperature",
+      "state": {
+        "state": "21.0",
+        "attributes": {
+          "device_class": "temperature",
+          "unit_of_measurement": "°C",
+          "friendly_name": "Temperatur"
+        }
+      }
+    },
+    {
+      "entity_id": "sensor.kitchen_humidity",
+      "state": {
+        "state": "54",
+        "attributes": {
+          "device_class": "humidity",
+          "unit_of_measurement": "%",
+          "friendly_name": "Luftfeuchte"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "room_climate": {
+      "temperature": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.kitchen_temperature"
+        ]
+      },
+      "humidity": {
+        "source": "auto",
+        "entity_ids": [
+          "sensor.kitchen_humidity"
+        ]
+      }
+    },
+    "value": {
+      "temperature": 21.0,
+      "humidity": 54.0
+    },
+    "local": {
+      "temperature": 21.0,
+      "humidity": 54.0
+    },
+    "primary_sensor": {
+      "temperature": "sensor.kitchen_temperature",
+      "humidity": "sensor.kitchen_humidity"
+    }
+  }
+}

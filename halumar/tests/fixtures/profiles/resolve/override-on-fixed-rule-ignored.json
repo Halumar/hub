@@ -1,0 +1,34 @@
+{
+  "description": "Wandpanel fixes remote access: a stored adjustment is ignored (the API answers 422 override.fixed; the hub deletes adjustments when a rule becomes fixed).",
+  "input": {
+    "platform": "ipados",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "from_suggestion": "wall_panel"
+    },
+    "overrides": [
+      {
+        "rule": "remote_access",
+        "value": true
+      }
+    ],
+    "device": {
+      "own_area_id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "has_remote_pin": true
+    },
+    "now": "2026-11-20T18:00:00Z"
+  },
+  "expected": {
+    "remote_access": {
+      "value": false,
+      "source": "profile",
+      "reason": "profile",
+      "locked": true,
+      "fixed": true,
+      "enforcement": "ha"
+    }
+  }
+}

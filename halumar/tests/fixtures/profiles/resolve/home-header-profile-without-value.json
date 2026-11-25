@@ -1,0 +1,40 @@
+{
+  "description": "A profile stored before the rule existed (no value, not in user_choice): the hub fills the comfort rule with the default of its kind (person: weather mood, everything on) as the user's choice – not locked, without saving the profile.",
+  "input": {
+    "platform": "ios",
+    "access": {
+      "kind": "member",
+      "expires_at": null
+    },
+    "profile": {
+      "kind": "person",
+      "rules": {},
+      "fixed": [],
+      "user_choice": [
+        "header"
+      ]
+    },
+    "overrides": [],
+    "device": {
+      "own_area_id": null,
+      "has_remote_pin": false
+    },
+    "now": "2026-11-22T18:00:00Z"
+  },
+  "expected": {
+    "home_header": {
+      "value": {
+        "style": "weather_mood",
+        "status_chips": true,
+        "greeting": true,
+        "weather": true
+      },
+      "source": "default",
+      "reason": "user_choice",
+      "locked": false,
+      "fixed": false,
+      "user_choice": true,
+      "enforcement": "app"
+    }
+  }
+}
